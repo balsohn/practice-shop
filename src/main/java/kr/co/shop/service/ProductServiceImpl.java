@@ -48,9 +48,16 @@ public class ProductServiceImpl implements ProductService {
 		
 		model.addAttribute("pos",pos);
 		
-		String type=request.getParameter("type")==null?"pansu":request.getParameter("type");
-		String order=request.getParameter("order")==null?"desc":request.getParameter("order");
-		ArrayList<ProductDTO> plist=mapper.list(pcode,type,order);
+		String order=request.getParameter("order")==null?"0":request.getParameter("order");
+		switch(order) {
+		case"0":order="pansu desc"; break;
+		case"1":order="price asc"; break;
+		case"2":order="price desc"; break;
+		case"3":order="star desc"; break;
+		case"4":order="writeday desc"; break;
+		}
+		
+		ArrayList<ProductDTO> plist=mapper.list(pcode,order);
 		
 		for(int i=0;i<plist.size();i++) {
 			ProductDTO pdto=plist.get(i);

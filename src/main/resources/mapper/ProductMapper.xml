@@ -7,7 +7,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="list" resultType="kr.co.shop.dto.ProductDTO">
 		select * from product where 
 		pcode like concat(#{pcode},'%')
-		order by ${type} ${order} limit 10
+		order by ${order} limit 10
 	</select>
 	<select id="getDaeName" resultType="string">
 		select name from dae

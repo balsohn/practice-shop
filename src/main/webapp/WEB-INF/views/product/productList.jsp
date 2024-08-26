@@ -21,18 +21,25 @@
    }
    main {width: 1100px; margin: auto; margin-top: 50px;}
    .main-top {display:flex; justify-content: space-between; margin-right:10px;}
+   .main-top > div > a {text-decoration: none; color:black;}
  </style>
+ <script>
+ window.onload=function() {
+	document.getElementsByClassName("type")[${param.order}].style.color="red";
+	 
+ }
+ </script>
 </head>
 <body> <!-- product/productList.jsp -->
   <main>
   	<div class="main-top">
   		<div>${pos}</div>
   		<div>
-  			<a href="productList?pcode=${pcode}&type=pansu&order=desc">판매량순</a>
-  			<a href="productList?pcode=${pcode}&type=price&order=asc">가격낮은순</a>
-  			<a href="productList?pcode=${pcode}&type=price&order=desc">가격높은순</a>
-  			<a href="productList?pcode=${pcode}&type=star&order=desc">별점순</a>
-  			<a href="productList?pcode=${pcode}&type=writeday&order=desc">최신상품</a>
+  			<a href="productList?pcode=${pcode}&order=0" class="type">판매량순</a>
+  			<a href="productList?pcode=${pcode}&order=1" class="type">가격낮은순</a>
+  			<a href="productList?pcode=${pcode}&order=2" class="type">가격높은순</a>
+  			<a href="productList?pcode=${pcode}&order=3" class="type">별점순</a>
+  			<a href="productList?pcode=${pcode}&order=4" class="type">최신상품</a>
   		</div>
   	</div>
    <table width="1100" align="center">
