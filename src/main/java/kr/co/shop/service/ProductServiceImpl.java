@@ -24,16 +24,13 @@ public class ProductServiceImpl implements ProductService {
 	public String list(HttpServletRequest request, Model model) {
 		String pcode=request.getParameter("pcode");
 		
-		String dae;
-		String jung;
-		String so;
-		if(pcode.length()==3) {
-			
-		} else if(pcode.length()==5) {
-			
-		} else if(pcode.length()==7) {
-			
-		}
+		String code=pcode.substring(1);
+		String dae=pcode.substring(0,2);
+		String jung=pcode.substring(2,4);
+		String so=pcode.substring(4,6);
+		
+		System.out.println(dae+" "+jung+" "+so);
+
 		
 		
 		ArrayList<ProductDTO> plist=mapper.list(pcode);

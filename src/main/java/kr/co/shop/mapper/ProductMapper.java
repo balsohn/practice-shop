@@ -9,4 +9,5 @@ import kr.co.shop.dto.ProductDTO;
 @Mapper
 public interface ProductMapper {
 	public ArrayList<ProductDTO> list(String pcode);
+	
 }
