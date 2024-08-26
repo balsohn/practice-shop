@@ -27,8 +27,8 @@ public class ProductServiceImpl implements ProductService {
 		
 		for(int i=0;i<plist.size();i++) {
 			ProductDTO pdto=plist.get(i);
-			int halinPrice=pdto.getPrice()-(pdto.getPrice()*(pdto.getHalin()/100));
-			int jukPrice=pdto.getPrice()*(pdto.getJuk()/100);
+			int halinPrice=(int)(pdto.getPrice()-(pdto.getPrice()*(pdto.getHalin()/100.0)));
+			int jukPrice=(int)(pdto.getPrice()*(pdto.getJuk()/100.0));
 			
 			LocalDate today=LocalDate.now();
 			LocalDate xday=today.plusDays(pdto.getBaeday());
@@ -45,9 +45,9 @@ public class ProductServiceImpl implements ProductService {
 				baeEx=m+"/"+d+"("+yoil+") 도착예정";
 			}
 			
-			pdto.setHalinPrice(halinPrice);
-			pdto.setJukPrice(jukPrice);
-			pdto.setBaeEx(baeEx);
+			plist.get(i).setHalinPrice(halinPrice);
+			plist.get(i).setJukPrice(jukPrice);
+			plist.get(i).setBaeEx(baeEx);
 		}
 		model.addAttribute("plist",plist);
 		return "/product/productList";
