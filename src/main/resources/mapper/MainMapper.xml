@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.shop.mapper.MainMapper">
+	<select id="getDae" resultType="kr.co.shop.dto.DaeDTO">
+		select * from dae order by code asc
+	</select>
+	<select id="getJung" resultType="kr.co.shop.dto.JungDTO">
+		select * from jung order by code asc
+	</select>
+	<select id="getSo" resultType="kr.co.shop.dto.SoDTO">
+		select * from so order by code asc
+	</select>
+	
+	
+	
+	
+	<select id="getCate" resultType="kr.co.shop.dto.CateDTO"> 
+SELECT 
+    d.name AS daeName, 
+    j.name AS jungName, 
+    s.name AS soName
+FROM 
+    dae d
+LEFT JOIN 
+    jung j ON d.code = j.daecode
+LEFT JOIN 
+    so s ON CONCAT(d.code, j.code) = s.daejung
+ORDER BY 
+    d.id, j.id, s.id;
+
+	</select>
+</mapper>
