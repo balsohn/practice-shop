@@ -9,4 +9,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		pcode like concat(#{pcode},'%')
 		order by pansu desc limit 10
 	</select>
+	<select id="getDaeName" resultType="string">
+		select name from dae
+		where code=#{code}
+	</select>
+	<select id="getJungName" resultType="string">
+		select name from jung
+		where code=#{code} and daecode=#{daecode}
+	</select>
+	<select id="getSoName" resultType="string">
+		select name from so
+		where code=#{code} and daejung=#{daejung}
+	</select>
 </mapper>

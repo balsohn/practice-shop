@@ -24,17 +24,28 @@ public class ProductServiceImpl implements ProductService {
 	public String list(HttpServletRequest request, Model model) {
 		String pcode=request.getParameter("pcode");
 		
-		String dae;
-		String jung;
-		String so;
+		String pos="HOME-";
 		if(pcode.length()==3) {
-			
+			String code=pcode.substring(1);
+			pos+=mapper.getDaeName(code);
 		} else if(pcode.length()==5) {
-			
+			String daecode=pcode.substring(1,3);
+			pos=pos+mapper.getDaeName(daecode);
+			String code=pcode.substring(3);
+			pos=pos+"-"+mapper.getJungName(code, daecode);
 		} else if(pcode.length()==7) {
+			String daecode=pcode.substring(1,3);
+			pos+=mapper.getDaeName(daecode);
 			
+			String daejung=pcode.substring(1,5);
+			String jungcode=pcode.substring(3,5);
+			String code=pcode.substring(5);
+			pos+="-"+mapper.getJungName(jungcode, daecode);
+			
+			pos+="-"+mapper.getSoName(code, daejung);
 		}
 		
+		model.addAttribute("pos",pos);
 		
 		ArrayList<ProductDTO> plist=mapper.list(pcode);
 		

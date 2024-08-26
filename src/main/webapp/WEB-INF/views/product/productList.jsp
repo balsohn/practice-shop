@@ -26,7 +26,7 @@
   <main>
    <table width="1100" align="center">
      <tr>
-     
+     ${pos}
     <c:forEach items="${plist}" var="pdto" varStatus="sts">
          <td> 
            <div> <img src="../resources/pageimg/${pdto.pimg}" width="200" height="300"> </div> 
