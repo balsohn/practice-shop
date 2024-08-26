@@ -49,6 +49,7 @@ public class ProductServiceImpl implements ProductService {
 		model.addAttribute("pos",pos);
 		
 		String order=request.getParameter("order")==null?"0":request.getParameter("order");
+		model.addAttribute("order",order);
 		switch(order) {
 		case"0":order="pansu desc"; break;
 		case"1":order="price asc"; break;
@@ -57,7 +58,21 @@ public class ProductServiceImpl implements ProductService {
 		case"4":order="writeday desc"; break;
 		}
 		
-		ArrayList<ProductDTO> plist=mapper.list(pcode,order);
+		
+		int page=request.getParameter("page")==null?1:Integer.parseInt(request.getParameter("page"));
+		int index=(page-1)*10;
+		int p=(page-1)/10;
+		int pstart=p*10+1;
+		int pend=pstart+9;
+		int chong=mapper.getChong(pcode);
+		if(chong<pend) {
+			pend=chong;
+		}
+		model.addAttribute("page",page);
+		model.addAttribute("pstart",pstart);
+		model.addAttribute("pend",pend);
+		model.addAttribute("chong",chong);
+		ArrayList<ProductDTO> plist=mapper.list(pcode,order,index);
 		
 		for(int i=0;i<plist.size();i++) {
 			ProductDTO pdto=plist.get(i);
@@ -86,6 +101,38 @@ public class ProductServiceImpl implements ProductService {
 		
 		model.addAttribute("plist",plist);
 		return "/product/productList";
+	}
+
+	@Override
+	public String content(HttpServletRequest request, Model model) {
+		String pcode=request.getParameter("pcode");
+		ProductDTO pdto=mapper.content(pcode);
+		
+			
+			int halinPrice=(int)(pdto.getPrice()-(pdto.getPrice()*(pdto.getHalin()/100.0)));
+			int jukPrice=(int)(pdto.getPrice()*(pdto.getJuk()/100.0));
+			
+			LocalDate today=LocalDate.now();
+			LocalDate xday=today.plusDays(pdto.getBaeday());
+			String yoil=MyUtils.getYoil(xday);
+			
+			String baeEx=null;
+			if(pdto.getBaeday()==1) {
+				baeEx="내일("+yoil+") 도착예정";
+			} else if(pdto.getBaeday()==2) {
+				baeEx="모레("+yoil+") 도착예정";
+			} else {
+				int m=xday.getMonthValue();
+				int d=xday.getDayOfMonth();
+				baeEx=m+"/"+d+"("+yoil+") 도착예정";
+			}
+			
+			pdto.setHalinPrice(halinPrice);
+			pdto.setJukPrice(jukPrice);
+			pdto.setBaeEx(baeEx);
+		
+		model.addAttribute("pdto",pdto);
+		return "/product/productContent";
 	}
 	
 	

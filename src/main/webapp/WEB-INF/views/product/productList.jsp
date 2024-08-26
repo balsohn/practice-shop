@@ -22,11 +22,11 @@
    main {width: 1100px; margin: auto; margin-top: 50px;}
    .main-top {display:flex; justify-content: space-between; margin-right:10px;}
    .main-top > div > a {text-decoration: none; color:black;}
+   main table td {cursor: pointer;}
  </style>
  <script>
- window.onload=function() {
+ function sel(){
 	document.getElementsByClassName("type")[${param.order}].style.color="red";
-	 
  }
  </script>
 </head>
@@ -47,7 +47,8 @@
      
      
     <c:forEach items="${plist}" var="pdto" varStatus="sts">
-         <td> 
+    	
+         <td onclick="location='productContent?pcode=${pdto.pcode}'"> 
            <div> <img src="../resources/pageimg/${pdto.pimg}" width="200" height="300"> </div> 
            <div> ${pdto.title} </div>
           <c:if test="${pdto.halin!=0}"> <!-- 할인율이 0이면 의미없다 -->
@@ -72,6 +73,22 @@
            </tr><tr>
          </c:if>
     </c:forEach>
+     </tr>
+     <tr>	
+     	<td colspan="4" align="center">
+     	<c:if test="${pstart!=1}">
+     	<a href="productList?pcode=${param.pcode}&order=${order}&page=1">처음</a>
+     	<a href="productList?pcode=${param.pcode}&order=${order}&page=${pstart-1}">이전</a>
+     	</c:if>
+     	<c:forEach var="i" begin="${pstart}" end="${pend}">
+     	<a href="productList?pcode=${param.pcode}&order=${order}&page=${i}" <c:if test="${i==page}">style='color:red;'</c:if>>${i}</a>
+     	
+     	</c:forEach>
+     	<c:if test="${chong!=pend}">
+     	<a href="productList?pcode=${param.pcode}&order=${order }&page=${pend+1}">다음</a>
+     	<a href="productList?pcode=${param.pcode}&order=${order}&page=${chong}">마지막</a>
+     	</c:if>
+		</td>
      </tr>
    </table>
   </main>

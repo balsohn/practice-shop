@@ -228,6 +228,8 @@ window.onload = function() {
     };
     soXhr.open("GET", "/main/getSo", true);
     soXhr.send();
+    
+    sel();
 }
 
 // 모든 데이터를 받은 후 처리하는 함수

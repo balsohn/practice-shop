@@ -7,7 +7,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="list" resultType="kr.co.shop.dto.ProductDTO">
 		select * from product where 
 		pcode like concat(#{pcode},'%')
-		order by ${order} limit 10
+		order by ${order} limit #{index},20
 	</select>
 	<select id="getDaeName" resultType="string">
 		select name from dae
@@ -20,5 +20,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="getSoName" resultType="string">
 		select name from so
 		where code=#{code} and daejung=#{daejung}
+	</select>
+	<select id="getChong" resultType="int">
+		select ceil(count(*)/20) from product where pcode like
+		concat(#{pcode},'%')
+	</select>
+	<select id="content" resultType="kr.co.shop.dto.ProductDTO">
+		select * from product where pcode=#{pcode}
 	</select>
 </mapper>

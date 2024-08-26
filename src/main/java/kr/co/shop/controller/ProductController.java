@@ -23,5 +23,10 @@ public class ProductController {
 	public String list(HttpServletRequest request, Model model) {
 		return service.list(request,model);
 	}
+	
+	@RequestMapping("/product/productContent")
+	public String content(HttpServletRequest request, Model model) {
+		return service.content(request,model);
+	}
 
 }
