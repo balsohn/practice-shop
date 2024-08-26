@@ -44,6 +44,7 @@ public class ProductServiceImpl implements ProductService {
 			
 			pos+="-"+mapper.getSoName(code, daejung);
 		}
+
 		
 		model.addAttribute("pos",pos);
 		
