@@ -20,13 +20,24 @@
      font-size:12px;
    }
    main {width: 1100px; margin: auto; margin-top: 50px;}
+   .main-top {display:flex; justify-content: space-between; margin-right:10px;}
  </style>
 </head>
 <body> <!-- product/productList.jsp -->
   <main>
+  	<div class="main-top">
+  		<div>${pos}</div>
+  		<div>
+  			<a href="productList?pcode=${pcode}&type=pansu&order=desc">판매량순</a>
+  			<a href="productList?pcode=${pcode}&type=price&order=asc">가격낮은순</a>
+  			<a href="productList?pcode=${pcode}&type=price&order=desc">가격높은순</a>
+  			<a href="productList?pcode=${pcode}&type=star&order=desc">별점순</a>
+  			<a href="productList?pcode=${pcode}&type=writeday&order=desc">최신상품</a>
+  		</div>
+  	</div>
    <table width="1100" align="center">
      <tr>
-     ${pos}
+     
     <c:forEach items="${plist}" var="pdto" varStatus="sts">
          <td> 
            <div> <img src="../resources/pageimg/${pdto.pimg}" width="200" height="300"> </div> 

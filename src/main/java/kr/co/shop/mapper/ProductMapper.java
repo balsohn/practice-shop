@@ -8,7 +8,7 @@ import kr.co.shop.dto.ProductDTO;
 
 @Mapper
 public interface ProductMapper {
-	public ArrayList<ProductDTO> list(String pcode);
+	public ArrayList<ProductDTO> list(String pcode, String type, String order);
 	public String getDaeName(String code);
 	public String getJungName(String code, String daecode);
 	public String getSoName(String code, String daejung);
