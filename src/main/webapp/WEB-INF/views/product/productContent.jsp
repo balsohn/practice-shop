@@ -16,6 +16,7 @@
 </style>
 </head>
 <body>
+
 	<main>
 		<section id="first">
 			<div id="left"> 
