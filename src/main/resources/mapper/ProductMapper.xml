@@ -7,6 +7,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="list" resultType="kr.co.shop.dto.ProductDTO">
 		select * from product where 
 		pcode like concat(#{pcode},'%')
-		order by pansu desc
+		order by pansu desc limit 10
 	</select>
 </mapper>

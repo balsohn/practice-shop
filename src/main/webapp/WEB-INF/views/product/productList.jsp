@@ -19,14 +19,15 @@
      border-radius:15px;
      font-size:12px;
    }
+   main {width: 1100px; margin: auto; margin-top: 50px;}
  </style>
 </head>
 <body> <!-- product/productList.jsp -->
   <main>
    <table width="1100" align="center">
      <tr>
+     
     <c:forEach items="${plist}" var="pdto" varStatus="sts">
-
          <td> 
            <div> <img src="../resources/pageimg/${pdto.pimg}" width="200" height="300"> </div> 
            <div> ${pdto.title} </div>

@@ -23,6 +23,19 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public String list(HttpServletRequest request, Model model) {
 		String pcode=request.getParameter("pcode");
+		
+		String dae;
+		String jung;
+		String so;
+		if(pcode.length()==3) {
+			
+		} else if(pcode.length()==5) {
+			
+		} else if(pcode.length()==7) {
+			
+		}
+		
+		
 		ArrayList<ProductDTO> plist=mapper.list(pcode);
 		
 		for(int i=0;i<plist.size();i++) {
@@ -49,6 +62,7 @@ public class ProductServiceImpl implements ProductService {
 			plist.get(i).setJukPrice(jukPrice);
 			plist.get(i).setBaeEx(baeEx);
 		}
+		
 		model.addAttribute("plist",plist);
 		return "/product/productList";
 	}
