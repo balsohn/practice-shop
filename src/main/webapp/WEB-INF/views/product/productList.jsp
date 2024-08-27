@@ -23,6 +23,9 @@
    .main-top {display:flex; justify-content: space-between; margin-right:10px;}
    .main-top > div > a {text-decoration: none; color:black;}
    main table td {cursor: pointer;}
+   table { margin-top: 20px;}
+   td {padding: 10px;}
+   td:hover {border:2px solid #ccc; border-radius: 5px; padding:10px;}
  </style>
  <script>
  function sel(){
@@ -48,8 +51,8 @@
      
     <c:forEach items="${plist}" var="pdto" varStatus="sts">
     	
-         <td onclick="location='productContent?pcode=${pdto.pcode}'"> 
-           <div> <img src="../resources/pageimg/${pdto.pimg}" width="200" height="300"> </div> 
+         <td onclick="location='productContent?pcode=${pdto.pcode}'" width="20%"> 
+           <div style="text-align:center;"> <img src="../resources/pageimg/${pdto.pimg}" width="200" height="300"> </div> 
            <div> ${pdto.title} </div>
           <c:if test="${pdto.halin!=0}"> <!-- 할인율이 0이면 의미없다 -->
            <div> ${pdto.halin}%  <s> <fmt:formatNumber value="${pdto.price}" type="number"/>원  </s></div> 

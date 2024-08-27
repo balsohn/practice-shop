@@ -7,8 +7,11 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import kr.co.shop.dto.ProductDTO;
 import kr.co.shop.service.ProductService;
 
@@ -27,6 +30,16 @@ public class ProductController {
 	@RequestMapping("/product/productContent")
 	public String content(HttpServletRequest request, Model model) {
 		return service.content(request,model);
+	}
+	
+	@RequestMapping("/product/jjimOk")
+	public @ResponseBody String jjimOk(HttpServletRequest request, HttpSession session, HttpServletResponse response) {
+		return service.jjimOk(request,session,response);
+	}
+	
+	@RequestMapping("/product/jjimChk")
+	public @ResponseBody String jjimChk(HttpServletRequest request,HttpSession session) {
+		return service.jjimChk(request,session);
 	}
 
 }

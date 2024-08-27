@@ -28,4 +28,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="content" resultType="kr.co.shop.dto.ProductDTO">
 		select * from product where pcode=#{pcode}
 	</select>
+	<insert id="jjimOk">
+		insert into jjim (userid,pcode,writeday)
+		values (#{userid},#{pcode},now())
+	</insert>
+	<delete id="jjimDel">
+		delete from jjim where pcode=#{pcode} and userid=#{userid}
+	</delete>
+	<select id="jjimChk" resultType="int">
+		select count(*) from jjim where pcode=#{pcode} and userid=#{userid}
+	</select>
 </mapper>

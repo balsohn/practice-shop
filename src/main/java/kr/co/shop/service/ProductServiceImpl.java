@@ -8,7 +8,10 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import kr.co.shop.dto.ProductDTO;
 import kr.co.shop.mapper.ProductMapper;
 import kr.co.shop.utils.MyUtils;
@@ -133,6 +136,46 @@ public class ProductServiceImpl implements ProductService {
 		
 		model.addAttribute("pdto",pdto);
 		return "/product/productContent";
+	}
+
+	@Override
+	public String jjimOk(HttpServletRequest request, HttpSession session, HttpServletResponse response) {
+		String jjimchk=request.getParameter("jjimchk");
+		String pcode=request.getParameter("pcode");
+		if(session.getAttribute("userid")==null) {
+			String oriURL ="/product/productContent?pcode=" + pcode;
+			Cookie cookie=new Cookie("url", oriURL);
+			cookie.setMaxAge(500);
+			cookie.setPath("/");
+			response.addCookie(cookie);
+			
+			return "0";
+		} else {
+			String userid=session.getAttribute("userid").toString();
+			if(mapper.jjimChk(pcode, userid)==1) {
+				mapper.jjimDel(pcode, userid);
+			} else {
+				mapper.jjimOk(pcode, userid);
+			}
+			return "1";
+		}
+	}
+
+	@Override
+	public String jjimChk(HttpServletRequest request,HttpSession session) {
+		String pcode=request.getParameter("pcode");
+		if(session.getAttribute("userid")!=null) {
+			String userid=session.getAttribute("userid").toString();
+			if(mapper.jjimChk(pcode, userid)==1) {
+				return "1";
+			} else {
+				return "0";
+			}
+		} else {
+			return "0";
+		}
+		
+		
 	}
 	
 	

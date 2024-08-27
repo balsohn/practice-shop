@@ -15,4 +15,7 @@ public interface ProductMapper {
 	public String getSoName(String code, String daejung);
 	public int getChong(String pcode);
 	public ProductDTO content(String pcode);
+	public void jjimOk(String pcode, String userid);
+	public void jjimDel(String pcode, String userid);
+	public int jjimChk(String pcode, String userid);
 }
