@@ -18,4 +18,5 @@ public interface ProductMapper {
 	public void jjimOk(String pcode, String userid);
 	public void jjimDel(String pcode, String userid);
 	public int jjimChk(String pcode, String userid);
+	public void addCart(String pcode, String userid, int su);
 }

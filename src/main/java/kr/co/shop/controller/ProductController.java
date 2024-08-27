@@ -42,5 +42,10 @@ public class ProductController {
 	public @ResponseBody String jjimChk(HttpServletRequest request,HttpSession session) {
 		return service.jjimChk(request,session);
 	}
+	
+	@RequestMapping("/product/addCart")
+	public @ResponseBody String addCart(HttpServletRequest request, HttpSession session) {
+		return service.addCart(request,session);
+	}
 
 }

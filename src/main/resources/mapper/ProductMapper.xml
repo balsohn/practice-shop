@@ -38,4 +38,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="jjimChk" resultType="int">
 		select count(*) from jjim where pcode=#{pcode} and userid=#{userid}
 	</select>
+	<insert id="addCart">
+		insert into cart (userid, pcode, su, writeday)
+		values (#{userid},#{pcode},#{su},now())
+	</insert>
 </mapper>

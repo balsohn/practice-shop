@@ -17,4 +17,6 @@ public interface ProductService {
 	public String jjimOk(HttpServletRequest request, HttpSession session, HttpServletResponse response);
 
 	public String jjimChk(HttpServletRequest request,HttpSession session);
+
+	public String addCart(HttpServletRequest request, HttpSession session);
 }
