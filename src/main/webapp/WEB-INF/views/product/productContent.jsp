@@ -23,7 +23,7 @@
 	#ju {display: grid; grid-template-columns:0.5fr 1fr 1fr; gap:10px;}
 	#su {width: 50px; outline: none;}
 	#btn1 {height:33px;width:100%; border:1px solid purple; background:white; color:purple; border-radius: 5px; position: relative;}
-	#btn2 {height:33px;width:100%; border:1px solid purple; background:white; color:purple; border-radius: 5px;}
+	#btn2 {height:33px;width:100%; border:1px solid purple; background:purple; color:white; border-radius: 5px;}
 	#ju1 {position: relative;}
 	#cartview{
 		text-align: center;
