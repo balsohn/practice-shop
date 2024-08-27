@@ -28,8 +28,9 @@ public class ProductController {
 	}
 	
 	@RequestMapping("/product/productContent")
-	public String content(HttpServletRequest request, Model model) {
-		return service.content(request,model);
+	public String content(HttpServletRequest request, Model model,
+			HttpSession session) {
+		return service.content(request,model,session);
 	}
 	
 	@RequestMapping("/product/jjimOk")

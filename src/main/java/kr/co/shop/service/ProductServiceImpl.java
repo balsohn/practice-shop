@@ -107,7 +107,7 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public String content(HttpServletRequest request, Model model) {
+	public String content(HttpServletRequest request, Model model,HttpSession session) {
 		String pcode=request.getParameter("pcode");
 		ProductDTO pdto=mapper.content(pcode);
 		
@@ -135,6 +135,11 @@ public class ProductServiceImpl implements ProductService {
 			pdto.setBaeEx(baeEx);
 		
 		model.addAttribute("pdto",pdto);
+		
+		if(session.getAttribute("userid")!=null) {
+			String userid=session.getAttribute("userid").toString();
+			int ch=mapper.jjimChk(pcode, userid);	
+		}
 		return "/product/productContent";
 	}
 
