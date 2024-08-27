@@ -12,7 +12,7 @@ import kr.co.shop.dto.ProductDTO;
 public interface ProductService {
 	public String list(HttpServletRequest request, Model model);
 
-	public String content(HttpServletRequest request, Model model);
+	public String content(HttpServletRequest request, Model model,HttpSession session);
 
 	public String jjimOk(HttpServletRequest request, HttpSession session, HttpServletResponse response);
 
