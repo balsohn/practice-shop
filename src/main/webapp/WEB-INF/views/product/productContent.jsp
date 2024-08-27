@@ -123,7 +123,6 @@
 </script>
 </head>
 <body>
-
 	<main>
 		<form method="post" action="gumae">
 		<section id="first">
