@@ -25,6 +25,12 @@
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"> 
 <script>
 	$(function() {
+		
+		var price=${pdto.price};
+		var halin=${pdto.halin};
+		var juk=${pdto.halin};
+		
+		
 		$('#su').spinner({
 			min:1,
 			max:10,
@@ -66,8 +72,6 @@
 	    
 	    chk.open("GET", "jjimOk?pcode=" + pcode);
 	    chk.send();
-	    
-	    
 	}
 
 </script>
@@ -106,8 +110,8 @@
 				${pdto.baeEx }
 				<div id="ju">
 					<input type="text" value="1" readonly id="su">
-					<button onclick="loaction.href:'asdfasdf'" id="btn1">장바구니</button>
-					<button onclick="loaction:''" id="btn2">구매하기</button>
+					<button onclick="location.href:'asdf'" id="btn1">장바구니</button>
+					<button onclick="location:''" id="btn2">구매하기</button>
 				</div>
 			</div>
 		</section>
