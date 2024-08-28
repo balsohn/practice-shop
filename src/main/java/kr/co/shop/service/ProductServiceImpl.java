@@ -186,79 +186,65 @@ public class ProductServiceImpl implements ProductService {
 
 	@Override
 	public String addCart(HttpServletRequest request, HttpSession session,
-	        HttpServletResponse response) {
-	    String pcode = request.getParameter("pcode");
-	    int su = Integer.parseInt(request.getParameter("su"));
+			HttpServletResponse response) {
+		String pcode=request.getParameter("pcode");
+		int su=Integer.parseInt(request.getParameter("su"));
+		
+		if(session.getAttribute("userid")==null) {
 
-	    if (session.getAttribute("userid") == null) {
-	        Cookie pookie = WebUtils.getCookie(request, "pcode");
-	        Cookie sukie = WebUtils.getCookie(request, "su");
-	        
-	        if (pookie == null || sukie == null) {
-	            // pookie 또는 sukie 쿠키가 없으면 새로운 쿠키 생성
-	            Cookie newPookie = new Cookie("pcode", pcode);
-	            newPookie.setMaxAge(500);
-	            newPookie.setPath("/");
-	            response.addCookie(newPookie);
-
-	            Cookie newSukie = new Cookie("su", String.valueOf(su));
-	            newSukie.setMaxAge(500);
-	            newSukie.setPath("/");
-	            response.addCookie(newSukie);
-	        } else {
-	            // 쿠키가 존재하는 경우
-	            String[] pookies = pookie.getValue().split("/");
-	            String[] sukies = sukie.getValue().split("/");
-	            StringBuilder pookie1 = new StringBuilder();
-	            StringBuilder sukie1 = new StringBuilder();
-	            boolean found = false;
-
-	            for (int i = 0; i < pookies.length; i++) {
-	                if (pookies[i].equals(pcode)) {
-	                    // 동일한 pcode가 이미 존재할 경우 su 값을 증가
-	                    int currentSu = Integer.parseInt(sukies[i]);
-	                    currentSu += su;
-	                    sukies[i] = String.valueOf(currentSu);
-	                    found = true;
-	                }
-	                pookie1.append(pookies[i]).append("/");
-	                sukie1.append(sukies[i]).append("/");
-	            }
-
-	            if (!found) {
-	                // 동일한 pcode가 없으면 새 항목 추가
-	                pookie1.append(pcode).append("/");
-	                sukie1.append(su).append("/");
-	            }
-
-	            // 마지막에 "/"를 제거
-	            if (pookie1.length() > 0) pookie1.setLength(pookie1.length() - 1);
-	            if (sukie1.length() > 0) sukie1.setLength(sukie1.length() - 1);
-
-	            // 쿠키 업데이트
-	            Cookie newPookie = new Cookie("pcode", pookie1.toString());
-	            newPookie.setMaxAge(500);
-	            newPookie.setPath("/");
-	            response.addCookie(newPookie);
-
-	            Cookie newSukie = new Cookie("su", sukie1.toString());
-	            newSukie.setMaxAge(500);
-	            newSukie.setPath("/");
-	            response.addCookie(newSukie);
-	        }
-	    } else {
-	        String userid = session.getAttribute("userid").toString();
-
-	        if (mapper.isCart(pcode, userid)) {
-	            mapper.upCart(pcode, userid, su);
-	        } else {
-	            mapper.addCart(pcode, userid, su);
-	        }
-	    }
-
-	    return "0";
+			// 로그인을 하지 않아도 장바구니 처리를 실행
+			// 이전의 쿠키변수 pcode를 읽어오기
+			Cookie cookie=WebUtils.getCookie(request, "pcode");
+			String newPro=pcode+"-"+su+"/";
+			
+			String newPcode=null;
+			if(cookie==null) {
+				newPcode=newPro;
+			} else {
+				String getPcode=cookie.getValue();
+				String[] pcodes=getPcode.split("/");
+				int chk=-1;
+				for(int i=0;i<pcodes.length;i++) {
+					if(pcodes[i].indexOf(pcode)!=-1) {
+						chk=i;
+					}
+				}
+				
+				if(chk!=-1) {
+					int num=Integer.parseInt(pcodes[chk].substring(13));
+					num+=su;
+					pcodes[chk]=pcodes[chk].substring(0,13)+num;
+					
+					String imsi="";
+					for(int i=0;i<pcodes.length;i++) {
+						imsi+=pcodes[i]+"/";
+					}
+					newPcode=imsi;
+				} else {
+					newPcode=cookie.getValue()+newPro;					
+				}
+			}
+			
+			System.out.println(newPcode);
+			
+			// newPcode를 새로운 쿠키객체로 생성
+			Cookie newCookie=new Cookie("pcode",newPcode);
+			newCookie.setMaxAge(600);
+			newCookie.setPath("/");
+			response.addCookie(newCookie);
+			
+		} else {
+			String userid=session.getAttribute("userid").toString();
+			
+			if(mapper.isCart(pcode, userid)) {
+				mapper.upCart(pcode,userid,su);
+			} else {
+				mapper.addCart(pcode, userid, su);				
+			}
+		}
+		
+		return "0";
 	}
-
 	
 	
 }
