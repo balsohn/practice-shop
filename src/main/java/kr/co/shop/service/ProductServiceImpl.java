@@ -206,12 +206,23 @@ public class ProductServiceImpl implements ProductService {
 			} else {
 				String[] pookies=pookie.getValue().split("/");
 				String[] sukies=sukie.getValue().split("/");
+				String pookie1="";
+				String sukie1="";
 				
 				for(int i=0;i<pookies.length;i++) {
 					if(pookies[i].equals(pcode)) {
-						 
+						 int currentSu=Integer.parseInt(sukies[i]);
+						 currentSu+=su;
+						 sukies[i]=String.valueOf(currentSu);
 					}
+					pookie1+=pookies[i]+"/";
+					sukie1+=sukies[i]+"/";
+					
+					
 				}
+				System.out.println(pookie1);
+				System.out.println(sukie1);
+				
 			}
 
 		} else {
