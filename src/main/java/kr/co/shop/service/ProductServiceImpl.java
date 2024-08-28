@@ -217,11 +217,19 @@ public class ProductServiceImpl implements ProductService {
 					}
 					pookie1+=pookies[i]+"/";
 					sukie1+=sukies[i]+"/";
-					
-					
 				}
 				System.out.println(pookie1);
-				System.out.println(sukie1);
+				System.err.println(sukie1);
+				
+				Cookie cookie=new Cookie("pcode", sukie1+pcode);
+				cookie.setMaxAge(500);
+				cookie.setPath("/");
+				response.addCookie(cookie);
+				
+				cookie=new Cookie("su", sukie1+request.getParameter("su"));
+				cookie.setMaxAge(500);
+				cookie.setPath("/");
+				response.addCookie(cookie);
 				
 			}
 
