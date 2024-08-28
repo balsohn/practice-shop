@@ -233,10 +233,6 @@ public class ProductServiceImpl implements ProductService {
 			newCookie.setPath("/");
 			response.addCookie(newCookie);
 			
-			
-			
-			
-			
 		} else {
 			String userid=session.getAttribute("userid").toString();
 			
