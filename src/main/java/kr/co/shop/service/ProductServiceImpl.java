@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
+import org.springframework.web.util.WebUtils;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -190,22 +191,29 @@ public class ProductServiceImpl implements ProductService {
 		int su=Integer.parseInt(request.getParameter("su"));
 		
 		if(session.getAttribute("userid")==null) {
-			
-			
-			Cookie cookie=new Cookie("pcode", pcode);
-			cookie.setMaxAge(500);
-			cookie.setPath("/");
-			response.addCookie(cookie);
-			
-			cookie=new Cookie("su",request.getParameter("su"));
-			cookie.setMaxAge(500);
-			cookie.setPath("/");
-			response.addCookie(cookie);
-			
-			
-			
-			
-			
+			Cookie pookie=WebUtils.getCookie(request, "pcode");
+			Cookie sukie=WebUtils.getCookie(request, "su");
+			if(pookie==null) {
+				Cookie cookie=new Cookie("pcode", pcode);
+				cookie.setMaxAge(500);
+				cookie.setPath("/");
+				response.addCookie(cookie);
+				
+				cookie=new Cookie("su",request.getParameter("su"));
+				cookie.setMaxAge(500);
+				cookie.setPath("/");
+				response.addCookie(cookie);
+			} else {
+				String[] pookies=pookie.getValue().split("/");
+				String[] sukies=sukie.getValue().split("/");
+				
+				for(int i=0;i<pookies.length;i++) {
+					if(pookies[i].equals(pcode)) {
+						 
+					}
+				}
+			}
+
 		} else {
 			String userid=session.getAttribute("userid").toString();
 			
