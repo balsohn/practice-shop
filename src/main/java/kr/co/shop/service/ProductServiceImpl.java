@@ -184,15 +184,36 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public String addCart(HttpServletRequest request, HttpSession session) {
+	public String addCart(HttpServletRequest request, HttpSession session,
+			HttpServletResponse response) {
 		String pcode=request.getParameter("pcode");
 		int su=Integer.parseInt(request.getParameter("su"));
 		
 		if(session.getAttribute("userid")==null) {
 			
+			
+			Cookie cookie=new Cookie("pcode", pcode);
+			cookie.setMaxAge(500);
+			cookie.setPath("/");
+			response.addCookie(cookie);
+			
+			cookie=new Cookie("su",request.getParameter("su"));
+			cookie.setMaxAge(500);
+			cookie.setPath("/");
+			response.addCookie(cookie);
+			
+			
+			
+			
+			
 		} else {
 			String userid=session.getAttribute("userid").toString();
-			mapper.addCart(pcode, userid, su);
+			
+			if(mapper.isCart(pcode, userid)) {
+				mapper.upCart(pcode,userid,su);
+			} else {
+				mapper.addCart(pcode, userid, su);				
+			}
 		}
 		
 		return "0";

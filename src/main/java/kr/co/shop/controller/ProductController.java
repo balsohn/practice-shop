@@ -44,8 +44,9 @@ public class ProductController {
 	}
 	
 	@RequestMapping("/product/addCart")
-	public @ResponseBody String addCart(HttpServletRequest request, HttpSession session) {
-		return service.addCart(request,session);
+	public @ResponseBody String addCart(HttpServletRequest request, HttpSession session,
+			HttpServletResponse response) {
+		return service.addCart(request,session,response);
 	}
 
 }

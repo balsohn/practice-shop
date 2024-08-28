@@ -42,4 +42,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		insert into cart (userid, pcode, su, writeday)
 		values (#{userid},#{pcode},#{su},now())
 	</insert>
+	<select id="isCart" resultType="Boolean">
+		select count(*) from cart 
+		where userid=#{userid} and pcode=#{pcode} 
+	</select>
+	<update id="upCart">
+		update cart set su=su+#{su}
+		where userid=#{userid} and pcode=#{pcode}
+	</update>
 </mapper>
