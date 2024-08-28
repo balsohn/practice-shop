@@ -25,5 +25,5 @@
 		<div align="center"> <input type="submit" value="로그인" id="btn"> </div>
 	</form>
 	</section>
-</body>
+</body>  
 </html>

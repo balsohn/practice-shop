@@ -7,8 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
+import org.springframework.web.util.WebUtils;
 
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import kr.co.shop.dto.ProductDTO;
 import kr.co.shop.mapper.ProductMapper;
 import kr.co.shop.utils.MyUtils;
@@ -104,7 +108,7 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public String content(HttpServletRequest request, Model model) {
+	public String content(HttpServletRequest request, Model model,HttpSession session) {
 		String pcode=request.getParameter("pcode");
 		ProductDTO pdto=mapper.content(pcode);
 		
@@ -132,7 +136,114 @@ public class ProductServiceImpl implements ProductService {
 			pdto.setBaeEx(baeEx);
 		
 		model.addAttribute("pdto",pdto);
+		
+		if(session.getAttribute("userid")!=null) {
+			String userid=session.getAttribute("userid").toString();
+			int ch=mapper.jjimChk(pcode, userid);	
+		}
 		return "/product/productContent";
+	}
+
+	@Override
+	public String jjimOk(HttpServletRequest request, HttpSession session, HttpServletResponse response) {
+		String jjimchk=request.getParameter("jjimchk");
+		String pcode=request.getParameter("pcode");
+		if(session.getAttribute("userid")==null) {
+			String oriURL ="/product/productContent?pcode=" + pcode;
+			Cookie cookie=new Cookie("url", oriURL);
+			cookie.setMaxAge(500);
+			cookie.setPath("/");
+			response.addCookie(cookie);
+			
+			return "0";
+		} else {
+			String userid=session.getAttribute("userid").toString();
+			if(mapper.jjimChk(pcode, userid)==1) {
+				mapper.jjimDel(pcode, userid);
+			} else {
+				mapper.jjimOk(pcode, userid);
+			}
+			return "1";
+		}
+	}
+
+	@Override
+	public String jjimChk(HttpServletRequest request,HttpSession session) {
+		String pcode=request.getParameter("pcode");
+		if(session.getAttribute("userid")!=null) {
+			String userid=session.getAttribute("userid").toString();
+			if(mapper.jjimChk(pcode, userid)==1) {
+				return "1";
+			} else {
+				return "0";
+			}
+		} else {
+			return "0";
+		}
+		
+		
+	}
+
+	@Override
+	public String addCart(HttpServletRequest request, HttpSession session,
+			HttpServletResponse response) {
+		String pcode=request.getParameter("pcode");
+		int su=Integer.parseInt(request.getParameter("su"));
+		
+		if(session.getAttribute("userid")==null) {
+
+			// 로그인을 하지 않아도 장바구니 처리를 실행
+			// 이전의 쿠키변수 pcode를 읽어오기
+			Cookie cookie=WebUtils.getCookie(request, "pcode");
+			String newPro=pcode+"-"+su+"/";
+			
+			String newPcode=null;
+			if(cookie==null) {
+				newPcode=newPro;
+			} else {
+				String getPcode=cookie.getValue();
+				String[] pcodes=getPcode.split("/");
+				int chk=-1;
+				for(int i=0;i<pcodes.length;i++) {
+					if(pcodes[i].indexOf(pcode)!=-1) {
+						chk=i;
+					}
+				}
+				
+				if(chk!=-1) {
+					int num=Integer.parseInt(pcodes[chk].substring(13));
+					num+=su;
+					pcodes[chk]=pcodes[chk].substring(0,13)+num;
+					
+					String imsi="";
+					for(int i=0;i<pcodes.length;i++) {
+						imsi+=pcodes[i]+"/";
+					}
+					newPcode=imsi;
+				} else {
+					newPcode=cookie.getValue()+newPro;					
+				}
+			}
+			
+			System.out.println(newPcode);
+			
+			// newPcode를 새로운 쿠키객체로 생성
+			Cookie newCookie=new Cookie("pcode",newPcode);
+			newCookie.setMaxAge(600);
+			newCookie.setPath("/");
+			response.addCookie(newCookie);
+			
+		} else {
+			String userid=session.getAttribute("userid").toString();
+			
+			if(mapper.isCart(pcode, userid)) {
+				mapper.upCart(pcode,userid,su);
+			} else {
+				mapper.addCart(pcode, userid, su);				
+			}
+		}
+		
+		return "0";
 	}
 	
 	

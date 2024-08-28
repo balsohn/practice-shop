@@ -6,6 +6,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.context.annotation.RequestScope;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import kr.co.shop.service.LoginService;
 
@@ -22,8 +24,8 @@ public class LoginController {
 	}
 	
 	@RequestMapping("/login/loginOk")
-	public String loginOk(String userid, String pwd, HttpSession session) {
-		return service.loginOk(userid, pwd, session);
+	public String loginOk(String userid, String pwd, HttpSession session, HttpServletRequest request, HttpServletResponse response) {
+		return service.loginOk(userid, pwd, session, request, response);
 	}
 	
 	@RequestMapping("/login/logout")
