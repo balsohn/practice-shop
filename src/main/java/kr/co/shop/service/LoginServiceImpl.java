@@ -20,7 +20,7 @@ public class LoginServiceImpl implements LoginService {
 	private LoginMapper mapper;
 	
 	@Autowired
-	private ProductMapper pMapper;
+	private ProductMapper proMapper;
 
 	@Override
 	public String loginOk(String userid,String pwd,HttpSession session, 
@@ -47,10 +47,10 @@ public class LoginServiceImpl implements LoginService {
 				for(int i=0;i<codes.length;i++) {
 					String pcode=codes[i].substring(0,index);
 					int su=Integer.parseInt(codes[i].substring(index+1));
-					if(pMapper.isCart(pcode, userid)) {
-						pMapper.upCart(pcode, userid, su);
+					if(proMapper.isCart(pcode, userid)) {
+						proMapper.upCart(pcode, userid, su);
 					} else {
-						pMapper.addCart(pcode, userid, su);						
+						proMapper.addCart(pcode, userid, su);						
 					}
 				}
 				
