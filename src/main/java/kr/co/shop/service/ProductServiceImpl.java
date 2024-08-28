@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
+import org.springframework.web.util.WebUtils;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -190,17 +191,47 @@ public class ProductServiceImpl implements ProductService {
 		int su=Integer.parseInt(request.getParameter("su"));
 		
 		if(session.getAttribute("userid")==null) {
+
+			// 로그인을 하지 않아도 장바구니 처리를 실행
+			// 이전의 쿠키변수 pcode를 읽어오기
+			Cookie cookie=WebUtils.getCookie(request, "pcode");
+			String newPro=pcode+"-"+su+"/";
 			
+			String newPcode=null;
+			if(cookie==null) {
+				newPcode=newPro;
+			} else {
+				String getPcode=cookie.getValue();
+				String[] pcodes=getPcode.split("/");
+				int chk=-1;
+				for(int i=0;i<pcodes.length;i++) {
+					if(pcodes[i].indexOf(pcode)!=-1) {
+						chk=i;
+					}
+				}
+				
+				if(chk!=-1) {
+					int num=Integer.parseInt(pcodes[chk].substring(13));
+					num+=su;
+					pcodes[chk]=pcodes[chk].substring(0,13)+num;
+					
+					String imsi="";
+					for(int i=0;i<pcodes.length;i++) {
+						imsi+=pcodes[i]+"/";
+					}
+					newPcode=imsi;
+				} else {
+					newPcode=cookie.getValue()+newPro;					
+				}
+			}
 			
-			Cookie cookie=new Cookie("pcode", pcode);
-			cookie.setMaxAge(500);
-			cookie.setPath("/");
-			response.addCookie(cookie);
+			System.out.println(newPcode);
 			
-			cookie=new Cookie("su",request.getParameter("su"));
-			cookie.setMaxAge(500);
-			cookie.setPath("/");
-			response.addCookie(cookie);
+			// newPcode를 새로운 쿠키객체로 생성
+			Cookie newCookie=new Cookie("pcode",newPcode);
+			newCookie.setMaxAge(600);
+			newCookie.setPath("/");
+			response.addCookie(newCookie);
 			
 			
 			
