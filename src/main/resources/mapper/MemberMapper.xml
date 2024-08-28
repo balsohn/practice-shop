@@ -11,4 +11,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		insert into member (userid, name, pwd, email, phone, writeday)
 		values (#{userid},#{name},#{pwd},#{email},#{phone},now())
 	</insert>
+	<select id="getProduct" resultType="kr.co.shop.dto.ProductDTO">
+		select * from product
+		where pcode=#{pcode}
+	</select>
 </mapper>

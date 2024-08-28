@@ -3,6 +3,7 @@ package kr.co.shop.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -33,5 +34,11 @@ public class MemberController {
 	@RequestMapping("/member/memberOk")
 	public String memberOk(MemberDTO mdto) {
 		return service.memberOk(mdto);
+	}
+	
+	@RequestMapping("/member/cartView")
+	public String cartView(HttpSession session, HttpServletRequest request,
+			Model model) {
+		return service.cartView(session, request, model);
 	}
 }

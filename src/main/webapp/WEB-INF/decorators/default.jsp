@@ -29,7 +29,7 @@
 #ads #first {
     width: 1100px;
     display: flex;
-    justify-content: space-between;
+    justify-content:flex-end;
     margin: auto;
     line-height: 40px;
     color: white;
@@ -52,6 +52,8 @@ header {
     margin: auto;
     padding: 0 30px;
 }
+
+.header-right {display:flex; flex-direction:column; justify-content: space-between; align-items: flex-end; }
 
 header #logo {
     
@@ -197,7 +199,7 @@ footer {
 }
 
 </style>
-
+<script src="https://code.jquery.com/jquery-latest.js"></script>
 <script>
 var daeData, jungData, soData;
 
@@ -290,6 +292,7 @@ function buildMenu(daeData, jungData, soData) {
 function viewsrc() {
 	document.getElementById("aa").innerText=document.getElementsByTagName("body")[0].innerHTML;
 }
+
 </script>
 </head>
 <sitemesh:write property="head"/>
@@ -297,9 +300,9 @@ function viewsrc() {
 <div id="aa"></div><button onclick="viewsrc()">ㅇㅇㅇ</button>
     <div id="ads">
         <div id="first">
-            <div id="left"></div>
-            <div id="center"> 회원가입하고 상품 첫 주문시 100만원 드립니다. </div>
-            <div id="right"> X </div>
+	        <div id="left"></div>
+	        <div id="center"> 회원가입하고 상품 첫 주문시 100만원 드립니다. </div>
+	        <div id="right"> X </div>
         </div>
     </div>      
     <header>
@@ -311,16 +314,21 @@ function viewsrc() {
                 <img src="../resources/uploads/s.png">
             </div>
         </div>
-        <div> 
-            <c:if test="${empty userid}">
-            <a href="../member/member">회원가입</a> 
-            <a href="../login/login">로그인</a>
-            </c:if>
-            <c:if test="${!empty userid}">
-            <a href="../member/member">${userid}님</a> 
-            <a href="../login/logout">로그아웃</a>
-            </c:if>
-            <a href="">고객센터</a>
+        <div class="header-right">
+        	<div>
+	           <c:if test="${empty userid}">
+	           <a href="../member/member">회원가입</a> 
+	           <a href="../login/login">로그인</a>
+	           </c:if>
+	           <c:if test="${!empty userid}">
+	           <a href="../member/member">${userid}님</a> 
+	           <a href="../login/logout">로그아웃</a>
+	           </c:if>
+	           <a href="">고객센터</a>
+            </div>
+            <div>
+            	<a href=""><img src="../resources/uploads/cart.png"></a>
+            </div>
         </div>
     </header>
 

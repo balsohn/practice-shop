@@ -1,11 +1,18 @@
 package kr.co.shop.service;
 
+import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
+import org.springframework.web.util.WebUtils;
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import kr.co.shop.dto.MemberDTO;
+import kr.co.shop.dto.ProductDTO;
 import kr.co.shop.mapper.MemberMapper;
 
 @Service
@@ -33,5 +40,32 @@ public class MemberServiceImpl implements MemberService {
 		} else {
 			return "/member/member";
 		}
+	}
+
+	@Override
+	public String cartView(HttpSession session, HttpServletRequest request, Model model) {
+		/*
+		if(session.getAttribute("uesrid")==null) {
+			Cookie code=WebUtils.getCookie(request, "pcode");
+			String[] codes=code==null?null:code.getValue().split("/");
+			
+			ArrayList<ProductDTO> plist=new ArrayList<ProductDTO>();
+			
+			if(code!=null) {
+				int index=codes[0].indexOf("-");
+				for(int i=0;i<codes.length;i++) {
+					String pcode=codes[i].substring(0,index);
+					int su=Integer.parseInt(codes[i].substring(index+1));
+					ProductDTO pdto=mapper.getProduct(pcode);
+					pdto.setSu(su);
+					plist.add(pdto);
+				}
+				model.addAttribute("plist",plist);
+			}
+		} else {
+			String userid=session.getAttribute("userid").toString();
+			
+		}*/
+		return null;
 	}
 }
