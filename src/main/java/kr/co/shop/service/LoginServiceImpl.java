@@ -23,15 +23,17 @@ public class LoginServiceImpl implements LoginService {
 	private ProductMapper pMapper;
 
 	@Override
-	public String loginOk(String userid,String pwd,HttpSession session, HttpServletRequest request, HttpServletResponse response) {
+	public String loginOk(String userid,String pwd,HttpSession session, 
+			HttpServletRequest request, HttpServletResponse response) {
+		
 		int chk=mapper.loginOk(userid, pwd);
 		if(chk==1) {
 			session.setAttribute("userid", userid);
 			
 			Cookie cookie=WebUtils.getCookie(request, "url");
 			Cookie code=WebUtils.getCookie(request, "pcode");
-			String oriURL=cookie==null?null:cookie.getValue();
-			String[] codes=code==null?null:code.getValue().split("/");
+			String oriURL=(cookie==null)?null:cookie.getValue();
+			String[] codes=(code==null)?null:code.getValue().split("/");
 			
 			if(cookie!=null) {
 				cookie.setMaxAge(0);
@@ -40,17 +42,15 @@ public class LoginServiceImpl implements LoginService {
 			}
 			
 			if(code!=null) {
-				String[] pcode =new String[codes.length];
-				String[] su=new String[codes.length];
 				int index=codes[0].indexOf("-");
 				
 				for(int i=0;i<codes.length;i++) {
-					pcode[i]=codes[i].substring(0,index);
-					su[i]=codes[i].substring(index+1);
-					if(pMapper.isCart(pcode[i], session.getAttribute("userid").toString())) {
-						pMapper.upCart(pcode[i], session.getAttribute("userid").toString(), Integer.parseInt(su[i]));
+					String pcode=codes[i].substring(0,index);
+					int su=Integer.parseInt(codes[i].substring(index+1));
+					if(pMapper.isCart(pcode, userid)) {
+						pMapper.upCart(pcode, userid, su);
 					} else {
-						pMapper.addCart(pcode[i], session.getAttribute("userid").toString(), Integer.parseInt(su[i]));						
+						pMapper.addCart(pcode, userid, su);						
 					}
 				}
 				
@@ -58,6 +58,7 @@ public class LoginServiceImpl implements LoginService {
 				code.setPath("/");
 				response.addCookie(code);
 			}
+			
 			
 			if(oriURL==null) {
 				return "redirect:../main/index";
