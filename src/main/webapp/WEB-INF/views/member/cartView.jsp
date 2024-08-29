@@ -7,10 +7,26 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<style>
+	main {display:grid; grid-template-cloumns: 5fr 3fr; width:800px;}
+	.item-container {display: grid; grid-template-columns:9fr 1fr; border:1px solid black;}
+</style>
 </head>
 <body>
-	<c:forEach var="map" items="${pMapAll}">
-		${map.title } ${map.su }
-	</c:forEach>
+	<main>
+	<div class="item-container">
+		<c:forEach var="map" items="${pMapAll}">
+		<div> <img src="../resources/pageimg/${map.pimg}"> </div>
+		<div>
+			<div>asdf</div>
+			<div>asfd</div>
+			<div>asdf</div>
+		</div>
+		</c:forEach>
+	</div>
+	<div>
+		<div>asfdasdfaf</div>
+	</div>
+	</main>
 </body>
 </html>

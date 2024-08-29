@@ -327,7 +327,7 @@ function viewsrc() {
 	           <a href="">고객센터</a>
             </div>
             <div>
-            	<a href=""><img src="../resources/uploads/cart.png"></a>
+            	<a href="../member/cartView"><img src="../resources/uploads/cart.png"></a>
             </div>
         </div>
     </header>
