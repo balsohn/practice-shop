@@ -46,28 +46,34 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public String cartView(HttpSession session, HttpServletRequest request, Model model) {
 		
+		ArrayList<HashMap> pMapAll=null;
+		
 		if(session.getAttribute("userid")==null) {
 			Cookie code=WebUtils.getCookie(request, "pcode");
+			System.out.println(code.getValue());
 			if(code!=null) {
 				String[] codes=code.getValue().split("/");
-				int index=codes[0].indexOf("-");
-				ArrayList<HashMap> pMapAll=new ArrayList<>();
+				
+				// 이게 빠졌어요
+				pMapAll=new ArrayList<HashMap>();
+				
 				for(int i=0;i<codes.length;i++) {
-					String pcode=codes[i].substring(0,index);
-					int su=Integer.parseInt(codes[i].substring(index+1));
+					String pcode=codes[i].substring(0,12);
+					int su=Integer.parseInt(codes[i].substring(13));
+					System.out.println(pcode);
 					HashMap product=mapper.getProduct(pcode);
 					product.put("su", su);
+					System.out.println(product.get("title"));
 					pMapAll.add(product);
+					
 				}
-				
-				model.addAttribute("pMapAll",pMapAll);
 			}
 		} else {
 			String userid=session.getAttribute("userid").toString();
-			ArrayList<HashMap> cartData=mapper.cartView(userid);
-			System.out.println(cartData.get(0).get("cart_su").getClass());
-			model.addAttribute("pMapAll",cartData);
+			pMapAll=mapper.cartView(userid);
 		}
+		
+		model.addAttribute("pMapAll",pMapAll);
 		return "/member/cartView";
 	}
 }
