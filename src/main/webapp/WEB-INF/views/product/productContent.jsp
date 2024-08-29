@@ -163,7 +163,7 @@
 						<input type="button" onclick="addCart()" id="btn1" value="장바구니">
 						<div id="cartview">
 							<div>장바구니에 담겼습니다.</div>
-							<div><input type="button" value="장바구니로 이동" onclick="location='../mypage/cartView'"></div>
+							<div><input type="button" value="장바구니로 이동" onclick="location='../member/cartView'"></div>
 						</div>
 					</div>
 					<div><button onclick="location:''" id="btn2">구매하기</button></div>

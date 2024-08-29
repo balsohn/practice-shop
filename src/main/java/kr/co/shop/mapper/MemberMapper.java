@@ -1,6 +1,7 @@
 package kr.co.shop.mapper;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -11,5 +12,6 @@ import kr.co.shop.dto.ProductDTO;
 public interface MemberMapper {
 	public String useridChk(String userid);
 	public void memberOk(MemberDTO mdto);
-	public ProductDTO getProduct(String pcode);
+	public HashMap getProduct(String pcode);
+	public ArrayList<HashMap> cartView(String userid);
 }

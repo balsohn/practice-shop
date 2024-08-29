@@ -1,6 +1,7 @@
 package kr.co.shop.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -44,28 +45,29 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public String cartView(HttpSession session, HttpServletRequest request, Model model) {
-		/*
-		if(session.getAttribute("uesrid")==null) {
+		
+		if(session.getAttribute("userid")==null) {
 			Cookie code=WebUtils.getCookie(request, "pcode");
-			String[] codes=code==null?null:code.getValue().split("/");
-			
-			ArrayList<ProductDTO> plist=new ArrayList<ProductDTO>();
-			
 			if(code!=null) {
+				String[] codes=code.getValue().split("/");
 				int index=codes[0].indexOf("-");
+				ArrayList<HashMap> pMapAll=new ArrayList<>();
 				for(int i=0;i<codes.length;i++) {
 					String pcode=codes[i].substring(0,index);
 					int su=Integer.parseInt(codes[i].substring(index+1));
-					ProductDTO pdto=mapper.getProduct(pcode);
-					pdto.setSu(su);
-					plist.add(pdto);
+					HashMap product=mapper.getProduct(pcode);
+					product.put("su", su);
+					pMapAll.add(product);
 				}
-				model.addAttribute("plist",plist);
+				
+				model.addAttribute("pMapAll",pMapAll);
 			}
 		} else {
 			String userid=session.getAttribute("userid").toString();
-			
-		}*/
-		return null;
+			ArrayList<HashMap> cartData=mapper.cartView(userid);
+			System.out.println(cartData.get(0).get("cart_su").getClass());
+			model.addAttribute("pMapAll",cartData);
+		}
+		return "/member/cartView";
 	}
 }
