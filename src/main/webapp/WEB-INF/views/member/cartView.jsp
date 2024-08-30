@@ -8,28 +8,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<<<<<<< HEAD
-<style>
-	main {display:grid; grid-template-cloumns: 5fr 3fr; width:800px;}
-	.item-container {display: grid; grid-template-columns:9fr 1fr; border:1px solid black;}
-</style>
-</head>
-<body>
-	<main>
-	<div class="item-container">
-		<c:forEach var="map" items="${pMapAll}">
-		<div> <img src="../resources/pageimg/${map.pimg}"> </div>
-		<div>
-			<div>asdf</div>
-			<div>asfd</div>
-			<div>asdf</div>
-		</div>
-		</c:forEach>
-	</div>
-	<div>
-		<div>asfdasdfaf</div>
-	</div>
-=======
+
   <style>
 main {
   width:1100px;
@@ -51,7 +30,15 @@ main table tr:first-child td {
   border-top:2px solid purple;
 }
 .su {width:30px;}
-.allClick {position: fixed; bottom: 0px; background: white; width:1100px; border-top: 1px solid black;}
+.allClick {
+	position: fixed; 
+	bottom: 0px; 
+	background: white; 
+	width:1100px; 
+	border-top: 1px solid black;
+	
+}
+label {margin-right: 30px;}
 </style>
 <script src="https://code.jquery.com/jquery-latest.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script> 
@@ -82,8 +69,22 @@ main table tr:first-child td {
 				break;
 			}
 		} 
-		
 		mainChk.checked=allChk;
+	}
+	
+	function selDel() {
+		var subChk=document.getElementsByClassName('subChk');
+		var pcode='';
+		
+		for(i=0;i<subChk.length;i++) {
+			if(subChk[i].checked){
+				pcode=pcode+subChk[i].value+"/";
+			}
+		}
+		if(pcode!=''){
+			location="cartDel?pcode="+pcode;
+			
+		}
 	}
 	
 	$(function() {
@@ -98,6 +99,9 @@ main table tr:first-child td {
 				alert(halValue);
 			}
 		});
+		
+		
+		
 	});
 
 	
@@ -115,12 +119,16 @@ main table tr:first-child td {
 			<td> 수량 </td>
 			<td> 배송비 </td>
 		</tr>
+		<c:set var="cnum" value="0"/>
 		<c:forEach items="${pMapAll}" var="map" varStatus="sts">
+		<c:if test="${map.days<=1}">
+			<c:set var="cnum" value="${cnum+1}"/>
+		</c:if>
 		<input type="hidden" value="${map.halinprice}" class="hal">
 		<input type="hidden" value="${map.jukprice}" class="juk">
 		<input type="hidden" value="${map.price}" class="pri">
 		<tr height="80">
-			<td> <input type="checkbox" class="subChk" onclick="subChk()"> </td>
+			<td> <input type="checkbox" ${map.days<2?'checked':''} value="${map.pcode}" class="subChk" onclick="subChk()"> </td>
 			<td width="100" align="center"> <img src="../resources/pageimg/${map.pimg}" height="80" width="80"> </td>
 			<td align="left"> ${map.title} </td>
 			<td width="140"> ${map.baeEx} </td>
@@ -134,15 +142,25 @@ main table tr:first-child td {
 			<c:if test="${map.baeprice!=0}">
 			<fmt:formatNumber value="${map.baeprice}" type="number"/>원
 			</c:if>
+			<br> <input type="button" value="삭제" onclick="location='cartDel?pcode=${map.pcode}'">
 			</td>
 		</tr>
 		</c:forEach>
-		<tr class="allClick">
-			<td> <label><input type="checkbox" id="mainChk" onclick="allChk()"> 전체 선택</label> </td>
+		<tr class="allClick" align="center">
+			<td> <label><input type="checkbox" ${cnum==pMapAll.size()?'checked':''} id="mainChk" onclick="allChk()"> 전체 선택</label> </td>
+			<td> <input type="button" value="선택상품 삭제" onclick="selDel()"> </td>
+			<td colspan="5">
+				총상품금액 
+				<fmt:formatNumber value="${halinpriceTot}" type="number"/>원 
+				+ 배송비 
+				<fmt:formatNumber value="${baepriceTot}" type="number"/>원 = 총결제금액 
+				<fmt:formatNumber value="${halinpriceTot+baepriceTot}" type="number"/>원  
+				(적립예정 : <fmt:formatNumber value="${jukpriceTot}" type="number"/>원) 
+			</td>
 			<td> 구매하기 </td>
 		</tr>
 		</table>
->>>>>>> origin/sub
+
 	</main>
 </body>
 </html>

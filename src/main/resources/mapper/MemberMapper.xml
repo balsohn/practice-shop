@@ -16,7 +16,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		where pcode=#{pcode}
 	</select>
 	<select id="cartView" resultType="Hashmap" >
-		select p.*,c.su as cart_su from product p inner join cart c
-		on p.pcode=c.pcode where c.userid=#{userid}
+		select p.*,c.su as cart_su, datediff(now(),c.writeday) as days 
+		from product p inner join cart c
+		on p.pcode=c.pcode where c.userid=#{userid} order by c.writeday desc
+	</select>
+	<select id="cartDel">
+		delete from cart where
+		userid=#{userid} and
+		pcode=#{pcode}
 	</select>
 </mapper>
