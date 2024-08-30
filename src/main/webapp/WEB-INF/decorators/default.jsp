@@ -29,7 +29,7 @@
 #ads #first {
     width: 1100px;
     display: flex;
-    justify-content:flex-end;
+    justify-content:space-between;
     margin: auto;
     line-height: 40px;
     color: white;
