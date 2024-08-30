@@ -39,6 +39,8 @@ main table tr:first-child td {
 	
 }
 label {margin-right: 30px;}
+
+#btn1 {margin:0 30px; border:none; background: purple; color:white; width: 100px; height: 30px; border-radius: 5px;}
 </style>
 <script src="https://code.jquery.com/jquery-latest.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script> 
@@ -93,7 +95,10 @@ label {margin-right: 30px;}
 			}
 		}
 		
-		document.getElementById('chong').innerText="총삼품금액 "+totalHp+"원 + 배송비 "+totalBp+"원 = 총결제금액 "+(totalHp+totalBp)+"원 (적립예정 :"+totalJp+"원)";
+		document.getElementById('chong').innerText=
+			"총삼품금액 "+totalHp.toLocaleString()+"원 + 배송비 "
+			+totalBp.toLocaleString()+"원 = 총결제금액 "+(totalHp+totalBp).toLocaleString()+
+			"원 (적립예정 :"+totalJp.toLocaleString()+"원)";
 		
 	}
 	
@@ -194,9 +199,9 @@ label {margin-right: 30px;}
 			</td>
 		</tr>
 		</c:forEach>
-		<tr class="allClick" align="center">
+		<tr class="allClick">
 			<td> <label><input type="checkbox" ${cnum==pMapAll.size()?'checked':''} id="mainChk" onclick="allChk()"> 전체 선택</label> </td>
-			<td> <input type="button" value="선택상품 삭제" onclick="selDel()"> </td>
+			<td> <input type="button" id="btn1" value="선택상품 삭제" onclick="selDel()"> </td>
 			<td colspan="5" id="chong">
 				총상품금액 
 				<fmt:formatNumber value="${halinpriceTot}" type="number"/>원 
@@ -205,7 +210,7 @@ label {margin-right: 30px;}
 				<fmt:formatNumber value="${halinpriceTot+baepriceTot}" type="number"/>원  
 				(적립예정 : <fmt:formatNumber value="${jukpriceTot}" type="number"/>원) 
 			</td>
-			<td> 구매하기 </td>
+			<td> <input type="button" value="구매하기" id="btn1"> </td>
 		</tr>
 		</table>
 
