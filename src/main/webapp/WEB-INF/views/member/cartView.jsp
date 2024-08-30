@@ -70,6 +70,31 @@ label {margin-right: 30px;}
 			}
 		} 
 		mainChk.checked=allChk;
+		totalChk();
+	}
+	
+	function totalChk() {
+		var subChk=document.getElementsByClassName("subChk");
+		var hp=document.getElementsByClassName("hp");
+		var jp=document.getElementsByClassName("jp");
+		var bp=document.getElementsByClassName("bp");
+		
+		var totalHp=0;
+		var totalJp=0;
+		var totalBp=0;
+		
+		for(i=0; i<subChk.length;i++) {
+			if(subChk[i].checked) {
+				totalHp += parseInt(hp[i].innerHTML.replace(/,/g,''));
+				totalJp += parseInt(jp[i].innerHTML.replace(/,/g,''));
+				if(bp[i].innerHTML!='무료배송'){
+					totalBp += parseInt(bp[i].innerHTML.replace(/,/g,''));
+				}
+			}
+		}
+		
+		document.getElementById('chong').innerText="총삼품금액 "+totalHp+"원 + 배송비 "+totalBp+"원 = 총결제금액 "+(totalHp+totalBp)+"원 (적립예정 :"+totalJp+"원)";
+		
 	}
 	
 	function selDel() {
@@ -92,11 +117,34 @@ label {margin-right: 30px;}
 			min: 1,
 			max: 10,
 			spin: function(e, ui) {
-				// 현재 스피너 요소의 인덱스를 구함
-				var index = $('.su').index($(e.target));
-				// 해당 인덱스의 .hal 요소 값을 가져옴
-				var halValue = $('.hal').eq(index).val();
-				alert(halValue);
+				
+				var pri=document.getElementsByClassName("price");
+	            var hp=document.getElementsByClassName("hp");
+	            var jp=document.getElementsByClassName("jp");
+	            var bp=document.getElementsByClassName("bp");
+	            var hal=document.getElementsByClassName("hal");
+	            var juk=document.getElementsByClassName("juk");
+	            
+	            // 현재 스핀 이벤트가 발생한 인덱스를 찾기 위해 사용
+	            var index=$('.su').index(e.target);
+	            var su=ui.value;
+	            
+	            // 할인율과 적립금 계산
+	            var originalPrice=parseInt(pri[index].value.replace(/,/g, ''));
+	            var halin=parseInt(hal[index].value.replace(/,/g, '')) / 100;
+	            var jukRate=parseInt(juk[index].value.replace(/,/g, '')) / 100;
+
+	            // 계산된 가격 및 적립금
+	            var newHp=Math.floor(originalPrice * (1 - halin) * su);
+	            var newJp=Math.floor(originalPrice * jukRate * su);
+	            
+	            // 값 업데이트
+	            hp[index].innerText=newHp.toLocaleString();
+	            jp[index].innerText=newJp.toLocaleString();
+
+	            // 총합계 업데이트
+	            totalChk();
+	            
 			}
 		});
 		
@@ -121,26 +169,26 @@ label {margin-right: 30px;}
 		</tr>
 		<c:set var="cnum" value="0"/>
 		<c:forEach items="${pMapAll}" var="map" varStatus="sts">
+		<input type="hidden" class="price" value="${map.price}">
+		<input type="hidden" class="juk" value="${map.juk }">
+		<input type="hidden" class="hal" value="${map.halin }">
 		<c:if test="${map.days<=1}">
 			<c:set var="cnum" value="${cnum+1}"/>
 		</c:if>
-		<input type="hidden" value="${map.halinprice}" class="hal">
-		<input type="hidden" value="${map.jukprice}" class="juk">
-		<input type="hidden" value="${map.price}" class="pri">
 		<tr height="80">
 			<td> <input type="checkbox" ${map.days<2?'checked':''} value="${map.pcode}" class="subChk" onclick="subChk()"> </td>
 			<td width="100" align="center"> <img src="../resources/pageimg/${map.pimg}" height="80" width="80"> </td>
 			<td align="left"> ${map.title} </td>
 			<td width="140"> ${map.baeEx} </td>
-			<td width="110" align="right"> <div class="halinprice"> <fmt:formatNumber value="${map.halinprice}" type="number"/>원 </div></td>
-			<td width="110" align="right"> <div class="jukprice"><fmt:formatNumber value="${map.jukprice}" type="number"/>원 </div></td>
+			<td width="110" align="right"> <span class="hp"><fmt:formatNumber value="${map.halinprice}" type="number"/></span>원 </td>
+			<td width="110" align="right"> <span class="jp"><fmt:formatNumber value="${map.jukprice}" type="number"/></span>원 </td>
 			<td width="60" align="right"> <input type="text" value="${map.cart_su}" name="su" class="su"> </td>
 			<td width="110" align="right"> 
 			<c:if test="${map.baeprice==0}">
-			무료배송
+			<span class="bp">무료배송</span>
 			</c:if>
 			<c:if test="${map.baeprice!=0}">
-			<fmt:formatNumber value="${map.baeprice}" type="number"/>원
+			<span class="bp"><fmt:formatNumber value="${map.baeprice}" type="number"/></span>원
 			</c:if>
 			<br> <input type="button" value="삭제" onclick="location='cartDel?pcode=${map.pcode}'">
 			</td>
@@ -149,7 +197,7 @@ label {margin-right: 30px;}
 		<tr class="allClick" align="center">
 			<td> <label><input type="checkbox" ${cnum==pMapAll.size()?'checked':''} id="mainChk" onclick="allChk()"> 전체 선택</label> </td>
 			<td> <input type="button" value="선택상품 삭제" onclick="selDel()"> </td>
-			<td colspan="5">
+			<td colspan="5" id="chong">
 				총상품금액 
 				<fmt:formatNumber value="${halinpriceTot}" type="number"/>원 
 				+ 배송비 

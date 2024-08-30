@@ -15,4 +15,4 @@ public interface MemberMapper {
 	public HashMap getProduct(String pcode);
 	public ArrayList<HashMap> cartView(String userid);
 	public void cartDel(String userid, String pcode);
-}
+} 

@@ -74,7 +74,7 @@ public class MemberServiceImpl implements MemberService {
 		} else {
 			String userid=session.getAttribute("userid").toString();
 			pMapAll=mapper.cartView(userid);
-			System.out.println(pMapAll.get(0));
+
 		}
 		
 		if(pMapAll!=null) {
@@ -168,14 +168,11 @@ public class MemberServiceImpl implements MemberService {
 					if(ckPcodes[i] != "")
 					  newPcode=newPcode+ckPcodes[i]+"/";
 				}
-				
 				Cookie newCookie=new Cookie("pcode",newPcode);
 				newCookie.setMaxAge(3600);
 				newCookie.setPath("/");
 				response.addCookie(newCookie);
-				
 			}
-			
 		}
 		else
 		{
@@ -184,7 +181,7 @@ public class MemberServiceImpl implements MemberService {
 			for(int i=0;i<pcodes.length;i++)
 			{
 			   // cart테이블에서 pcode에 해당하는 레코드를 삭제
-			   mapper.cartDel(pcodes[i],userid);
+			   mapper.cartDel(userid,pcodes[i]);
 			}
 		}
 		
