@@ -25,4 +25,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		userid=#{userid} and
 		pcode=#{pcode}
 	</select>
+	<update id="chgSu">
+		update cart set su=#{su} where pcode=#{pcode} and userid=#{userid}
+	</update>
 </mapper>

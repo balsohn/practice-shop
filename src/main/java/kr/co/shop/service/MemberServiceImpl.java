@@ -55,7 +55,7 @@ public class MemberServiceImpl implements MemberService {
 		if(session.getAttribute("userid")==null) {
 			Cookie code=WebUtils.getCookie(request, "pcode");
 			
-			if(code!=null) {
+			if(code!=null && !code.getValue().isEmpty()) {
 				String[] codes=code.getValue().split("/");
 				
 
@@ -192,6 +192,52 @@ public class MemberServiceImpl implements MemberService {
 		 
 		
 		return "redirect:/member/cartView";
+	}
+
+	@Override
+	public int[] chgSu(HttpServletRequest request,HttpSession session,HttpServletResponse response) {
+		String pcode=request.getParameter("pcode");
+		int su=Integer.parseInt(request.getParameter("su"));
+		
+		if(session.getAttribute("userid")==null) {
+			Cookie code=WebUtils.getCookie(request, "pcode");
+			String[] codes=code.getValue().split("/");
+			
+			for(int i=0;i<codes.length;i++) {
+				if(codes[i].indexOf(pcode)!=-1) {
+					codes[i]=pcode+"-"+su;
+					
+					break;
+				}
+			}
+			String newPcode="";
+			for(int i=0;i<codes.length;i++) {
+				newPcode+=codes[i]+"/";
+			}
+			
+			code=new Cookie("pcode", newPcode);
+			code.setMaxAge(500);
+			code.setPath("/");
+			response.addCookie(code);
+			
+		} else {
+			String userid=session.getAttribute("userid").toString();
+			mapper.chgSu(userid, pcode, su);
+			
+		}
+				
+		HashMap map=mapper.getProduct(pcode);
+		
+		int price=Integer.parseInt(map.get("price").toString());
+		int juk=Integer.parseInt(map.get("juk").toString());
+		int halin=Integer.parseInt(map.get("halin").toString());
+		
+		int[] tot=new int[3];
+		tot[0]=(int)(price-(price*halin/100.0))*su;
+	    tot[1]=(int)(price*juk/100.0)*su;
+	    tot[2]=Integer.parseInt(map.get("baeprice").toString());
+	    
+	    return tot;
 	}
 
 	

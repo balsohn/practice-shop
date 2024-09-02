@@ -48,4 +48,9 @@ public class MemberController {
 			HttpServletResponse response) {
 		return service.cartDel(request, session, response);
 	}
+	
+	@RequestMapping("/member/chgSu")
+	public @ResponseBody int[] chgSu(HttpServletRequest request, HttpSession session, HttpServletResponse response) {
+		return service.chgSu(request,session,response);
+	}
 }
