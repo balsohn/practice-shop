@@ -50,4 +50,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		update cart set su=su+#{su}
 		where userid=#{userid} and pcode=#{pcode}
 	</update>
+	<select id="getCartNum" resultType="string">
+		select count(*) from cart
+		where userid=#{userid}
+	</select>
 </mapper>

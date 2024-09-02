@@ -15,4 +15,5 @@ public interface MainMapper {
 	public ArrayList<CateDTO> getCate();
 	public ArrayList<JungDTO> getJung();
 	public ArrayList<SoDTO> getSo();
+	public String cartNum(String userid);
 }

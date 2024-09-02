@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import kr.co.shop.dto.CateDTO;
 import kr.co.shop.dto.DaeDTO;
 import kr.co.shop.dto.JungDTO;
@@ -51,6 +52,11 @@ public class MainController {
 	@RequestMapping("/main/daejungso")
 	public @ResponseBody ArrayList<CateDTO> daejungso(){
 		return service.getCate();
+	}
+	
+	@RequestMapping("/main/cartNum")
+	public @ResponseBody String cartNum(HttpServletRequest request, HttpSession session) {
+		return service.cartNum(request,session);
 	}
 
 }

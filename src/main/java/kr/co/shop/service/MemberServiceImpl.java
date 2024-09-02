@@ -74,7 +74,6 @@ public class MemberServiceImpl implements MemberService {
 		} else {
 			String userid=session.getAttribute("userid").toString();
 			pMapAll=mapper.cartView(userid);
-			System.out.println(pMapAll.get(0));
 		}
 		
 		if(pMapAll!=null) {
@@ -169,10 +168,19 @@ public class MemberServiceImpl implements MemberService {
 					  newPcode=newPcode+ckPcodes[i]+"/";
 				}
 				
-				Cookie newCookie=new Cookie("pcode",newPcode);
-				newCookie.setMaxAge(3600);
-				newCookie.setPath("/");
-				response.addCookie(newCookie);
+				if(newPcode.isEmpty()) {
+					Cookie newCookie=new Cookie("pcode",newPcode);
+					newCookie.setMaxAge(0);
+					newCookie.setPath("/");
+					response.addCookie(newCookie);
+
+				} else {
+					Cookie newCookie=new Cookie("pcode",newPcode);
+					newCookie.setMaxAge(3600);
+					newCookie.setPath("/");
+					response.addCookie(newCookie);
+				}
+				
 				
 			}
 			
@@ -239,6 +247,61 @@ public class MemberServiceImpl implements MemberService {
 	    
 	    return tot;
 	}
+
+	@Override
+	public String jjimList(HttpSession session,Model model) {
+		if(session.getAttribute("userid")==null) {
+			return "redirect:/login/login";
+		} else {
+			String userid=session.getAttribute("userid").toString();
+			ArrayList<ProductDTO> plist=mapper.jjimList(userid);
+			
+			for(ProductDTO product : plist) {
+				int price=product.getPrice();
+				int halin=product.getHalin();
+				
+				int halinPrice=(int) (price-(price*halin/100.0));
+				product.setHalinPrice(halinPrice);
+			}
+			
+			model.addAttribute("pdto",plist);
+			
+			return "member/jjimList";
+		}
+	}
+
+	@Override
+	public String addCart(HttpServletRequest request, HttpSession session) {
+		String pcode=request.getParameter("pcode");
+		if(session.getAttribute("userid")==null) {
+			return "redirect:/login/login";
+		} else {
+			String userid=session.getAttribute("userid").toString();
+			if(!mapper.isCart(userid, pcode)) {
+				mapper.addCart(userid,pcode);	
+				mapper.jjimDel(userid, pcode);
+			}
+		}
+		return null;
+	}
+
+	@Override
+	public String jjimDel(HttpServletRequest request, HttpSession session) {
+		String del=request.getParameter("del");
+		if(session.getAttribute("userid")==null) {
+			return "redirect:/login/login";
+		} else {
+			String userid=session.getAttribute("userid").toString();
+			String[] pcodes=del.split("/");
+			for(String pcode:pcodes) {
+				mapper.jjimDel(userid, pcode);
+			}
+			return "redirect:/member/jjimList";
+		}
+		
+	}
+	
+	
 
 	
 }

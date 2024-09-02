@@ -189,7 +189,7 @@ public class ProductServiceImpl implements ProductService {
 			HttpServletResponse response) {
 		String pcode=request.getParameter("pcode");
 		int su=Integer.parseInt(request.getParameter("su"));
-		
+		String cartNum=null;
 		if(session.getAttribute("userid")==null) {
 
 			// 로그인을 하지 않아도 장바구니 처리를 실행
@@ -198,11 +198,15 @@ public class ProductServiceImpl implements ProductService {
 			String newPro=pcode+"-"+su+"/";
 			
 			String newPcode=null;
-			if(cookie==null) {
+			if(cookie==null || cookie.getValue().isEmpty()) {
 				newPcode=newPro;
+				cartNum="1";
 			} else {
 				String getPcode=cookie.getValue();
 				String[] pcodes=getPcode.split("/");
+				
+				
+				
 				int chk=-1;
 				for(int i=0;i<pcodes.length;i++) {
 					if(pcodes[i].indexOf(pcode)!=-1) {
@@ -221,7 +225,8 @@ public class ProductServiceImpl implements ProductService {
 					}
 					newPcode=imsi;
 				} else {
-					newPcode=cookie.getValue()+newPro;					
+					newPcode=cookie.getValue()+newPro;			
+					cartNum=(pcodes.length+1)+"";
 				}
 			}
 			
@@ -233,6 +238,8 @@ public class ProductServiceImpl implements ProductService {
 			newCookie.setPath("/");
 			response.addCookie(newCookie);
 			
+			return cartNum;
+			
 		} else {
 			String userid=session.getAttribute("userid").toString();
 			
@@ -241,9 +248,9 @@ public class ProductServiceImpl implements ProductService {
 			} else {
 				mapper.addCart(pcode, userid, su);				
 			}
+			return mapper.getCartNum(userid);
 		}
 		
-		return "0";
 	}
 	
 	

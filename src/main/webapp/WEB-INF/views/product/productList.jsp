@@ -28,9 +28,11 @@
    td:hover {border:2px solid #ccc; border-radius: 5px; padding:10px;}
  </style>
  <script>
+ /*
  function sel(){
 	document.getElementsByClassName("type")[${param.order}].style.color="red";
  }
+ */
  </script>
 </head>
 <body> <!-- product/productList.jsp -->
