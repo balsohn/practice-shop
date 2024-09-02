@@ -92,9 +92,32 @@ label {margin-right: 30px;}
 			min: 1,
 			max: 10,
 			spin: function(e, ui) {
-				// 현재 스피너 요소의 인덱스를 구함
-				var index=$('.su').index(this);
-				alert(index);
+				var pri=document.getElementsByClassName("price");
+	            var hp=document.getElementsByClassName("hp");
+	            var jp=document.getElementsByClassName("jp");
+	            var bp=document.getElementsByClassName("bp");
+	            var hal=document.getElementsByClassName("hal");
+	            var juk=document.getElementsByClassName("juk");
+	            
+	            // 현재 스핀 이벤트가 발생한 인덱스를 찾기 위해 사용
+	            var index=$('.su').index(this);
+	            var su=ui.value;
+	            
+	            // 할인율과 적립금 계산
+	            var originalPrice=parseInt(pri[index].value.replace(/,/g, ''));
+	            var halin=parseInt(hal[index].value.replace(/,/g, '')) / 100;
+	            var jukRate=parseInt(juk[index].value.replace(/,/g, '')) / 100;
+
+	            // 계산된 가격 및 적립금
+	            var newHp=Math.floor(originalPrice * (1 - halin) * su);
+	            var newJp=Math.floor(originalPrice * jukRate * su);
+	            
+	            // 값 업데이트
+	            hp[index].innerText=newHp.toLocaleString();
+	            jp[index].innerText=newJp.toLocaleString();
+
+	            // 총합계 업데이트
+	            totalChk();
 			}
 		});
 		
