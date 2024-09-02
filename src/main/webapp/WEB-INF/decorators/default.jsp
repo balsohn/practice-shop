@@ -53,16 +53,20 @@ header {
     padding: 0 30px;
 }
 
-.header-right {display:flex; flex-direction:column; justify-content: space-between; align-items: flex-end; }
+.header-right {
+	display:flex; 
+	flex-direction:column; 
+	justify-content: space-between; 
+	align-items: flex-end; 
+}
 
-header #logo {
-    
+header #logo {    
     width: 80px;
     height: 80px;
 }
 
 .logo {
-	    width: 200px;
+	width: 200px;
     position: relative;
     top: 50%;
     transform: translateY(-50%);
@@ -198,6 +202,33 @@ footer {
     margin: auto;
 }
 
+.header-right #myMenu {
+    position: relative;
+    cursor: pointer;
+}
+
+.header-right #myMenuList {
+    display: none; /* 기본적으로 숨김 */
+    position: absolute;
+    top: 100%; /* 부모 요소 바로 아래에 위치 */
+    right: 0; /* 부모 요소의 오른쪽에 맞춤 */
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    list-style: none;
+    padding: 10px 0;
+    margin: 0;
+    z-index: 1000;
+}
+
+.header-right #myMenuList li {
+    padding: 10px 20px;
+    white-space: nowrap; /* 텍스트 줄바꿈 방지 */
+}
+
+.header-right #myMenuList li:hover {
+    background-color: #f1f1f1; /* 호버 시 배경색 변경 */
+}
+
 </style>
 <script src="https://code.jquery.com/jquery-latest.js"></script>
 <script>
@@ -231,7 +262,18 @@ window.onload = function() {
     soXhr.open("GET", "/main/getSo", true);
     soXhr.send();
     
-    sel();
+    var chk=new XMLHttpRequest();
+    chk.onload=function() {
+    	document.getElementById("cartNum").innerText=chk.responseText;
+    }
+    chk.open("get","../main/cartNum")
+    chk.send();
+    
+    <c:if test="${param.order!=null}">
+    document.getElementsByClassName("type")[${param.order}].style.color="red";
+    </c:if>
+    
+    
 }
 
 // 모든 데이터를 받은 후 처리하는 함수
@@ -293,6 +335,28 @@ function viewsrc() {
 	document.getElementById("aa").innerText=document.getElementsByTagName("body")[0].innerHTML;
 }
 
+document.addEventListener("DOMContentLoaded", function() {
+    var myMenu = document.getElementById("myMenu");
+    var myMenuList = document.getElementById("myMenuList");
+
+    myMenu.addEventListener("click", function() {
+        // 드랍다운 메뉴의 표시/숨김 상태를 토글
+        if (myMenuList.style.display === "block") {
+            myMenuList.style.display = "none";
+        } else {
+            myMenuList.style.display = "block";
+        }
+    });
+
+    // 클릭 외의 영역을 클릭하면 드랍다운 메뉴 숨김
+    document.addEventListener("click", function(event) {
+        if (!myMenu.contains(event.target)) {
+            myMenuList.style.display = "none";
+        }
+    });
+});
+
+
 </script>
 </head>
 <sitemesh:write property="head"/>
@@ -321,13 +385,24 @@ function viewsrc() {
 	           <a href="../login/login">로그인</a>
 	           </c:if>
 	           <c:if test="${!empty userid}">
-	           <a href="../member/member">${userid}님</a> 
+	           ${userid}님
+	           <span id="myMenu"> 나의 메뉴
+			    <ul id="myMenuList">
+			        <li><a href="../member/jjimList">찜리스트</a></li>
+			        <li><a href="#">회원정보</a></li>
+			        <li><a href="#">주문목록</a></li>
+			        <li><a href="#">배송지관리</a></li>
+			        <li><a href="#">배송지관리</a></li>
+			        <li><a href="#">배송지관리</a></li>
+			    </ul>
+				</span>
+
 	           <a href="../login/logout">로그아웃</a>
 	           </c:if>
 	           <a href="">고객센터</a>
             </div>
             <div>
-            	<a href="../member/cartView"><img src="../resources/uploads/cart.png"></a>
+            	<a href="../member/cartView"><img src="../resources/uploads/cart.png">(<span id="cartNum"></span>)</a>
             </div>
         </div>
     </header>

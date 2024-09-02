@@ -3,6 +3,7 @@ package kr.co.shop.service;
 import java.util.ArrayList;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import kr.co.shop.dto.CateDTO;
 import kr.co.shop.dto.DaeDTO;
 import kr.co.shop.dto.JungDTO;
@@ -14,4 +15,5 @@ public interface MainService {
 	public ArrayList<CateDTO> getCate();
 	public ArrayList<JungDTO> getJung();
 	public ArrayList<SoDTO> getSo();
+	public String cartNum(HttpServletRequest request, HttpSession session);
 }

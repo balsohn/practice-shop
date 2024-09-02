@@ -21,4 +21,5 @@ public interface ProductMapper {
 	public void addCart(String pcode, String userid, int su);
 	public boolean isCart(String pcode, String userid);
 	public void upCart(String pcode, String userid, int su);
+	public String getCartNum(String userid);
 }

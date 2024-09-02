@@ -25,4 +25,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		userid=#{userid} and
 		pcode=#{pcode}
 	</select>
+	<update id="chgSu">
+		update cart set su=#{su} where pcode=#{pcode} and userid=#{userid}
+	</update>
+	<select id="jjimList" resultType="kr.co.shop.dto.ProductDTO">
+		select product.* from product inner join jjim
+		on product.pcode=jjim.pcode and userid=#{userid}
+	</select>
+	<insert id="addCart">
+		insert into cart (userid, pcode, su, writeday)
+		values (#{userid},#{pcode},1,now())
+	</insert>
+	<select id="isCart" resultType="boolean">
+		select count(*) from cart
+		where userid=#{userid} and pcode=#{pcode} 
+	</select>
+	<delete id="jjimDel">
+		delete from jjim where userid=#{userid} and pcode=#{pcode}
+	</delete>
 </mapper>
