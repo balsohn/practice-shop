@@ -93,10 +93,8 @@ label {margin-right: 30px;}
 			max: 10,
 			spin: function(e, ui) {
 				// 현재 스피너 요소의 인덱스를 구함
-				var index = $('.su').index($(e.target));
-				// 해당 인덱스의 .hal 요소 값을 가져옴
-				var halValue = $('.hal').eq(index).val();
-				alert(halValue);
+				var index=$('.su').index(this);
+				alert(index);
 			}
 		});
 		
