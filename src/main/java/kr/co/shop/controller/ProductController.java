@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import kr.co.shop.dto.BaesongDTO;
 import kr.co.shop.dto.ProductDTO;
 import kr.co.shop.service.ProductService;
 
@@ -49,6 +50,25 @@ public class ProductController {
 		return service.addCart(request,session,response);
 	}
 	
+	@RequestMapping("/product/gumae")
+	public String gumae(HttpSession session, HttpServletRequest request,Model model, HttpServletResponse response) {
+		return service.gumae(session,request,model,response);
+	}
+	
+	@RequestMapping("/product/jusoWrite")
+	public String jusoWrite() {
+		return "/product/jusoWrite";
+	}
+	
+	@RequestMapping("/product/jusoWriteOk")
+	public String jusoWriteOk(BaesongDTO bdto,Model model,HttpSession session) {
+		return service.jusoWriteOk(bdto,model,session);
+	}
+	
+	@RequestMapping("/product/jusoList")
+	public String jusoList(HttpSession session, Model model) {
+		return service.jusoList(session,model);
+	}
 	
 
 }

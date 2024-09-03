@@ -54,4 +54,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		select count(*) from cart
 		where userid=#{userid}
 	</select>
+	<select id="getMember" resultType="kr.co.shop.dto.MemberDTO">
+		select * from member where userid=#{userid}
+	</select>
+	<select id="getBaesong" resultType="kr.co.shop.dto.BaesongDTO">
+		select * from baesong
+		where userid=#{userid} and gibon=1
+	</select>
+	<insert id="jusoWriteOk">
+		insert into baesong (userid,name,zip,juso,jusoEtc,phone,gibon,req)
+		values (#{userid},#{name},#{zip},#{juso},#{jusoEtc},#{phone},#{gibon},#{req})
+	</insert>
+	<select id="jusoList" resultType="kr.co.shop.dto.BaesongDTO">
+		select * from baesong where userid=#{userid}
+	</select>
 </mapper>

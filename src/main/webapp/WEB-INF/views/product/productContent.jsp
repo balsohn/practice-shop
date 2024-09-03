@@ -129,6 +129,7 @@
 <body>
 	<main>
 		<form method="post" action="gumae">
+		<input type="hidden" name="pcode" value="${pdto.pcode}">
 		<section id="first">
 			<div id="left"> 
 				<img src="../resources/pageimg/${pdto.pimg}">
