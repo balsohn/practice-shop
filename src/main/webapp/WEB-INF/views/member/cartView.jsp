@@ -116,6 +116,22 @@ label {margin-right: 30px;}
 		}
 	}
 	
+	function buyAll() {
+		var subChk=document.getElementsByClassName('subChk');
+		var suChk=document.getElementsByClassName('su');
+		var pcodes='';
+		var sues='';
+		
+		for(i=0;i<subChk.length;i++) {
+			if(subChk[i].checked) {
+				pcodes+=subChk[i].value+"/";
+				sues+=suChk[i].value+"/";
+			}
+		}
+		
+		location="../product/gumae?pcode="+pcodes+"&su="+sues;
+	}
+	
 	function chgSu(su,index) {
 		var pcode=document.getElementsByClassName("subChk")[index].value;
 		var xhr=new XMLHttpRequest();
@@ -210,7 +226,7 @@ label {margin-right: 30px;}
 				<fmt:formatNumber value="${halinpriceTot+baepriceTot}" type="number"/>원  
 				(적립예정 : <fmt:formatNumber value="${jukpriceTot}" type="number"/>원) 
 			</td>
-			<td> <input type="button" value="구매하기" id="btn1"> </td>
+			<td> <input type="button" value="구매하기" id="btn1" onclick="buyAll()"> </td>
 		</tr>
 		</table>
 

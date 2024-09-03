@@ -13,6 +13,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import kr.co.shop.dto.BaesongDTO;
 import kr.co.shop.dto.ProductDTO;
 import kr.co.shop.mapper.ProductMapper;
 import kr.co.shop.utils.MyUtils;
@@ -251,6 +252,135 @@ public class ProductServiceImpl implements ProductService {
 			return mapper.getCartNum(userid);
 		}
 		
+	}
+
+	@Override
+	public String gumae(HttpSession session, HttpServletRequest request, Model model, HttpServletResponse response) {
+		String pcode=request.getParameter("pcode");
+		String su=request.getParameter("su");
+		
+		if(session.getAttribute("userid")==null) {
+			Cookie url=new Cookie("url", "/member/cartView");
+			url.setMaxAge(500);
+			url.setPath("/");
+			response.addCookie(url);
+			
+			return "redirect:/login/login";
+		} else {
+			String userid=session.getAttribute("userid").toString();
+			model.addAttribute("mdto",mapper.getMember(userid)); 
+			
+			// 배송지 정보
+			BaesongDTO bdto=mapper.getBaesong(userid);
+			if(bdto!=null) {
+				String breq="";
+				switch(bdto.getReq()) {
+				case 0:breq="문 앞"; break;
+				case 1:breq="직접받고 부재시 문앞"; break;
+				case 2:breq="경비실"; break;
+				case 3:breq="택배함"; break;
+				case 4:breq="공동현관 앞"; break;				
+				}
+				bdto.setBreq(breq);
+				
+			}
+			model.addAttribute("bdto",bdto);
+			
+			String[] pcodes=pcode.split("/");
+			String[] imsi=su.split("/");
+			int[] sues=new int[imsi.length];
+			for(int i=0;i<sues.length;i++) {
+				sues[i]=Integer.parseInt(imsi[i]);
+			}
+			
+			ArrayList<ProductDTO> plist=new ArrayList<>();
+			for(int i=0;i<pcodes.length;i++) {
+				ProductDTO pdto=mapper.content(pcodes[i]);
+				pdto.setSu(sues[i]);
+				plist.add(pdto);
+			}
+			model.addAttribute("plist",plist);
+			
+			int halinPrice=0;
+			int baePrice=0;
+			int jukPrice=0;
+			
+			for(int i=0;i<plist.size();i++) {
+				ProductDTO pdto=plist.get(i);
+				int price=pdto.getPrice();
+				int halin=pdto.getHalin();
+				int su2=pdto.getSu();
+				int bae=pdto.getBaeprice();
+				int juk=pdto.getJuk();
+				halinPrice=halinPrice+price-(int)(price*halin/100.0)*su2;
+				baePrice=baePrice+bae;
+				jukPrice=jukPrice+(int)(price*juk/100.0);
+			}
+			
+			model.addAttribute("halinPrice",halinPrice);
+			model.addAttribute("baePrice",baePrice);
+			model.addAttribute("jukPrice",jukPrice);			
+			
+			
+			
+			return "/product/gumae";
+		}
+	}
+
+	@Override
+	public String jusoWriteOk(BaesongDTO bdto, Model model, HttpSession session) {
+		
+		String userid=session.getAttribute("userid").toString();
+		bdto.setUserid(userid);
+		mapper.jusoWriteOk(bdto);
+		
+		if(bdto.getTt().equals("1")) {
+			//추가입력
+			return "redirect:/product/jusoList";
+		} else {
+			model.addAttribute("bname",bdto.getName());
+			model.addAttribute("bjuso", bdto.getJuso());
+			model.addAttribute("bphone",bdto.getPhone());
+			String breq="";
+			switch(bdto.getReq()) {
+			case 0:breq="문 앞"; break;
+			case 1:breq="직접받고 부재시 문앞"; break;
+			case 2:breq="경비실"; break;
+			case 3:breq="택배함"; break;
+			case 4:breq="공동현관 앞"; break;			
+			}
+			
+			model.addAttribute("breq",breq);
+		}
+		
+		
+		
+		return null;
+		
+	}
+
+	@Override
+	public String jusoList(HttpSession session, Model model) {
+		
+		if(session.getAttribute("userid")==null) {
+			return "redirect:/main/index";
+		} else {
+			String userid=session.getAttribute("userid").toString();
+			ArrayList<BaesongDTO> bdto=mapper.jusoList(userid);
+			for(BaesongDTO juso:bdto) {
+				String breq="";
+				switch(juso.getReq()) {
+				case 0:breq="문 앞"; break;
+				case 1:breq="직접받고 부재시 문앞"; break;
+				case 2:breq="경비실"; break;
+				case 3:breq="택배함"; break;
+				case 4:breq="공동현관 앞"; break;				
+				}
+				juso.setBreq(breq);
+			}
+			model.addAttribute("bdto",bdto);			
+			return "/product/jusoList";
+		}
 	}
 	
 	
