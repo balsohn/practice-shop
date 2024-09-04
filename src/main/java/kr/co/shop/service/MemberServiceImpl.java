@@ -55,7 +55,7 @@ public class MemberServiceImpl implements MemberService {
 		if(session.getAttribute("userid")==null) {
 			Cookie code=WebUtils.getCookie(request, "pcode");
 			
-			if(code!=null && !code.getValue().isEmpty()) {
+			if(code!=null) {
 				String[] codes=code.getValue().split("/");
 				
 
