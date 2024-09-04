@@ -98,11 +98,13 @@
 </script> 
  <style>
    main {
-     width:1100px;
+     width:700px;
      margin:auto;
+     margin-top :30px;
     font-family: 'GmarketSansMedium';
+    
    }
-   section {margin-bottom: 20px; }
+   section {margin:20px auto; width: 700px;}
    main #sudan #other {
      display:none;
    }
@@ -164,6 +166,8 @@
       outline:none;
       text-align:right;
    }
+   
+   button {border:none; background: none; font-size: 18px;}
  </style>
 </head>
 <body>	<!-- product/gumae.jsp -->
