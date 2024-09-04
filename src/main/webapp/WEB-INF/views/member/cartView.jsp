@@ -131,8 +131,10 @@ label {margin-right: 30px;}
 	            var juk=document.getElementsByClassName("juk");
 	            
 	            // 현재 스핀 이벤트가 발생한 인덱스를 찾기 위해 사용
-	            var index=$('.su').index(e.target);
+	            var index=$('.su').index(e.target);	//0
 	            var su=ui.value;
+
+	            
 	            
 	            // 할인율과 적립금 계산
 	            var originalPrice=parseInt(pri[index].value.replace(/,/g, ''));
