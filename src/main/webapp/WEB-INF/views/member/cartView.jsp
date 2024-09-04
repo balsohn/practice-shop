@@ -128,8 +128,11 @@ label {margin-right: 30px;}
 				sues+=suChk[i].value+"/";
 			}
 		}
-		
-		location="../product/gumae?pcode="+pcodes+"&su="+sues;
+		if(pcodes==''){
+			alert("선택한 상품이 없어요.");
+		} else {
+			location="../product/gumae?pcode="+pcodes+"&su="+sues;	
+		}
 	}
 	
 	function chgSu(su,index) {
@@ -167,9 +170,6 @@ label {margin-right: 30px;}
 	            
 			}
 		});
-		
-		
-		
 	});
 
 	

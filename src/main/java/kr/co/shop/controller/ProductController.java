@@ -70,5 +70,24 @@ public class ProductController {
 		return service.jusoList(session,model);
 	}
 	
+	@RequestMapping("/product/chgPhone")
+	public @ResponseBody int chgPhone(HttpServletRequest request,HttpSession session) {
+		return service.chgPhone(request,session);
+	}
+	
+	@RequestMapping("/product/jusoDel")
+	public String jusoDel(HttpServletRequest request) {
+		return service.jusoDel(request);
+	}
+	
+	@RequestMapping("/product/jusoUpdate")
+	public String jusoUpdate(HttpServletRequest request, Model model) {
+		return service.jusoUpdate(request,model);
+	}
+	
+	@RequestMapping("/product/jusoUpdateOk")
+	public String jusoUpdateOk(BaesongDTO bdto, HttpSession session) {
+		return service.jusoUpdateOk(bdto,session);
+	}
 
 }

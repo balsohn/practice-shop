@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.util.WebUtils;
 
 import jakarta.servlet.http.Cookie;
@@ -114,27 +115,27 @@ public class ProductServiceImpl implements ProductService {
 		ProductDTO pdto=mapper.content(pcode);
 		
 			
-			int halinPrice=(int)(pdto.getPrice()-(pdto.getPrice()*(pdto.getHalin()/100.0)));
-			int jukPrice=(int)(pdto.getPrice()*(pdto.getJuk()/100.0));
-			
-			LocalDate today=LocalDate.now();
-			LocalDate xday=today.plusDays(pdto.getBaeday());
-			String yoil=MyUtils.getYoil(xday);
-			
-			String baeEx=null;
-			if(pdto.getBaeday()==1) {
-				baeEx="내일("+yoil+") 도착예정";
-			} else if(pdto.getBaeday()==2) {
-				baeEx="모레("+yoil+") 도착예정";
-			} else {
-				int m=xday.getMonthValue();
-				int d=xday.getDayOfMonth();
-				baeEx=m+"/"+d+"("+yoil+") 도착예정";
-			}
-			
-			pdto.setHalinPrice(halinPrice);
-			pdto.setJukPrice(jukPrice);
-			pdto.setBaeEx(baeEx);
+		int halinPrice=(int)(pdto.getPrice()-(pdto.getPrice()*(pdto.getHalin()/100.0)));
+		int jukPrice=(int)(pdto.getPrice()*(pdto.getJuk()/100.0));
+		
+		LocalDate today=LocalDate.now();
+		LocalDate xday=today.plusDays(pdto.getBaeday());
+		String yoil=MyUtils.getYoil(xday);
+		
+		String baeEx=null;
+		if(pdto.getBaeday()==1) {
+			baeEx="내일("+yoil+") 도착예정";
+		} else if(pdto.getBaeday()==2) {
+			baeEx="모레("+yoil+") 도착예정";
+		} else {
+			int m=xday.getMonthValue();
+			int d=xday.getDayOfMonth();
+			baeEx=m+"/"+d+"("+yoil+") 도착예정";
+		}
+		
+		pdto.setHalinPrice(halinPrice);
+		pdto.setJukPrice(jukPrice);
+		pdto.setBaeEx(baeEx);
 		
 		model.addAttribute("pdto",pdto);
 		
@@ -298,12 +299,36 @@ public class ProductServiceImpl implements ProductService {
 				ProductDTO pdto=mapper.content(pcodes[i]);
 				pdto.setSu(sues[i]);
 				plist.add(pdto);
+				int halinPrice=(int)(pdto.getPrice()-(pdto.getPrice()*(pdto.getHalin()/100.0)));
+				int jukPrice=(int)(pdto.getPrice()*(pdto.getJuk()/100.0));
+				
+				LocalDate today=LocalDate.now();
+				LocalDate xday=today.plusDays(pdto.getBaeday());
+				String yoil=MyUtils.getYoil(xday);
+				
+				String baeEx=null;
+				if(pdto.getBaeday()==1) {
+					baeEx="내일("+yoil+") 도착예정";
+				} else if(pdto.getBaeday()==2) {
+					baeEx="모레("+yoil+") 도착예정";
+				} else {
+					int m=xday.getMonthValue();
+					int d=xday.getDayOfMonth();
+					baeEx=m+"/"+d+"("+yoil+") 도착예정";
+				}
+				
+				pdto.setHalinPrice(halinPrice);
+				pdto.setJukPrice(jukPrice);
+				pdto.setBaeEx(baeEx);
 			}
 			model.addAttribute("plist",plist);
 			
 			int halinPrice=0;
 			int baePrice=0;
 			int jukPrice=0;
+			
+			
+			
 			
 			for(int i=0;i<plist.size();i++) {
 				ProductDTO pdto=plist.get(i);
@@ -321,7 +346,7 @@ public class ProductServiceImpl implements ProductService {
 			model.addAttribute("baePrice",baePrice);
 			model.addAttribute("jukPrice",jukPrice);			
 			
-			
+			model.addAttribute("juk", mapper.getJuk(userid));
 			
 			return "/product/gumae";
 		}
@@ -332,6 +357,10 @@ public class ProductServiceImpl implements ProductService {
 		
 		String userid=session.getAttribute("userid").toString();
 		bdto.setUserid(userid);
+		
+		if(bdto.getGibon()==1) {
+			mapper.gibonInit(userid);
+		}
 		mapper.jusoWriteOk(bdto);
 		
 		if(bdto.getTt().equals("1")) {
@@ -382,6 +411,41 @@ public class ProductServiceImpl implements ProductService {
 			return "/product/jusoList";
 		}
 	}
+
+	@Override
+	public int chgPhone(HttpServletRequest request,HttpSession session) {
+		String userid=session.getAttribute("userid").toString();
+		String phone=request.getParameter("phone");
+		mapper.chgPhone(userid, phone);
+		return 1;
+	}
+
+	@Override
+	public String jusoDel(HttpServletRequest request) {
+		String id=request.getParameter("id");
+		mapper.jusoDel(id);
+		return "redirect:/product/jusoList";
+	}
+
+	@Override
+	public String jusoUpdate(HttpServletRequest request, Model model) {
+		String id=request.getParameter("id");
+		model.addAttribute("bdto",mapper.jusoUpdate(id));
+		return "/product/jusoUpdate";
+	}
+
+	@Override
+	public String jusoUpdateOk(BaesongDTO bdto, HttpSession session) {
+		String userid=session.getAttribute("userid").toString();
+		
+		if(bdto.getGibon()==1) {
+			mapper.gibonInit(userid);
+		}
+		mapper.jusoUpdateOk(bdto);
+		return "redirect:/product/jusoList";
+	}
+	
+
 	
 	
 }
