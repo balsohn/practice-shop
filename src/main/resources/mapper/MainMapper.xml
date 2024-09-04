@@ -13,6 +13,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="getSo" resultType="kr.co.shop.dto.SoDTO">
 		select * from so order by code asc
 	</select>
+	<select id="cartNum" resultType="string">
+		select count(*) from cart where userid=#{userid}
+	</select>
 	
 	
 	

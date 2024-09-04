@@ -50,4 +50,45 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		update cart set su=su+#{su}
 		where userid=#{userid} and pcode=#{pcode}
 	</update>
+	<select id="getCartNum" resultType="string">
+		select count(*) from cart
+		where userid=#{userid}
+	</select>
+	<select id="getMember" resultType="kr.co.shop.dto.MemberDTO">
+		select * from member where userid=#{userid}
+	</select>
+	<select id="getBaesong" resultType="kr.co.shop.dto.BaesongDTO">
+		select * from baesong
+		where userid=#{userid} and gibon=1
+	</select>
+	<insert id="jusoWriteOk">
+		insert into baesong (userid,name,zip,juso,jusoEtc,phone,gibon,req)
+		values (#{userid},#{name},#{zip},#{juso},#{jusoEtc},#{phone},#{gibon},#{req})
+	</insert>
+	<select id="jusoList" resultType="kr.co.shop.dto.BaesongDTO">
+		select * from baesong 
+		where userid=#{userid}
+		order by gibon desc
+	</select>
+	<update id="gibonInit">
+		update baesong set gibon=0
+		where userid=#{userid}
+	</update>
+	<select id="getJuk" resultType="int">
+		select juk from member
+		where userid=#{userid}
+	</select>
+	<update id="chgPhone">
+		update member set phone=#{phone} where userid=#{userid}
+	</update>
+	<delete id='jusoDel'>
+		delete from baesong where id=#{id}
+	</delete>
+	<select id="jusoUpdate" resultType="kr.co.shop.dto.BaesongDTO">
+		select * from baesong where id=#{id}
+	</select>
+	<update id="jusoUpdateOk">
+		update baesong set name=#{name}, zip=#{zip}, juso=#{juso}, jusoEtc=#{jusoEtc},
+		phone=#{phone}, req=#{req}, gibon=#{gibon} where id=#{id}
+	</update>
 </mapper>

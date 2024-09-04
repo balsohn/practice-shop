@@ -99,7 +99,6 @@ label {margin-right: 30px;}
 			"총삼품금액 "+totalHp.toLocaleString()+"원 + 배송비 "
 			+totalBp.toLocaleString()+"원 = 총결제금액 "+(totalHp+totalBp).toLocaleString()+
 			"원 (적립예정 :"+totalJp.toLocaleString()+"원)";
-		
 	}
 	
 	function selDel() {
@@ -117,46 +116,61 @@ label {margin-right: 30px;}
 		}
 	}
 	
+	function buyAll() {
+		var subChk=document.getElementsByClassName('subChk');
+		var suChk=document.getElementsByClassName('su');
+		var pcodes='';
+		var sues='';
+		
+		for(i=0;i<subChk.length;i++) {
+			if(subChk[i].checked) {
+				pcodes+=subChk[i].value+"/";
+				sues+=suChk[i].value+"/";
+			}
+		}
+		if(pcodes==''){
+			alert("선택한 상품이 없어요.");
+		} else {
+			location="../product/gumae?pcode="+pcodes+"&su="+sues;	
+		}
+	}
+	
+	function chgSu(su,index) {
+		var pcode=document.getElementsByClassName("subChk")[index].value;
+		var xhr=new XMLHttpRequest();
+		xhr.onload=function() {
+			//alert(chk.responseText);
+    		var data=JSON.parse(xhr.responseText);
+   
+    		document.getElementsByClassName("hp")[index].innerText=data[0].toLocaleString();
+    		document.getElementsByClassName("jp")[index].innerText=data[1].toLocaleString();
+    		
+    		var imsi;
+    		if(data[2]==0)
+    			imsi="무료배송";
+    		else
+    			imsi=data[2].toLocaleString();
+    		document.getElementsByClassName("bp")[index].innerText=imsi;
+
+    		totalChk();
+		}
+		xhr.open("get","chgSu?su="+su+"&pcode="+pcode);
+		xhr.send();
+	}
+	
 	$(function() {
 		$('.su').spinner({
 			min: 1,
 			max: 10,
 			spin: function(e, ui) {
+				var index=$('.su').index(this);
+				var su=ui.value;
 				
-				var pri=document.getElementsByClassName("price");
-	            var hp=document.getElementsByClassName("hp");
-	            var jp=document.getElementsByClassName("jp");
-	            var bp=document.getElementsByClassName("bp");
-	            var hal=document.getElementsByClassName("hal");
-	            var juk=document.getElementsByClassName("juk");
-	            
-	            // 현재 스핀 이벤트가 발생한 인덱스를 찾기 위해 사용
-	            var index=$('.su').index(e.target);	//0
-	            var su=ui.value;
+				chgSu(su,index);
 
-	            
-	            
-	            // 할인율과 적립금 계산
-	            var originalPrice=parseInt(pri[index].value.replace(/,/g, ''));
-	            var halin=parseInt(hal[index].value.replace(/,/g, '')) / 100;
-	            var jukRate=parseInt(juk[index].value.replace(/,/g, '')) / 100;
-
-	            // 계산된 가격 및 적립금
-	            var newHp=Math.floor(originalPrice * (1 - halin) * su);
-	            var newJp=Math.floor(originalPrice * jukRate * su);
-	            
-	            // 값 업데이트
-	            hp[index].innerText=newHp.toLocaleString();
-	            jp[index].innerText=newJp.toLocaleString();
-
-	            // 총합계 업데이트
-	            totalChk();
 	            
 			}
 		});
-		
-		
-		
 	});
 
 	
@@ -212,7 +226,7 @@ label {margin-right: 30px;}
 				<fmt:formatNumber value="${halinpriceTot+baepriceTot}" type="number"/>원  
 				(적립예정 : <fmt:formatNumber value="${jukpriceTot}" type="number"/>원) 
 			</td>
-			<td> <input type="button" value="구매하기" id="btn1"> </td>
+			<td> <input type="button" value="구매하기" id="btn1" onclick="buyAll()"> </td>
 		</tr>
 		</table>
 

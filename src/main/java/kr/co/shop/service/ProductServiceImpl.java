@@ -7,12 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.util.WebUtils;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import kr.co.shop.dto.BaesongDTO;
 import kr.co.shop.dto.ProductDTO;
 import kr.co.shop.mapper.ProductMapper;
 import kr.co.shop.utils.MyUtils;
@@ -113,27 +115,27 @@ public class ProductServiceImpl implements ProductService {
 		ProductDTO pdto=mapper.content(pcode);
 		
 			
-			int halinPrice=(int)(pdto.getPrice()-(pdto.getPrice()*(pdto.getHalin()/100.0)));
-			int jukPrice=(int)(pdto.getPrice()*(pdto.getJuk()/100.0));
-			
-			LocalDate today=LocalDate.now();
-			LocalDate xday=today.plusDays(pdto.getBaeday());
-			String yoil=MyUtils.getYoil(xday);
-			
-			String baeEx=null;
-			if(pdto.getBaeday()==1) {
-				baeEx="내일("+yoil+") 도착예정";
-			} else if(pdto.getBaeday()==2) {
-				baeEx="모레("+yoil+") 도착예정";
-			} else {
-				int m=xday.getMonthValue();
-				int d=xday.getDayOfMonth();
-				baeEx=m+"/"+d+"("+yoil+") 도착예정";
-			}
-			
-			pdto.setHalinPrice(halinPrice);
-			pdto.setJukPrice(jukPrice);
-			pdto.setBaeEx(baeEx);
+		int halinPrice=(int)(pdto.getPrice()-(pdto.getPrice()*(pdto.getHalin()/100.0)));
+		int jukPrice=(int)(pdto.getPrice()*(pdto.getJuk()/100.0));
+		
+		LocalDate today=LocalDate.now();
+		LocalDate xday=today.plusDays(pdto.getBaeday());
+		String yoil=MyUtils.getYoil(xday);
+		
+		String baeEx=null;
+		if(pdto.getBaeday()==1) {
+			baeEx="내일("+yoil+") 도착예정";
+		} else if(pdto.getBaeday()==2) {
+			baeEx="모레("+yoil+") 도착예정";
+		} else {
+			int m=xday.getMonthValue();
+			int d=xday.getDayOfMonth();
+			baeEx=m+"/"+d+"("+yoil+") 도착예정";
+		}
+		
+		pdto.setHalinPrice(halinPrice);
+		pdto.setJukPrice(jukPrice);
+		pdto.setBaeEx(baeEx);
 		
 		model.addAttribute("pdto",pdto);
 		
@@ -189,7 +191,7 @@ public class ProductServiceImpl implements ProductService {
 			HttpServletResponse response) {
 		String pcode=request.getParameter("pcode");
 		int su=Integer.parseInt(request.getParameter("su"));
-		
+		String cartNum=null;
 		if(session.getAttribute("userid")==null) {
 
 			// 로그인을 하지 않아도 장바구니 처리를 실행
@@ -198,11 +200,15 @@ public class ProductServiceImpl implements ProductService {
 			String newPro=pcode+"-"+su+"/";
 			
 			String newPcode=null;
-			if(cookie==null) {
+			if(cookie==null || cookie.getValue().isEmpty()) {
 				newPcode=newPro;
+				cartNum="1";
 			} else {
 				String getPcode=cookie.getValue();
 				String[] pcodes=getPcode.split("/");
+				
+				
+				
 				int chk=-1;
 				for(int i=0;i<pcodes.length;i++) {
 					if(pcodes[i].indexOf(pcode)!=-1) {
@@ -221,7 +227,8 @@ public class ProductServiceImpl implements ProductService {
 					}
 					newPcode=imsi;
 				} else {
-					newPcode=cookie.getValue()+newPro;					
+					newPcode=cookie.getValue()+newPro;			
+					cartNum=(pcodes.length+1)+"";
 				}
 			}
 			
@@ -233,6 +240,8 @@ public class ProductServiceImpl implements ProductService {
 			newCookie.setPath("/");
 			response.addCookie(newCookie);
 			
+			return cartNum;
+			
 		} else {
 			String userid=session.getAttribute("userid").toString();
 			
@@ -241,10 +250,202 @@ public class ProductServiceImpl implements ProductService {
 			} else {
 				mapper.addCart(pcode, userid, su);				
 			}
+			return mapper.getCartNum(userid);
 		}
 		
-		return "0";
 	}
+
+	@Override
+	public String gumae(HttpSession session, HttpServletRequest request, Model model, HttpServletResponse response) {
+		String pcode=request.getParameter("pcode");
+		String su=request.getParameter("su");
+		
+		if(session.getAttribute("userid")==null) {
+			Cookie url=new Cookie("url", "/member/cartView");
+			url.setMaxAge(500);
+			url.setPath("/");
+			response.addCookie(url);
+			
+			return "redirect:/login/login";
+		} else {
+			String userid=session.getAttribute("userid").toString();
+			model.addAttribute("mdto",mapper.getMember(userid)); 
+			
+			// 배송지 정보
+			BaesongDTO bdto=mapper.getBaesong(userid);
+			if(bdto!=null) {
+				String breq="";
+				switch(bdto.getReq()) {
+				case 0:breq="문 앞"; break;
+				case 1:breq="직접받고 부재시 문앞"; break;
+				case 2:breq="경비실"; break;
+				case 3:breq="택배함"; break;
+				case 4:breq="공동현관 앞"; break;				
+				}
+				bdto.setBreq(breq);
+				
+			}
+			model.addAttribute("bdto",bdto);
+			
+			String[] pcodes=pcode.split("/");
+			String[] imsi=su.split("/");
+			int[] sues=new int[imsi.length];
+			for(int i=0;i<sues.length;i++) {
+				sues[i]=Integer.parseInt(imsi[i]);
+			}
+			
+			ArrayList<ProductDTO> plist=new ArrayList<>();
+			for(int i=0;i<pcodes.length;i++) {
+				ProductDTO pdto=mapper.content(pcodes[i]);
+				pdto.setSu(sues[i]);
+				plist.add(pdto);
+				int halinPrice=(int)(pdto.getPrice()-(pdto.getPrice()*(pdto.getHalin()/100.0)));
+				int jukPrice=(int)(pdto.getPrice()*(pdto.getJuk()/100.0));
+				
+				LocalDate today=LocalDate.now();
+				LocalDate xday=today.plusDays(pdto.getBaeday());
+				String yoil=MyUtils.getYoil(xday);
+				
+				String baeEx=null;
+				if(pdto.getBaeday()==1) {
+					baeEx="내일("+yoil+") 도착예정";
+				} else if(pdto.getBaeday()==2) {
+					baeEx="모레("+yoil+") 도착예정";
+				} else {
+					int m=xday.getMonthValue();
+					int d=xday.getDayOfMonth();
+					baeEx=m+"/"+d+"("+yoil+") 도착예정";
+				}
+				
+				pdto.setHalinPrice(halinPrice);
+				pdto.setJukPrice(jukPrice);
+				pdto.setBaeEx(baeEx);
+			}
+			model.addAttribute("plist",plist);
+			
+			int halinPrice=0;
+			int baePrice=0;
+			int jukPrice=0;
+			
+			
+			
+			
+			for(int i=0;i<plist.size();i++) {
+				ProductDTO pdto=plist.get(i);
+				int price=pdto.getPrice();
+				int halin=pdto.getHalin();
+				int su2=pdto.getSu();
+				int bae=pdto.getBaeprice();
+				int juk=pdto.getJuk();
+				halinPrice=halinPrice+price-(int)(price*halin/100.0)*su2;
+				baePrice=baePrice+bae;
+				jukPrice=jukPrice+(int)(price*juk/100.0);
+			}
+			
+			model.addAttribute("halinPrice",halinPrice);
+			model.addAttribute("baePrice",baePrice);
+			model.addAttribute("jukPrice",jukPrice);			
+			
+			model.addAttribute("juk", mapper.getJuk(userid));
+			
+			return "/product/gumae";
+		}
+	}
+
+	@Override
+	public String jusoWriteOk(BaesongDTO bdto, Model model, HttpSession session) {
+		
+		String userid=session.getAttribute("userid").toString();
+		bdto.setUserid(userid);
+		
+		if(bdto.getGibon()==1) {
+			mapper.gibonInit(userid);
+		}
+		mapper.jusoWriteOk(bdto);
+		
+		if(bdto.getTt().equals("1")) {
+			//추가입력
+			return "redirect:/product/jusoList";
+		} else {
+			model.addAttribute("bname",bdto.getName());
+			model.addAttribute("bjuso", bdto.getJuso());
+			model.addAttribute("bphone",bdto.getPhone());
+			String breq="";
+			switch(bdto.getReq()) {
+			case 0:breq="문 앞"; break;
+			case 1:breq="직접받고 부재시 문앞"; break;
+			case 2:breq="경비실"; break;
+			case 3:breq="택배함"; break;
+			case 4:breq="공동현관 앞"; break;			
+			}
+			
+			model.addAttribute("breq",breq);
+		}
+		
+		
+		
+		return null;
+		
+	}
+
+	@Override
+	public String jusoList(HttpSession session, Model model) {
+		
+		if(session.getAttribute("userid")==null) {
+			return "redirect:/main/index";
+		} else {
+			String userid=session.getAttribute("userid").toString();
+			ArrayList<BaesongDTO> bdto=mapper.jusoList(userid);
+			for(BaesongDTO juso:bdto) {
+				String breq="";
+				switch(juso.getReq()) {
+				case 0:breq="문 앞"; break;
+				case 1:breq="직접받고 부재시 문앞"; break;
+				case 2:breq="경비실"; break;
+				case 3:breq="택배함"; break;
+				case 4:breq="공동현관 앞"; break;				
+				}
+				juso.setBreq(breq);
+			}
+			model.addAttribute("bdto",bdto);			
+			return "/product/jusoList";
+		}
+	}
+
+	@Override
+	public int chgPhone(HttpServletRequest request,HttpSession session) {
+		String userid=session.getAttribute("userid").toString();
+		String phone=request.getParameter("phone");
+		mapper.chgPhone(userid, phone);
+		return 1;
+	}
+
+	@Override
+	public String jusoDel(HttpServletRequest request) {
+		String id=request.getParameter("id");
+		mapper.jusoDel(id);
+		return "redirect:/product/jusoList";
+	}
+
+	@Override
+	public String jusoUpdate(HttpServletRequest request, Model model) {
+		String id=request.getParameter("id");
+		model.addAttribute("bdto",mapper.jusoUpdate(id));
+		return "/product/jusoUpdate";
+	}
+
+	@Override
+	public String jusoUpdateOk(BaesongDTO bdto, HttpSession session) {
+		String userid=session.getAttribute("userid").toString();
+		
+		if(bdto.getGibon()==1) {
+			mapper.gibonInit(userid);
+		}
+		mapper.jusoUpdateOk(bdto);
+		return "redirect:/product/jusoList";
+	}
+	
+
 	
 	
 }

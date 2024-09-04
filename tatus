@@ -1,0 +1,303 @@
+[33mcommit 5ee68aaf61d61467a939351c71f74f632aab6bfd[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m
+Author: geoson <balsohn@naver.com>
+Date:   Fri Aug 30 17:45:41 2024 +0900
+
+    asdf
+
+[33mcommit 96ece02e1a2822c5b03ac9fa3c95b72078200b6f[m
+Author: geoson <balsohn@naver.com>
+Date:   Fri Aug 30 17:36:15 2024 +0900
+
+    cart
+
+[33mcommit ef938a2f6837d65ee248661c7de460dfa017347c[m
+Author: geoson <balsohn@naver.com>
+Date:   Fri Aug 30 17:14:17 2024 +0900
+
+    cart
+
+[33mcommit 8c27975f98f30c484c232ba15a6f4807ff02152c[m
+Author: geoson <balsohn@naver.com>
+Date:   Fri Aug 30 14:25:58 2024 +0900
+
+    asdf
+
+[33mcommit 7e7d1b144ff771179fc818109f5c1f22196d7474[m
+Merge: 419f496 df21e15
+Author: geoson <balsohn@naver.com>
+Date:   Thu Aug 29 17:49:55 2024 +0900
+
+    asdf
+
+[33mcommit df21e15d5788323f965abe2ecaf9b5113544ab0e[m
+Author: geoson <balsohn@naver.com>
+Date:   Thu Aug 29 17:48:29 2024 +0900
+
+    cartview
+
+[33mcommit 419f496d29f635a323d0cd7c7ba12a6969e00f73[m
+Author: geoson <balsohn@naver.com>
+Date:   Thu Aug 29 14:22:27 2024 +0900
+
+    jiho
+
+[33mcommit 303e07eb64d0638e2fd31c06b2e795d8d56f6958[m
+Merge: 5936b91 43423fc
+Author: geoson <balsohn@naver.com>
+Date:   Thu Aug 29 14:04:45 2024 +0900
+
+    Merge remote-tracking branch 'origin/main' into jiho
+
+[33mcommit 0da3e8bf44a53e0a7ec55bd5e3bf2aab2a9787d1[m
+Author: geoson <balsohn@naver.com>
+Date:   Thu Aug 29 14:02:24 2024 +0900
+
+    asf
+
+[33mcommit 5936b912a490d5991feb384fd8c98cfaf41d33be[m
+Author: geoson <balsohn@naver.com>
+Date:   Thu Aug 29 12:42:14 2024 +0900
+
+    jiho
+
+[33mcommit f21e355f46e0b702ac9057b52b047f04197b07d5[m
+Author: geoson <balsohn@naver.com>
+Date:   Wed Aug 28 16:55:28 2024 +0900
+
+    cartview
+
+[33mcommit 43423fc7ddc00e55ac18aa9337ff37a1e5641eae[m
+Merge: 001151f 207039d
+Author: geoson <86379869+balsohn@users.noreply.github.com>
+Date:   Wed Aug 28 15:44:23 2024 +0900
+
+    Merge pull request #1 from balsohn/jiho
+    
+    Jiho
+
+[33mcommit 43c52fb4e9e8d78392bea576f18de665e7d10ceb[m
+Merge: 207039d 2d2b118
+Author: geoson <balsohn@naver.com>
+Date:   Wed Aug 28 15:42:46 2024 +0900
+
+    Merge branch 'sub' of https://github.com/balsohn/practice-shop into sub
+
+[33mcommit 207039d684ed5c67f59b24ca3efd179fe95ffd4a[m
+Author: geoson <balsohn@naver.com>
+Date:   Wed Aug 28 15:35:21 2024 +0900
+
+    loginOk
+
+[33mcommit 79c52e549c98198d6974c8b4edba6880882c0bb7[m
+Author: geoson <balsohn@naver.com>
+Date:   Wed Aug 28 15:32:57 2024 +0900
+
+    loginOk
+
+[33mcommit 6f7ddab92d8556a724136da188e4071674200431[m
+Author: geoson <balsohn@naver.com>
+Date:   Wed Aug 28 14:36:31 2024 +0900
+
+    cart
+
+[33mcommit 90b79f91614afc2bb97684ee1ef19a6ad94a8600[m
+Author: geoson <balsohn@naver.com>
+Date:   Wed Aug 28 14:19:58 2024 +0900
+
+    cart
+
+[33mcommit 2d2b11895fe5d16aef8ea37884b88357406f5ddb[m
+Author: geoson <balsohn@naver.com>
+Date:   Wed Aug 28 12:34:08 2024 +0900
+
+    asdf
+
+[33mcommit 89563fa91e37752ee3037e9690d75507b7497575[m
+Author: geoson <balsohn@naver.com>
+Date:   Wed Aug 28 12:28:26 2024 +0900
+
+    jiho
+
+[33mcommit 319f8aa3a163e0a1eed42347028f37032cb47a26[m
+Author: geoson <balsohn@naver.com>
+Date:   Wed Aug 28 12:06:13 2024 +0900
+
+    sub
+
+[33mcommit 5663dc88d516b4a6634cdac4bb762bcccdae0b7a[m
+Author: geoson <balsohn@naver.com>
+Date:   Wed Aug 28 11:34:06 2024 +0900
+
+    asdf
+
+[33mcommit e217234add68cf88dbbc2ddde303f3c5099f50d1[m
+Author: geoson <balsohn@naver.com>
+Date:   Wed Aug 28 11:14:22 2024 +0900
+
+    asdf
+
+[33mcommit a909e1417ca1732f788c3646944368edb326adb0[m
+Author: geoson <balsohn@naver.com>
+Date:   Wed Aug 28 10:59:31 2024 +0900
+
+    cookie
+
+[33mcommit 49260f92800ec7ec5ea806c1f813bdc41bb75916[m
+Author: geoson <balsohn@naver.com>
+Date:   Wed Aug 28 10:48:02 2024 +0900
+
+    addCart
+
+[33mcommit 10ea7338835fa3355e65a2ae3cbd09d530e2a29b[m
+Author: geoson <balsohn@naver.com>
+Date:   Tue Aug 27 17:49:28 2024 +0900
+
+    0827
+
+[33mcommit bd2d9e26b1ce5842a7de49bdee94c20e0524d1df[m
+Merge: 64260fe 5e00682
+Author: geoson <balsohn@naver.com>
+Date:   Tue Aug 27 17:43:42 2024 +0900
+
+    Merge branch 'sub' of https://github.com/balsohn/practice-shop into sub
+
+[33mcommit 64260fee28892b17ba6e8bdaea8aeb2a0b398972[m
+Author: geoson <balsohn@naver.com>
+Date:   Tue Aug 27 17:42:55 2024 +0900
+
+    0827
+
+[33mcommit f80bb21654a35403776ad12b404cc5401fd236a6[m
+Author: geoson <balsohn@naver.com>
+Date:   Tue Aug 27 17:41:22 2024 +0900
+
+    0827
+
+[33mcommit 79c104ede0bb15edc5811f1a3fd37cddd576239d[m
+Author: geoson <balsohn@naver.com>
+Date:   Tue Aug 27 15:12:30 2024 +0900
+
+    asdf
+
+[33mcommit ee6427c72dc6bf2b964b4d4d7db3497bb3bc3807[m
+Author: geoson <balsohn@naver.com>
+Date:   Tue Aug 27 15:28:41 2024 +0900
+
+    asdf
+
+[33mcommit 5e006829668136668ceb986e61993776a26af558[m
+Author: geoson <balsohn@naver.com>
+Date:   Tue Aug 27 15:12:30 2024 +0900
+
+    asdf
+
+[33mcommit a2fbd3e8a58cc3493d25b3e3e7e76a6ee8e904ed[m
+Merge: ed3288d 572d739
+Author: geoson <balsohn@naver.com>
+Date:   Tue Aug 27 14:55:24 2024 +0900
+
+    Merge branch 'sub' of https://github.com/balsohn/practice-shop into sub
+
+[33mcommit ed3288de004a6c95627219c9bff223b042bac25e[m
+Author: geoson <balsohn@naver.com>
+Date:   Tue Aug 27 14:53:26 2024 +0900
+
+    asfd
+
+[33mcommit be8b48d0def20f73e9fa9a520c80e7ad480e52d2[m
+Author: geoson <balsohn@naver.com>
+Date:   Tue Aug 27 09:48:56 2024 +0900
+
+    adf
+
+[33mcommit b8da39ed62c15409f7712e28aa268cad722e5b49[m
+Author: geoson <balsohn@naver.com>
+Date:   Mon Aug 26 17:29:46 2024 +0900
+
+    jiho
+
+[33mcommit 572d739c747c6ab53bc6e2d6487402d23b1c50b5[m
+Author: geoson <balsohn@naver.com>
+Date:   Mon Aug 26 17:29:46 2024 +0900
+
+    jiho
+
+[33mcommit 001151fde91d1dcedbd0a25cec008b8f87e511f1[m
+Merge: 033903e 69cb779
+Author: geoson <balsohn@naver.com>
+Date:   Mon Aug 26 17:11:28 2024 +0900
+
+    Merge branch 'jiho'
+
+[33mcommit 69cb77973b6b6c69ed974d4130fa5248ccbdfe39[m
+Author: geoson <balsohn@naver.com>
+Date:   Mon Aug 26 17:08:49 2024 +0900
+
+    asdf
+
+[33mcommit 7fedc68d16d6dc65c1e022ef5a7b1cb2a0b45ec9[m
+Author: geoson <balsohn@naver.com>
+Date:   Mon Aug 26 16:50:49 2024 +0900
+
+    shop
+
+[33mcommit 0714699a9aef1f829e41c0bcecc92a499886c1a0[m
+Author: geoson <balsohn@naver.com>
+Date:   Mon Aug 26 15:16:49 2024 +0900
+
+    asDF
+
+[33mcommit 705538a76f3e663df9530b0b3bfc868efd7b892f[m
+Merge: 133285a e1be55b
+Author: geoson <balsohn@naver.com>
+Date:   Mon Aug 26 14:39:27 2024 +0900
+
+    jiho
+
+[33mcommit 133285a36d572682320ffecd0d99d38c115c3d09[m
+Author: geoson <balsohn@naver.com>
+Date:   Mon Aug 26 14:37:19 2024 +0900
+
+    jiho
+
+[33mcommit ee1bdc1e7fc281d7bf6ae0525d1891872982752b[m
+Author: geoson <balsohn@naver.com>
+Date:   Mon Aug 26 14:28:31 2024 +0900
+
+    jiho
+
+[33mcommit e1be55b48c1f3060a630cf69f881f31612bb2579[m
+Author: geoson <balsohn@naver.com>
+Date:   Mon Aug 26 12:59:08 2024 +0900
+
+    asdf
+
+[33mcommit 077829302cdc17ce3e60452d326c62939634d992[m
+Author: geoson <balsohn@naver.com>
+Date:   Mon Aug 26 12:55:34 2024 +0900
+
+    sub
+
+[33mcommit 2690b903622928ae66da619aec9d5a83dd662e8f[m
+Author: geoson <balsohn@naver.com>
+Date:   Mon Aug 26 12:41:07 2024 +0900
+
+    jiho
+
+[33mcommit 3be84c753923ac63955bce46edb290f06f9420b9[m
+Author: geoson <balsohn@naver.com>
+Date:   Mon Aug 26 12:03:39 2024 +0900
+
+    productList
+
+[33mcommit a3a4ef4df5ad6da731ac1f17b39c6baf80a2471e[m[33m ([m[1;31morigin/master[m[33m, [m[1;32mmaster[m[33m)[m
+Author: geoson <balsohn@naver.com>
+Date:   Mon Aug 26 11:46:56 2024 +0900
+
+    shop
+
+[33mcommit 033903ee619ebad805c023bcbe7f3cde4e22ee2c[m
+Author: geoson <86379869+balsohn@users.noreply.github.com>
+Date:   Mon Aug 26 10:41:00 2024 +0900
+
+    Initial commit

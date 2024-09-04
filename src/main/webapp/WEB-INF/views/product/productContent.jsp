@@ -78,6 +78,7 @@
 		}
 		xhr.open("get","jjimChk?pcode="+pcode);
 		xhr.send();
+		
 
 	})
 
@@ -101,19 +102,22 @@
 	    chk.send();
 	}
 	
+	
 	function addCart() {
 		var pcode='${pdto.pcode}';
 		var su=document.getElementById("su").value;
 		
 		var chk=new XMLHttpRequest();
 		chk.onload=function() {
-			if(chk.responseText=="0") {
+			if(chk.responseText=="-1") {
+				alert("오류");
+			} else {
 				document.getElementById("cartview").style.visibility="visible";
 				setTimeout(function(){
 					document.getElementById("cartview").style.visibility="hidden";
 				},3000)
-			} else {
-				alert("오류");
+				
+				document.getElementById("cartNum").innerText=chk.responseText;
 			}
 		}
 		chk.open("get","addCart?pcode="+pcode+"&su="+su);
@@ -125,6 +129,7 @@
 <body>
 	<main>
 		<form method="post" action="gumae">
+		<input type="hidden" name="pcode" value="${pdto.pcode}">
 		<section id="first">
 			<div id="left"> 
 				<img src="../resources/pageimg/${pdto.pimg}">

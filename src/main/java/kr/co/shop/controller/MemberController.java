@@ -22,7 +22,6 @@ public class MemberController {
 	
 	@RequestMapping("/member/member")
 	public String member(HttpSession session) {
-		
 		return service.member(session);
 	}
 	
@@ -47,5 +46,25 @@ public class MemberController {
 	public String cartDel(HttpServletRequest request, HttpSession session,
 			HttpServletResponse response) {
 		return service.cartDel(request, session, response);
+	}
+	
+	@RequestMapping("/member/chgSu")
+	public @ResponseBody int[] chgSu(HttpServletRequest request, HttpSession session, HttpServletResponse response) {
+		return service.chgSu(request,session,response);
+	}
+	
+	@RequestMapping("/member/jjimList")
+	public String jjimList(HttpSession session,Model model) {
+		return service.jjimList(session,model);
+	}
+	
+	@RequestMapping("/member/addCart")
+	public @ResponseBody String addCart(HttpServletRequest request, HttpSession session) {
+		return service.addCart(request,session);
+	}
+	
+	@RequestMapping("/member/jjimDel")
+	public String jjimDel(HttpServletRequest request, HttpSession session) {
+		return service.jjimDel(request,session);
 	}
 }
