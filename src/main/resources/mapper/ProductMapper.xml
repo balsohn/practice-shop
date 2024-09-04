@@ -78,4 +78,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		select juk from member
 		where userid=#{userid}
 	</select>
+	<update id="chgPhone">
+		update member set phone=#{phone} where userid=#{userid}
+	</update>
+	<delete id='jusoDel'>
+		delete from baesong where id=#{id}
+	</delete>
+	<select id="jusoUpdate" resultType="kr.co.shop.dto.BaesongDTO">
+		select * from baesong where id=#{id}
+	</select>
+	<update id="jusoUpdateOk">
+		update baesong set name=#{name}, zip=#{zip}, juso=#{juso}, jusoEtc=#{jusoEtc},
+		phone=#{phone}, req=#{req}, gibon=#{gibon} where id=#{id}
+	</update>
 </mapper>

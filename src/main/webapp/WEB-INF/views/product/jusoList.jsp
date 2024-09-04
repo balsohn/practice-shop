@@ -69,7 +69,11 @@
 		<div class="bphone">${bdto.phone }</div>
 		<div style="display:flex; justify-content: space-between;">
 			<div class="breq">${bdto.breq }</div>
-			<div><input type="button" value="선택" onclick="transJuso(${sts.index})"></div>
+			<div>
+				<input type="button" value="수정" onclick="location='jusoUpdate?id=${bdto.id}'">
+				<input type="button" value="삭제" onclick="location='jusoDel?id=${bdto.id}'">
+				<input type="button" value="선택" onclick="transJuso(${sts.index})">
+			</div>
 		</div>
 	</div>
 	</c:forEach>

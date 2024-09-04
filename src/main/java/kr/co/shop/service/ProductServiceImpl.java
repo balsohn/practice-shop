@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.util.WebUtils;
 
 import jakarta.servlet.http.Cookie;
@@ -410,6 +411,41 @@ public class ProductServiceImpl implements ProductService {
 			return "/product/jusoList";
 		}
 	}
+
+	@Override
+	public int chgPhone(HttpServletRequest request,HttpSession session) {
+		String userid=session.getAttribute("userid").toString();
+		String phone=request.getParameter("phone");
+		mapper.chgPhone(userid, phone);
+		return 1;
+	}
+
+	@Override
+	public String jusoDel(HttpServletRequest request) {
+		String id=request.getParameter("id");
+		mapper.jusoDel(id);
+		return "redirect:/product/jusoList";
+	}
+
+	@Override
+	public String jusoUpdate(HttpServletRequest request, Model model) {
+		String id=request.getParameter("id");
+		model.addAttribute("bdto",mapper.jusoUpdate(id));
+		return "/product/jusoUpdate";
+	}
+
+	@Override
+	public String jusoUpdateOk(BaesongDTO bdto, HttpSession session) {
+		String userid=session.getAttribute("userid").toString();
+		
+		if(bdto.getGibon()==1) {
+			mapper.gibonInit(userid);
+		}
+		mapper.jusoUpdateOk(bdto);
+		return "redirect:/product/jusoList";
+	}
+	
+
 	
 	
 }

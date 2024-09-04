@@ -19,4 +19,8 @@ public interface ProductService {
 	public String gumae(HttpSession session, HttpServletRequest request,Model model,HttpServletResponse response);
 	public String jusoWriteOk(BaesongDTO bdto, Model model,HttpSession session);
 	public String jusoList(HttpSession session, Model model);
+	public int chgPhone(HttpServletRequest request, HttpSession session);
+	public String jusoDel(HttpServletRequest request);
+	public String jusoUpdate(HttpServletRequest request, Model model);
+	public String jusoUpdateOk(BaesongDTO bdto, HttpSession session);
 }

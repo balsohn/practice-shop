@@ -10,6 +10,7 @@ public class SitemeshConfig extends ConfigurableSiteMeshFilter{
 		builder.addDecoratorPath("*", "/default.jsp");
 		builder.addExcludedPath("/product/jusoWrite");
 		builder.addExcludedPath("/product/jusoList");
+		builder.addExcludedPath("/product/jusoUpdate");
         
        
 	}
