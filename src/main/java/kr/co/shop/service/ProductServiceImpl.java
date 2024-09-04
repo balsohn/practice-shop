@@ -114,27 +114,27 @@ public class ProductServiceImpl implements ProductService {
 		ProductDTO pdto=mapper.content(pcode);
 		
 			
-			int halinPrice=(int)(pdto.getPrice()-(pdto.getPrice()*(pdto.getHalin()/100.0)));
-			int jukPrice=(int)(pdto.getPrice()*(pdto.getJuk()/100.0));
-			
-			LocalDate today=LocalDate.now();
-			LocalDate xday=today.plusDays(pdto.getBaeday());
-			String yoil=MyUtils.getYoil(xday);
-			
-			String baeEx=null;
-			if(pdto.getBaeday()==1) {
-				baeEx="내일("+yoil+") 도착예정";
-			} else if(pdto.getBaeday()==2) {
-				baeEx="모레("+yoil+") 도착예정";
-			} else {
-				int m=xday.getMonthValue();
-				int d=xday.getDayOfMonth();
-				baeEx=m+"/"+d+"("+yoil+") 도착예정";
-			}
-			
-			pdto.setHalinPrice(halinPrice);
-			pdto.setJukPrice(jukPrice);
-			pdto.setBaeEx(baeEx);
+		int halinPrice=(int)(pdto.getPrice()-(pdto.getPrice()*(pdto.getHalin()/100.0)));
+		int jukPrice=(int)(pdto.getPrice()*(pdto.getJuk()/100.0));
+		
+		LocalDate today=LocalDate.now();
+		LocalDate xday=today.plusDays(pdto.getBaeday());
+		String yoil=MyUtils.getYoil(xday);
+		
+		String baeEx=null;
+		if(pdto.getBaeday()==1) {
+			baeEx="내일("+yoil+") 도착예정";
+		} else if(pdto.getBaeday()==2) {
+			baeEx="모레("+yoil+") 도착예정";
+		} else {
+			int m=xday.getMonthValue();
+			int d=xday.getDayOfMonth();
+			baeEx=m+"/"+d+"("+yoil+") 도착예정";
+		}
+		
+		pdto.setHalinPrice(halinPrice);
+		pdto.setJukPrice(jukPrice);
+		pdto.setBaeEx(baeEx);
 		
 		model.addAttribute("pdto",pdto);
 		
@@ -298,12 +298,36 @@ public class ProductServiceImpl implements ProductService {
 				ProductDTO pdto=mapper.content(pcodes[i]);
 				pdto.setSu(sues[i]);
 				plist.add(pdto);
+				int halinPrice=(int)(pdto.getPrice()-(pdto.getPrice()*(pdto.getHalin()/100.0)));
+				int jukPrice=(int)(pdto.getPrice()*(pdto.getJuk()/100.0));
+				
+				LocalDate today=LocalDate.now();
+				LocalDate xday=today.plusDays(pdto.getBaeday());
+				String yoil=MyUtils.getYoil(xday);
+				
+				String baeEx=null;
+				if(pdto.getBaeday()==1) {
+					baeEx="내일("+yoil+") 도착예정";
+				} else if(pdto.getBaeday()==2) {
+					baeEx="모레("+yoil+") 도착예정";
+				} else {
+					int m=xday.getMonthValue();
+					int d=xday.getDayOfMonth();
+					baeEx=m+"/"+d+"("+yoil+") 도착예정";
+				}
+				
+				pdto.setHalinPrice(halinPrice);
+				pdto.setJukPrice(jukPrice);
+				pdto.setBaeEx(baeEx);
 			}
 			model.addAttribute("plist",plist);
 			
 			int halinPrice=0;
 			int baePrice=0;
 			int jukPrice=0;
+			
+			
+			
 			
 			for(int i=0;i<plist.size();i++) {
 				ProductDTO pdto=plist.get(i);
@@ -321,7 +345,7 @@ public class ProductServiceImpl implements ProductService {
 			model.addAttribute("baePrice",baePrice);
 			model.addAttribute("jukPrice",jukPrice);			
 			
-			
+			model.addAttribute("juk", mapper.getJuk(userid));
 			
 			return "/product/gumae";
 		}
@@ -332,6 +356,10 @@ public class ProductServiceImpl implements ProductService {
 		
 		String userid=session.getAttribute("userid").toString();
 		bdto.setUserid(userid);
+		
+		if(bdto.getGibon()==1) {
+			mapper.gibonInit(userid);
+		}
 		mapper.jusoWriteOk(bdto);
 		
 		if(bdto.getTt().equals("1")) {

@@ -66,6 +66,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		values (#{userid},#{name},#{zip},#{juso},#{jusoEtc},#{phone},#{gibon},#{req})
 	</insert>
 	<select id="jusoList" resultType="kr.co.shop.dto.BaesongDTO">
-		select * from baesong where userid=#{userid}
+		select * from baesong 
+		where userid=#{userid}
+		order by gibon desc
+	</select>
+	<update id="gibonInit">
+		update baesong set gibon=0
+		where userid=#{userid}
+	</update>
+	<select id="getJuk" resultType="int">
+		select juk from member
+		where userid=#{userid}
 	</select>
 </mapper>

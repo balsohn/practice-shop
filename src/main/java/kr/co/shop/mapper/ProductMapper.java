@@ -28,4 +28,6 @@ public interface ProductMapper {
 	public BaesongDTO getBaesong(String userid);
 	public void jusoWriteOk(BaesongDTO bdto);
 	public ArrayList<BaesongDTO> jusoList(String userid);
+	public void gibonInit(String userid);
+	public int getJuk(String userid);
 }
