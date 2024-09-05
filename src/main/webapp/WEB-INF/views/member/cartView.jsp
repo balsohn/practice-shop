@@ -167,6 +167,7 @@ label {margin-right: 30px;}
 				var su=ui.value;
 				
 				chgSu(su,index);
+
 	            
 			}
 		});
