@@ -171,7 +171,7 @@
 							<div><input type="button" value="장바구니로 이동" onclick="location='../member/cartView'"></div>
 						</div>
 					</div>
-					<div><button onclick="location:''" id="btn2">구매하기</button></div>
+					<div><button onclick="location:'gumae?pcode=${pdto.pcode}" id="btn2">구매하기</button></div>
 				</div>
 			</div>
 		</section>

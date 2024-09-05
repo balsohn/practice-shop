@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import kr.co.shop.dto.BaesongDTO;
+import kr.co.shop.dto.GumaeDTO;
 import kr.co.shop.dto.ProductDTO;
 
 public interface ProductService {
@@ -23,4 +24,6 @@ public interface ProductService {
 	public String jusoDel(HttpServletRequest request);
 	public String jusoUpdate(HttpServletRequest request, Model model);
 	public String jusoUpdateOk(BaesongDTO bdto, HttpSession session);
+	public String gumaeOk(GumaeDTO gdto,HttpSession session);
+	public String gumaeView(HttpServletRequest request);
 }

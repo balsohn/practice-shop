@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import kr.co.shop.dto.BaesongDTO;
+import kr.co.shop.dto.GumaeDTO;
 import kr.co.shop.dto.ProductDTO;
 import kr.co.shop.service.ProductService;
 
@@ -88,6 +89,16 @@ public class ProductController {
 	@RequestMapping("/product/jusoUpdateOk")
 	public String jusoUpdateOk(BaesongDTO bdto, HttpSession session) {
 		return service.jusoUpdateOk(bdto,session);
+	}
+	
+	@RequestMapping("/product/gumaeOk")
+	public String gumaeOk(GumaeDTO gdto,HttpSession session) {
+		return service.gumaeOk(gdto,session);
+	}
+	
+	@RequestMapping("/product/gumaeView")
+	public String gumaeView(HttpServletRequest request) {
+		return service.gumaeView(request);
 	}
 
 }
