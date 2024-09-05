@@ -97,8 +97,8 @@ public class ProductController {
 	}
 	
 	@RequestMapping("/product/gumaeView")
-	public String gumaeView(HttpServletRequest request) {
-		return service.gumaeView(request);
+	public String gumaeView(HttpServletRequest request, Model model) {
+		return service.gumaeView(request,model);
 	}
 
 }

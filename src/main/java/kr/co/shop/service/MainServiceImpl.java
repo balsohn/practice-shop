@@ -49,8 +49,7 @@ public class MainServiceImpl implements MainService {
 	}
 
 	@Override
-	public String cartNum(HttpServletRequest request, HttpSession session) {
-		
+	public String cartNum(HttpServletRequest request, HttpSession session) {		
 		if(session.getAttribute("userid")==null) {
 			Cookie cookie=WebUtils.getCookie(request, "pcode");
 			
@@ -59,14 +58,11 @@ public class MainServiceImpl implements MainService {
 				return pcodes.length+"";				
 			} else {
 				return "0";
-			}
-			
+			}			
 		} else {
 			String userid=session.getAttribute("userid").toString();
 			return mapper.cartNum(userid);
 		}
 	}
 	
-	
-
 }

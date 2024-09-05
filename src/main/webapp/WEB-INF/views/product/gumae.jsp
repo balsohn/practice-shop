@@ -101,7 +101,7 @@
      width:700px;
      margin:auto;
      margin-top :30px;
-    font-family: 'GmarketSansMedium';
+     font-family: 'GmarketSansMedium';
     
    }
    section {margin:20px auto; width: 700px;}
@@ -176,9 +176,9 @@
 		    <h2 style="border-bottom:3px solid purple; margin-bottom: 20px;"> 주문 / 결제 </h2>
 			<section id="member"> <!-- 구매자정보 -->
 				<table width="700" align="center">
-					<h3 align="left"> 구매자 정보 </h3>
+					<caption><h3 align="left"> 구매자 정보 </h3></caption>
 					<tr>
-						<td>이 름 </td>
+						<td  style="width:25%;">이 름 </td>
 						<td>${mdto.name }</td>
 					</tr>
 					<tr>
@@ -208,7 +208,7 @@
 					</h3>
 					<tr>
 						<td style="width:25%;">이름 </td>
-						<td> <span id="bname"> ${bdto.name} </span></td>
+						<td> <span id="bname"> ${bdto.name } </span></td>
 					</tr>
 					<tr>
 						<td>배송주소</td>
@@ -220,7 +220,7 @@
 					</tr>
 					<tr>
 						<td> 배송요청사항 </td>
-						<td><span id="breq"> ${bdto.breq}</span></td>
+						<td><span id="breq"> ${bdto.breq }</span></td>
 					</tr>
 				</table>
 			</section>
@@ -231,17 +231,17 @@
 					<input type="hidden" name="pcodes" value="${pdto.pcode }" class="pcode">
 					<input type="hidden" name="sues" value="${pdto.su }" class="su">
 					<tr>
-						<td colspan="2"style="background:#ccc;">${pdto.baeEx}</td>
+						<td colspan="2"style="background:#ccc;">${pdto.baeEx }</td>
 					</tr>
 					<tr>
 						<td width="500">${pdto.title }</td>
 						<td>
 							수량 ${pdto.su}개 /
-							<c:if test="${pdto.baeprice==0}">
+							<c:if test="${pdto.baeprice==0 }">
 							무료배송
 							</c:if>  
-							<c:if test="${pdto.baeprice!=0}">
-							<fmt:formatNumber value="${pdto.baeprice}" type="number"/> 원
+							<c:if test="${pdto.baeprice!=0 }">
+							<fmt:formatNumber value="${pdto.baeprice }" type="number"/> 원
 							</c:if>
 						</td>
 					</tr>
@@ -252,17 +252,17 @@
 				<table width="700">
 					<h3>결제 정보</h3>
 					<tr>
-						<td> 상품가격 </td>
+						<td style="width:25%;"> 상품가격 </td>
 						<td><fmt:formatNumber value="${halinPrice }" type="number"/> 원</td>
 					</tr>
 					<tr>
 						<td> 배송비 </td>
 						<td>
-						<c:if test="${baePrice==0}">
+						<c:if test="${baePrice==0 }">
 						무료배송
 						</c:if>  
-						<c:if test="${baePrice!=0}">
-						<fmt:formatNumber value="${baePrice}" type="number"/> 원
+						<c:if test="${baePrice!=0 }">
+						<fmt:formatNumber value="${baePrice }" type="number"/> 원
 						</c:if>
 						</td>
 					</tr>
@@ -277,11 +277,11 @@
 							<span id="point"><fmt:formatNumber value='${juk }' type='number'/></span> 포인트 
 						</td>
 					</tr>
-					<input type="hidden" name="chongPrice" value='${halinPrice+baePrice}'>
+					<input type="hidden" name="chongPrice" value='${halinPrice+baePrice }'>
 					<tr>	
 						<td> 총 결제 금액 </td>
 						<td> 
-							<span id="chong"><fmt:formatNumber value='${halinPrice+baePrice}' type='number'/></span> 원 
+							<span id="chong"><fmt:formatNumber value='${halinPrice+baePrice }' type='number'/></span> 원 
 						</td>
 					</tr>
 				</table>

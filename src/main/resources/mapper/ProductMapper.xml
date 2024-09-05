@@ -107,7 +107,32 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		,#{halbu},#{bank},#{lcard},#{tong},#{nbank},#{jumuncode},now())
 	</insert>
 	<update id="useJuk">
-		update member set juk=juk-#{useJuk} where userid=#{userid}
+		update member 
+		set juk=juk-#{useJuk} 
+		where userid=#{userid}
 	</update>
-
+	<delete id="cartDel">
+		delete from cart 
+		where userid=#{userid} and pcode=#{pcode}
+	</delete>
+	<update id="suUp">
+		update product 
+		set su=su-#{su}, pansu=pansu+#{su} 
+		where pcode=#{pcode}
+	</update>
+	<select id="gumaeView">
+		select * from gumae where jumuncode=#{jumuncode}
+	</select>
+	<select id="gumaeView2" resultType="hashmap">
+		select 
+		product.title, product.pimg, product.baeday,
+		product.price,product.halin,baesong.name,
+		baesong.phone, baesong.juso, baesong.req, 
+		gumae.useJuk, gumae.su, product.baeprice
+		from gumae inner join product 
+		on gumae.pcode=product.pcode 
+		inner join baesong 
+		on gumae.baeId=baesong.id
+		where gumae.jumuncode=#{jumuncode}
+	</select>
 </mapper>
