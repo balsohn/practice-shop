@@ -67,8 +67,7 @@ public class MemberServiceImpl implements MemberService {
 					HashMap product=mapper.getProduct(pcode);
 					product.put("cart_su", su);
 					product.put("days", "0");
-					pMapAll.add(product);
-					
+					pMapAll.add(product);					
 				}
 			}
 		} else {
@@ -108,9 +107,7 @@ public class MemberServiceImpl implements MemberService {
 				int halinprice=(int)( price-(price*halin/100.0) )*su;
 			    map.put("halinprice", halinprice);
 			    
-			    
-			    
-				// 3. 적립금
+			    // 3. 적립금
 				int juk=Integer.parseInt(map.get("juk").toString());
 				int jukprice=(int)(price*juk/100.0)*su;
 				map.put("jukprice", jukprice);
@@ -119,13 +116,12 @@ public class MemberServiceImpl implements MemberService {
 				if(days<2) {
 					// 2-1. 모든 상품의 구매금액을 누적
 				    halinpriceTot=halinpriceTot+halinprice;
-				 // 3-1 모든 상품의 적립금액을 누적
+				    // 3-1 모든 상품의 적립금액을 누적
 					jukpriceTot=jukpriceTot+jukprice;
 					// 4 모든 상품의 배송비를 누적
 					int baeprice=Integer.parseInt(map.get("baeprice").toString());
 					baepriceTot=baepriceTot+baeprice;
 				}
-				
 			}
 			// 뷰에 모든 상품의 구매금액,적립금,배송비를 전달
 			model.addAttribute("halinpriceTot",halinpriceTot);
@@ -179,8 +175,7 @@ public class MemberServiceImpl implements MemberService {
 					newCookie.setMaxAge(3600);
 					newCookie.setPath("/");
 					response.addCookie(newCookie);
-				}
-				
+				}				
 			}
 		}
 		else
@@ -193,7 +188,6 @@ public class MemberServiceImpl implements MemberService {
 			   mapper.cartDel(userid,pcodes[i]);
 			}
 		}
-
 		return "redirect:/member/cartView";
 	}
 
@@ -292,11 +286,6 @@ public class MemberServiceImpl implements MemberService {
 				mapper.jjimDel(userid, pcode);
 			}
 			return "redirect:/member/jjimList";
-		}
-		
-	}
-	
-	
-
-	
+		}		
+	}	
 }
