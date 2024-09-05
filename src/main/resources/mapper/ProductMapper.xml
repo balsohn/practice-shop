@@ -91,4 +91,23 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		update baesong set name=#{name}, zip=#{zip}, juso=#{juso}, jusoEtc=#{jusoEtc},
 		phone=#{phone}, req=#{req}, gibon=#{gibon} where id=#{id}
 	</update>
+	<select id="getBaeId" resultType="int">
+		select id from baesong
+		where userid=#{userid}
+		order by id desc limit 1	
+	</select>
+	<select id="getJumuncode" resultType="int">
+		select ifnull(max(right(jumuncode,3)),0)+1 
+		from gumae where jumuncode like concat(#{jumuncode},'%')
+	</select>
+	<insert id="gumaeOk">
+		insert into gumae
+		(userid,baeId,pcode,su,useJuk,chongPrice,sudan,card,halbu,bank,lcard,tong,nbank,jumuncode,writeday)
+		values (#{userid},#{baeId},#{pcode},#{su},#{useJuk},#{chongPrice},#{sudan},#{card}
+		,#{halbu},#{bank},#{lcard},#{tong},#{nbank},#{jumuncode},now())
+	</insert>
+	<update id="useJuk">
+		update member set juk=juk-#{useJuk} where userid=#{userid}
+	</update>
+
 </mapper>

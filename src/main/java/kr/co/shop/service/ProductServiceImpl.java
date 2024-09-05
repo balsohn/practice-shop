@@ -15,6 +15,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import kr.co.shop.dto.BaesongDTO;
+import kr.co.shop.dto.GumaeDTO;
 import kr.co.shop.dto.ProductDTO;
 import kr.co.shop.mapper.ProductMapper;
 import kr.co.shop.utils.MyUtils;
@@ -363,6 +364,7 @@ public class ProductServiceImpl implements ProductService {
 		}
 		mapper.jusoWriteOk(bdto);
 		
+		
 		if(bdto.getTt().equals("1")) {
 			//추가입력
 			return "redirect:/product/jusoList";
@@ -370,6 +372,7 @@ public class ProductServiceImpl implements ProductService {
 			model.addAttribute("bname",bdto.getName());
 			model.addAttribute("bjuso", bdto.getJuso());
 			model.addAttribute("bphone",bdto.getPhone());
+			model.addAttribute("baeId",mapper.getBaeId(userid));
 			String breq="";
 			switch(bdto.getReq()) {
 			case 0:breq="문 앞"; break;
@@ -443,6 +446,44 @@ public class ProductServiceImpl implements ProductService {
 		}
 		mapper.jusoUpdateOk(bdto);
 		return "redirect:/product/jusoList";
+	}
+
+	@Override
+	public String gumaeOk(GumaeDTO gdto,HttpSession session) {
+		String userid=session.getAttribute("userid").toString();
+		gdto.setUserid(userid);
+		LocalDate today=LocalDate.now();
+		String y=String.format("%02d", today.getYear()); 
+		String m=String.format("%02d", today.getMonthValue());
+		String d=String.format("%02d", today.getDayOfMonth());
+		
+		String jumuncode="j"+y+m+d;
+		jumuncode=jumuncode+String.format("%03d", mapper.getJumuncode(jumuncode));
+		gdto.setJumuncode(jumuncode);		
+		
+		if(gdto.getUseJuk()!=0) {
+			mapper.useJuk(userid,gdto.getUseJuk());
+		}
+	
+		String[] pcodes=gdto.getPcodes();
+		int[] sues=gdto.getSues();
+		
+		for(int i=0;i<pcodes.length;i++) {
+			gdto.setPcode(pcodes[i]);
+			gdto.setSu(sues[i]);
+			mapper.gumaeOk(gdto);
+		}
+		
+		return "redirect:/product/gumaeView?jumuncode="+jumuncode;
+	}
+
+	@Override
+	public String gumaeView(HttpServletRequest request) {
+		String jumuncode=request.getParameter("jumuncode");		
+		
+		
+		
+		return "/product/gumaeView";
 	}
 	
 

@@ -12,6 +12,8 @@ opener.document.getElementById("bphone").innerText="${bphone}";
 opener.document.getElementById("breq").innerText="${breq}";
 opener.document.getElementById("fbtn").setAttribute("onclick","juso_select()");
 opener.document.getElementById("fbtn").value="배송지 변경";
+opener.document.gform.baeId.value=${baeId};
+
 
 window.close();
 </script>
