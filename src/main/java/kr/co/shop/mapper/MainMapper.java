@@ -1,6 +1,7 @@
 package kr.co.shop.mapper;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -16,4 +17,5 @@ public interface MainMapper {
 	public ArrayList<JungDTO> getJung();
 	public ArrayList<SoDTO> getSo();
 	public String cartNum(String userid);
+	public ArrayList<HashMap> gumaeAll();
 }

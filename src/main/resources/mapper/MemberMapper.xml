@@ -43,4 +43,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<delete id="jjimDel">
 		delete from jjim where userid=#{userid} and pcode=#{pcode}
 	</delete>
+	<select id="jumunList" resultType="Hashmap">
+		select p.title, p.pimg, b.name, b.juso, g.chongPrice,
+		g.state, g.su, g.useJuk,g.sudan,g.writeday, p.price,g.id
+		from gumae g inner join product p on g.pcode=p.pcode
+		inner join baesong b on g.baeId=b.id
+		where g.userid=#{userid} order by g.id desc
+	</select>
+	<update id="chgState">
+		update gumae set state=#{state}
+		where id=#{id}
+	</update>
 </mapper>

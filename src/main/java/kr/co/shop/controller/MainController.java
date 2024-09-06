@@ -1,10 +1,12 @@
 package kr.co.shop.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -57,6 +59,12 @@ public class MainController {
 	@RequestMapping("/main/cartNum")
 	public @ResponseBody String cartNum(HttpServletRequest request, HttpSession session) {
 		return service.cartNum(request,session);
+	}
+	
+	@RequestMapping("/gumae/gumaeAll")
+	public String gumaeAll(Model model) {
+		
+		return service.gumaeAll(model);
 	}
 
 }

@@ -67,4 +67,14 @@ public class MemberController {
 	public String jjimDel(HttpServletRequest request, HttpSession session) {
 		return service.jjimDel(request,session);
 	}
+	
+	@RequestMapping("/member/jumunList")
+	public String jumunList(HttpSession session,Model model,HttpServletResponse response) {
+		return service.jumunList(session ,model, response);
+	}
+	
+	@RequestMapping("/member/chgState")
+	public String chgState(HttpServletRequest request) {
+		return service.chgState(request);
+	}
 }
