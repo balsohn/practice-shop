@@ -101,7 +101,7 @@
      width:700px;
      margin:auto;
      margin-top :30px;
-    font-family: 'GmarketSansMedium';
+     font-family: 'GmarketSansMedium';
     
    }
    section {margin:20px auto; width: 700px;}
@@ -172,202 +172,211 @@
 </head>
 <body>	<!-- product/gumae.jsp -->
 	<main>
-	    <h2 style="border-bottom:3px solid purple; margin-bottom: 20px;"> 주문 / 결제 </h2>
-		<section id="member"> <!-- 구매자정보 -->
-			<table width="700" align="center">
-				<h3 align="left"> 구매자 정보 </h3>
-				<tr>
-					<td>이 름 </td>
-					<td>${mdto.name }</td>
-				</tr>
-				<tr>
-					<td>이메일</td>
-					<td>${mdto.email }</td>
-				</tr>
-				<tr>
-					<td>전화번호 </td>
-					<td>
-						<input type="text" name="phone" id="phone" value="${mdto.phone }">
-						<input type="button" onclick="chgPhone()" value="수정">
-					</td>
-				</tr>
-			</table>
-		</section>
-		<section id="baesong">
-			<table width="700" align="center">
-				<h3 align="left">
-					배송지 정보
-					<c:if test="${bdto!=null }">
-					<input type="button" value="배송지 변경" onclick="juso_select()">
-					</c:if>
-					<c:if test="${bdto==null }">
-					<input type="button" value="배송지 등록" id="fbtn" onclick="juso_search()">
-					</c:if>
-				</h3>
-				<tr>
-					<td>이름 </td>
-					<td> <span id="bname"> ${bdto.name} </span></td>
-				</tr>
-				<tr>
-					<td>배송주소</td>
-					<td> <span id="bjuso"> ${bdto.juso } ${bdto.jusoEtc } </span></td>
-				</tr>
-				<tr>
-					<td>연락처</td>
-					<td><span id="bphone">${bdto.phone }</span></td>
-				</tr>
-				<tr>
-					<td> 배송요청사항 </td>
-					<td><span id="breq"> ${bdto.breq}</span></td>
-				</tr>
-			</table>
-		</section>
-		<section id="product">
-			<table width="700" align="center">
-				<h3>구매 상품 정보</h3>
-				<c:forEach items="${plist }" var="pdto">
-				<tr>
-					<td colspan="2"style="background:#ccc;">${pdto.baeEx}</td>
-				</tr>
-				<tr>
-					<td width="500">${pdto.title }</td>
-					<td>
-						수량 ${pdto.su}개 /
-						<c:if test="${pdto.baeprice==0}">
+		<form method="post" action="gumaeOk" name="gform">
+		    <h2 style="border-bottom:3px solid purple; margin-bottom: 20px;"> 주문 / 결제 </h2>
+			<section id="member"> <!-- 구매자정보 -->
+				<table width="700" align="center">
+					<caption><h3 align="left"> 구매자 정보 </h3></caption>
+					<tr>
+						<td  style="width:25%;">이 름 </td>
+						<td>${mdto.name }</td>
+					</tr>
+					<tr>
+						<td>이메일</td>
+						<td>${mdto.email }</td>
+					</tr>
+					<tr>
+						<td>전화번호 </td>
+						<td>
+							<input type="text" name="phone" id="phone" value="${mdto.phone }">
+							<input type="button" onclick="chgPhone()" value="수정">
+						</td>
+					</tr>
+				</table>
+			</section>
+			<section id="baesong">
+				<input type="hidden" name="baeId" value="${bdto.id }">
+				<table width="700" align="center">
+					<h3 align="left">
+						배송지 정보
+						<c:if test="${bdto!=null }">
+						<input type="button" value="배송지 변경" onclick="juso_select()">
+						</c:if>
+						<c:if test="${bdto==null }">
+						<input type="button" value="배송지 등록" id="fbtn" onclick="juso_search()">
+						</c:if>
+					</h3>
+					<tr>
+						<td style="width:25%;">이름 </td>
+						<td> <span id="bname"> ${bdto.name } </span></td>
+					</tr>
+					<tr>
+						<td>배송주소</td>
+						<td> <span id="bjuso"> ${bdto.juso } ${bdto.jusoEtc } </span></td>
+					</tr>
+					<tr>
+						<td>연락처</td>
+						<td><span id="bphone">${bdto.phone }</span></td>
+					</tr>
+					<tr>
+						<td> 배송요청사항 </td>
+						<td><span id="breq"> ${bdto.breq }</span></td>
+					</tr>
+				</table>
+			</section>
+			<section id="product">
+				<table width="700" align="center">
+					<h3>구매 상품 정보</h3>
+					<c:forEach items="${plist }" var="pdto">
+					<input type="hidden" name="pcodes" value="${pdto.pcode }" class="pcode">
+					<input type="hidden" name="sues" value="${pdto.su }" class="su">
+					<tr>
+						<td colspan="2"style="background:#ccc;">${pdto.baeEx }</td>
+					</tr>
+					<tr>
+						<td width="500">${pdto.title }</td>
+						<td>
+							수량 ${pdto.su}개 /
+							<c:if test="${pdto.baeprice==0 }">
+							무료배송
+							</c:if>  
+							<c:if test="${pdto.baeprice!=0 }">
+							<fmt:formatNumber value="${pdto.baeprice }" type="number"/> 원
+							</c:if>
+						</td>
+					</tr>
+					</c:forEach>
+				</table>
+			</section>
+			<section id="price">
+				<table width="700">
+					<h3>결제 정보</h3>
+					<tr>
+						<td style="width:25%;"> 상품가격 </td>
+						<td><fmt:formatNumber value="${halinPrice }" type="number"/> 원</td>
+					</tr>
+					<tr>
+						<td> 배송비 </td>
+						<td>
+						<c:if test="${baePrice==0 }">
 						무료배송
 						</c:if>  
-						<c:if test="${pdto.baeprice!=0}">
-						<fmt:formatNumber value="${pdto.baeprice}" type="number"/> 원
+						<c:if test="${baePrice!=0 }">
+						<fmt:formatNumber value="${baePrice }" type="number"/> 원
 						</c:if>
-					</td>
-				</tr>
-				</c:forEach>
-			</table>
-		</section>
-		<section id="price">
-			<table width="700">
-				<h3>결제 정보</h3>
-				<tr>
-					<td> 상품가격 </td>
-					<td><fmt:formatNumber value="${halinPrice }" type="number"/> 원</td>
-				</tr>
-				<tr>
-					<td> 배송비 </td>
-					<td>
-					<c:if test="${baePrice==0}">
-					무료배송
-					</c:if>  
-					<c:if test="${baePrice!=0}">
-					<fmt:formatNumber value="${baePrice}" type="number"/> 원
-					</c:if>
-					</td>
-				</tr>
-				<tr>
-					<td>적립 예정 포인트</td>
-					<td> <fmt:formatNumber value="${jukPrice }" type="number" /> 포인트 </td>
-				</tr>
-				<tr>	
-					<td> 사용가능한 포인트 </td>
-					<td>
-						<input type="text" name="useJuk" value="0" onfocus="init(this)" onblur="jukCal(this)" oninput="numChk(this)" style="width:100px; height: 28px;"> / 
-						<span id="point"><fmt:formatNumber value='${juk }' type='number'/></span> 포인트 
-					</td>
-				</tr>
-				<tr>	
-					<td> 총 결제 금액 </td>
-					<td> 
-						<span id="chong"><fmt:formatNumber value='${halinPrice+baePrice}' type='number'/></span> 원 
-					</td>
-				</tr>
-			</table>
-		</section>
-		<section id="sudan">
-			<h3>결제수단</h3>
-			<div id="sudan-first">
-				<div> 
-					<label><input type="radio" name="sudan" class="sudan" onclick="viewSub(0)" checked> 신용 / 체크카드 </label>
-					<div class="sub">
-						<select name="card">
-							<option> 선택 </option>
-							<option> 신한카드 </option>
-							<option> 농협카드 </option>
-							<option> 우리카드 </option>
-							<option> 국민카드 </option>
-							<option> 하나카드 </option>
-						</select>
-						<select name="halbu">
-							<option> 일시불 </option>
-							<option> 2개월 </option>
-							<option> 3개월 </option>
-							<option> 6개월 </option>
-							<option> 12개월 </option>
-						</select>
-					</div>
-				</div>
-				<div> 
-					<label><input type="radio" name="sudan" class="sudan" onclick="viewSub(1)" > 쿠페이머니 </label>
-					<div class="sub">
-						0원
-					</div>
-				</div>
-			</div>
-			<div id="sudan-second">
-				<div><label>다른결제 수단 <button onclick="viewOther(this)">▼</button></label></div>
-					<div id="other">
+						</td>
+					</tr>
+					<tr>
+						<td>적립 예정 포인트</td>
+						<td> <fmt:formatNumber value="${jukPrice }" type="number" /> 포인트 </td>
+					</tr>
+					<tr>	
+						<td> 사용가능한 포인트 </td>
+						<td>
+							<input type="text" name="useJuk" value="0" onfocus="init(this)" onblur="jukCal(this)" oninput="numChk(this)" style="width:100px; height: 28px;"> / 
+							<span id="point"><fmt:formatNumber value='${juk }' type='number'/></span> 포인트 
+						</td>
+					</tr>
+					<input type="hidden" name="chongPrice" value='${halinPrice+baePrice }'>
+					<tr>	
+						<td> 총 결제 금액 </td>
+						<td> 
+							<span id="chong"><fmt:formatNumber value='${halinPrice+baePrice }' type='number'/></span> 원 
+						</td>
+					</tr>
+				</table>
+			</section>
+			<section id="sudan">
+				<h3>결제수단</h3>
+				<div id="sudan-first">
 					<div> 
-						<label><input type="radio" name="sudan" class="sudan" onclick="viewSub(2)" > 계좌이체 </label> 
+						<label><input type="radio" value="0" name="sudan" class="sudan" onclick="viewSub(0)" checked> 신용 / 체크카드 </label>
 						<div class="sub">
-							<select name="bank">
-								<option> 선택 </option>
-								<option> 신한은행 </option>
-								<option> 농협은행 </option>
-								<option> 우리은행 </option>
-								<option> 국민은행 </option>
-								<option> 하나은행 </option>
+							<select name="card">
+								<option value="0"> 선택 </option>
+								<option value="1"> 신한카드 </option>
+								<option value="2"> 농협카드 </option>
+								<option value="3"> 우리카드 </option>
+								<option value="4"> 국민카드 </option>
+								<option value="5"> 하나카드 </option>
+							</select>
+							<select name="halbu">
+								<option value="0"> 일시불 </option>
+								<option value="2"> 2개월 </option>
+								<option value="3"> 3개월 </option>
+								<option value="6"> 6개월 </option>
+								<option value="12"> 12개월 </option>
 							</select>
 						</div>
 					</div>
 					<div> 
-						<label><input type="radio" name="sudan" class="sudan" onclick="viewSub(3)" > 법인카드 </label>
+						<label><input type="radio" value="1" name="sudan" class="sudan" onclick="viewSub(1)" > 쿠페이머니 </label>
 						<div class="sub">
-							<select name="lcard">
-								<option> 선택 </option>
-								<option> 신한카드 </option>
-								<option> 농협카드 </option>
-								<option> 우리카드 </option>
-								<option> 국민카드 </option>
-								<option> 하나카드 </option>
-							</select>
-						</div> 
-					</div>
-					<div> 
-						<label><input type="radio" name="sudan" class="sudan" onclick="viewSub(4)" > 휴대폰 </label> 
-						<div class="sub">
-							<select name="tong">
-								<option> 선택 </option>
-								<option> SKT </option>
-								<option> KT </option>
-								<option> LG </option>
-								<option> 별정통신 </option>
-							</select>
-						</div> 
-					</div>
-					<div> 
-						<label><input type="radio" name="sudan" class="sudan" onclick="viewSub(5)" > 무통장입금 </label> 
-						<div class="sub">
-							<select name="nbank">
-								<option> 선택 </option>
-								<option> 신한은행 </option>
-								<option> 농협은행 </option>
-								<option> 우리은행 </option>
-								<option> 국민은행 </option>
-								<option> 하나은행 </option>
-							</select>
-						</div> 
+							0원
+						</div>
 					</div>
 				</div>
-			</div>
-		</section>
+				<div id="sudan-second">
+					<div><label>다른결제 수단 <button onclick="viewOther(this)">▼</button></label></div>
+						<div id="other">
+						<div> 
+							<label><input type="radio" value="2" name="sudan" class="sudan" onclick="viewSub(2)" > 계좌이체 </label> 
+							<div class="sub">
+								<select name="bank">
+									<option value="0"> 선택 </option>
+									<option value="1"> 신한은행 </option>
+									<option value="2"> 농협은행 </option>
+									<option value="3"> 우리은행 </option>
+									<option value="4"> 국민은행 </option>
+									<option value="5"> 하나은행 </option>
+								</select>
+							</div>
+						</div>
+						<div> 
+							<label><input type="radio" value="3" name="sudan" class="sudan" onclick="viewSub(3)" > 법인카드 </label>
+							<div class="sub">
+								<select name="lcard">
+									<option value="0"> 선택 </option>
+									<option value="1"> 신한카드 </option>
+									<option value="2"> 농협카드 </option>
+									<option value="3"> 우리카드 </option>
+									<option value="4"> 국민카드 </option>
+									<option value="5"> 하나카드 </option>
+								</select>
+							</div> 
+						</div>
+						<div> 
+							<label><input type="radio" value="4" name="sudan" class="sudan" onclick="viewSub(4)" > 휴대폰 </label> 
+							<div class="sub">
+								<select name="tong">
+									<option value="0"> 선택 </option>
+									<option value="1"> SKT </option>
+									<option value="2"> KT </option>
+									<option value="3"> LG </option>
+									<option value="4"> 별정통신 </option>
+								</select>
+							</div> 
+						</div>
+						<div> 
+							<label><input type="radio" value="5" name="sudan" class="sudan" onclick="viewSub(5)" > 무통장입금 </label> 
+							<div class="sub">
+								<select name="nbank">
+									<option value="0"> 선택 </option>
+									<option value="1"> 신한은행 </option>
+									<option value="2"> 농협은행 </option>
+									<option value="3"> 우리은행 </option>
+									<option value="4"> 국민은행 </option>
+									<option value="5"> 하나은행 </option>
+								</select>
+							</div> 
+						</div>
+					</div>
+				</div>
+			</section>
+			<section align="right">
+				<input type="submit" value="상품 구매" style="margin-right:10px;">
+			</section>
+		</form>
 	</main>
 </body>
 </html>

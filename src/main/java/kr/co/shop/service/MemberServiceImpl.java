@@ -35,7 +35,7 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public String memberOk(MemberDTO mdto) {
 		mapper.memberOk(mdto);
-		return "../login/login";
+		return "redirect:/login/login";
 	}
 
 	@Override
@@ -67,8 +67,7 @@ public class MemberServiceImpl implements MemberService {
 					HashMap product=mapper.getProduct(pcode);
 					product.put("cart_su", su);
 					product.put("days", "0");
-					pMapAll.add(product);
-					
+					pMapAll.add(product);					
 				}
 			}
 		} else {
@@ -108,9 +107,7 @@ public class MemberServiceImpl implements MemberService {
 				int halinprice=(int)( price-(price*halin/100.0) )*su;
 			    map.put("halinprice", halinprice);
 			    
-			    
-			    
-				// 3. 적립금
+			    // 3. 적립금
 				int juk=Integer.parseInt(map.get("juk").toString());
 				int jukprice=(int)(price*juk/100.0)*su;
 				map.put("jukprice", jukprice);
@@ -119,13 +116,12 @@ public class MemberServiceImpl implements MemberService {
 				if(days<2) {
 					// 2-1. 모든 상품의 구매금액을 누적
 				    halinpriceTot=halinpriceTot+halinprice;
-				 // 3-1 모든 상품의 적립금액을 누적
+				    // 3-1 모든 상품의 적립금액을 누적
 					jukpriceTot=jukpriceTot+jukprice;
 					// 4 모든 상품의 배송비를 누적
 					int baeprice=Integer.parseInt(map.get("baeprice").toString());
 					baepriceTot=baepriceTot+baeprice;
 				}
-				
 			}
 			// 뷰에 모든 상품의 구매금액,적립금,배송비를 전달
 			model.addAttribute("halinpriceTot",halinpriceTot);
@@ -179,8 +175,7 @@ public class MemberServiceImpl implements MemberService {
 					newCookie.setMaxAge(3600);
 					newCookie.setPath("/");
 					response.addCookie(newCookie);
-				}
-				
+				}				
 			}
 		}
 		else
@@ -193,7 +188,6 @@ public class MemberServiceImpl implements MemberService {
 			   mapper.cartDel(userid,pcodes[i]);
 			}
 		}
-
 		return "redirect:/member/cartView";
 	}
 
@@ -292,11 +286,46 @@ public class MemberServiceImpl implements MemberService {
 				mapper.jjimDel(userid, pcode);
 			}
 			return "redirect:/member/jjimList";
-		}
-		
+		}		
 	}
-	
-	
 
-	
+	@Override
+	public String jumunList(HttpSession session, Model model, HttpServletResponse response) {
+		if(session.getAttribute("userid")==null) {
+			Cookie url=new Cookie("url", "/member/jumunList");
+			url.setMaxAge(500);
+			url.setPath("/");
+			response.addCookie(url);
+			return "redirect:/login/login";
+		} else {
+			String userid=session.getAttribute("userid").toString();
+			ArrayList<HashMap> mapAll=mapper.jumunList(userid);
+			
+			for(HashMap map:mapAll) {
+				String sts="";
+				switch((int)map.get("state")) {
+					case 0:sts="결제완료"; break;
+					case 1:sts="상품준비중"; break;
+					case 2:sts="배송중"; break;
+					case 3:sts="배송완료"; break;
+					case 4:sts="취소완료"; break;
+					case 5:sts="반품"; break;
+					case 6:sts="교환"; break;
+				}
+				map.put("stat", sts );
+			}
+			
+			model.addAttribute("mapAll", mapAll);
+			return "/member/jumunList";
+		}
+	}
+
+	@Override
+	public String chgState(HttpServletRequest request) {
+		String state=request.getParameter("state");
+		String id=request.getParameter("id");
+		
+		mapper.chgState(state,id);
+		return "redirect:/member/jumunList";
+	}	
 }

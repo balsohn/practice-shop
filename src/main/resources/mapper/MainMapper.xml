@@ -16,10 +16,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="cartNum" resultType="string">
 		select count(*) from cart where userid=#{userid}
 	</select>
-	
-	
-	
-	
+
 	<select id="getCate" resultType="kr.co.shop.dto.CateDTO"> 
 SELECT 
     d.name AS daeName, 
@@ -35,4 +32,5 @@ ORDER BY
     d.id, j.id, s.id;
 
 	</select>
+
 </mapper>

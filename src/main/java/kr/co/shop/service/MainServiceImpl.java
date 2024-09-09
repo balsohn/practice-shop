@@ -1,10 +1,12 @@
 package kr.co.shop.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 import org.springframework.web.util.WebUtils;
 
 import jakarta.servlet.http.Cookie;
@@ -49,8 +51,7 @@ public class MainServiceImpl implements MainService {
 	}
 
 	@Override
-	public String cartNum(HttpServletRequest request, HttpSession session) {
-		
+	public String cartNum(HttpServletRequest request, HttpSession session) {		
 		if(session.getAttribute("userid")==null) {
 			Cookie cookie=WebUtils.getCookie(request, "pcode");
 			
@@ -59,14 +60,20 @@ public class MainServiceImpl implements MainService {
 				return pcodes.length+"";				
 			} else {
 				return "0";
-			}
-			
+			}			
 		} else {
 			String userid=session.getAttribute("userid").toString();
 			return mapper.cartNum(userid);
 		}
 	}
-	
-	
 
+	@Override
+	public String gumaeAll(Model model) {
+		ArrayList<HashMap> mapAll=mapper.gumaeAll();
+		model.addAttribute("mapAll",mapAll);
+		return "/gumae/gumaeAll";
+	}
+	
+	
+	
 }

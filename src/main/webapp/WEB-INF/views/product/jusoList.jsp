@@ -53,6 +53,7 @@
 		opener.document.getElementById("bjuso").innerText=document.getElementsByClassName("bjuso")[n].innerText;
 		opener.document.getElementById("bphone").innerText=document.getElementsByClassName("bphone")[n].innerText;
 		opener.document.getElementById("breq").innerText=document.getElementsByClassName("breq")[n].innerText;
+		opener.document.gform.baeId.value=document.getElementsByClassName("baeId")[n].value;
 		
 		close();
 	}
@@ -60,6 +61,7 @@
 </head>
 <body>
 	<c:forEach var="bdto" items="${bdto }" varStatus="sts">
+	<input type="hidden" class="baeId" value="${bdto.id}">
 	<div class="baeJuso">
 		<div class="bname">${bdto.name }</div>
 		<c:if test="${bdto.gibon==1 }">

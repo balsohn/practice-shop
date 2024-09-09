@@ -64,12 +64,10 @@ public class LoginServiceImpl implements LoginService {
 				return "redirect:../main/index";
 			} else {
 				return "redirect:"+oriURL;
-			}
-			
+			}			
 		} else {
 			return "redirect:/login/login?err=1";
-		}
-		
+		}	
 	}
 
 	@Override

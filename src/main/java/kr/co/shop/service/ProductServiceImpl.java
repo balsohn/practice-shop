@@ -1,13 +1,15 @@
 package kr.co.shop.service;
 
 import java.time.LocalDate;
+import java.time.format.TextStyle;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.util.WebUtils;
 
 import jakarta.servlet.http.Cookie;
@@ -15,6 +17,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import kr.co.shop.dto.BaesongDTO;
+import kr.co.shop.dto.GumaeDTO;
 import kr.co.shop.dto.ProductDTO;
 import kr.co.shop.mapper.ProductMapper;
 import kr.co.shop.utils.MyUtils;
@@ -50,20 +53,18 @@ public class ProductServiceImpl implements ProductService {
 			
 			pos+="-"+mapper.getSoName(code, daejung);
 		}
-
 		
 		model.addAttribute("pos",pos);
 		
 		String order=request.getParameter("order")==null?"0":request.getParameter("order");
 		model.addAttribute("order",order);
 		switch(order) {
-		case"0":order="pansu desc"; break;
-		case"1":order="price asc"; break;
-		case"2":order="price desc"; break;
-		case"3":order="star desc"; break;
-		case"4":order="writeday desc"; break;
-		}
-		
+			case"0":order="pansu desc"; break;
+			case"1":order="price asc"; break;
+			case"2":order="price desc"; break;
+			case"3":order="star desc"; break;
+			case"4":order="writeday desc"; break;
+		}		
 		
 		int page=request.getParameter("page")==null?1:Integer.parseInt(request.getParameter("page"));
 		int index=(page-1)*10;
@@ -112,8 +113,7 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public String content(HttpServletRequest request, Model model,HttpSession session) {
 		String pcode=request.getParameter("pcode");
-		ProductDTO pdto=mapper.content(pcode);
-		
+		ProductDTO pdto=mapper.content(pcode);		
 			
 		int halinPrice=(int)(pdto.getPrice()-(pdto.getPrice()*(pdto.getHalin()/100.0)));
 		int jukPrice=(int)(pdto.getPrice()*(pdto.getJuk()/100.0));
@@ -276,11 +276,11 @@ public class ProductServiceImpl implements ProductService {
 			if(bdto!=null) {
 				String breq="";
 				switch(bdto.getReq()) {
-				case 0:breq="문 앞"; break;
-				case 1:breq="직접받고 부재시 문앞"; break;
-				case 2:breq="경비실"; break;
-				case 3:breq="택배함"; break;
-				case 4:breq="공동현관 앞"; break;				
+					case 0:breq="문 앞"; break;
+					case 1:breq="직접받고 부재시 문앞"; break;
+					case 2:breq="경비실"; break;
+					case 3:breq="택배함"; break;
+					case 4:breq="공동현관 앞"; break;				
 				}
 				bdto.setBreq(breq);
 				
@@ -327,9 +327,6 @@ public class ProductServiceImpl implements ProductService {
 			int baePrice=0;
 			int jukPrice=0;
 			
-			
-			
-			
 			for(int i=0;i<plist.size();i++) {
 				ProductDTO pdto=plist.get(i);
 				int price=pdto.getPrice();
@@ -363,6 +360,7 @@ public class ProductServiceImpl implements ProductService {
 		}
 		mapper.jusoWriteOk(bdto);
 		
+		
 		if(bdto.getTt().equals("1")) {
 			//추가입력
 			return "redirect:/product/jusoList";
@@ -370,13 +368,14 @@ public class ProductServiceImpl implements ProductService {
 			model.addAttribute("bname",bdto.getName());
 			model.addAttribute("bjuso", bdto.getJuso());
 			model.addAttribute("bphone",bdto.getPhone());
+			model.addAttribute("baeId",mapper.getBaeId(userid));
 			String breq="";
 			switch(bdto.getReq()) {
-			case 0:breq="문 앞"; break;
-			case 1:breq="직접받고 부재시 문앞"; break;
-			case 2:breq="경비실"; break;
-			case 3:breq="택배함"; break;
-			case 4:breq="공동현관 앞"; break;			
+				case 0:breq="문 앞"; break;
+				case 1:breq="직접받고 부재시 문앞"; break;
+				case 2:breq="경비실"; break;
+				case 3:breq="택배함"; break;
+				case 4:breq="공동현관 앞"; break;			
 			}
 			
 			model.addAttribute("breq",breq);
@@ -443,6 +442,107 @@ public class ProductServiceImpl implements ProductService {
 		}
 		mapper.jusoUpdateOk(bdto);
 		return "redirect:/product/jusoList";
+	}
+
+	@Override
+	public String gumaeOk(GumaeDTO gdto,HttpSession session) {
+		String userid=session.getAttribute("userid").toString();
+		gdto.setUserid(userid);
+		LocalDate today=LocalDate.now();
+		String y=String.format("%02d", today.getYear()); 
+		String m=String.format("%02d", today.getMonthValue());
+		String d=String.format("%02d", today.getDayOfMonth());
+		
+		String jumuncode="j"+y+m+d;
+		jumuncode=jumuncode+String.format("%03d", mapper.getJumuncode(jumuncode));
+		gdto.setJumuncode(jumuncode);		
+		
+		String[] pcodes=gdto.getPcodes();
+		int[] sues=gdto.getSues();
+		mapper.useJuk(userid,gdto.getUseJuk());
+		
+		for(int i=0;i<pcodes.length;i++) {
+			gdto.setPcode(pcodes[i]);
+			gdto.setSu(sues[i]);
+			mapper.gumaeOk(gdto);
+			
+			// 장바구니에 있는 구매된 상품은 삭제
+			mapper.cartDel(userid, pcodes[i]);
+			// 잔여수량과 판매수량 업데이트
+			mapper.suUp(pcodes[i], sues[i]);	
+		}
+		
+		return "redirect:/product/gumaeView?jumuncode="+jumuncode;
+	}
+	
+	@Override
+	public String gumaeView(HttpServletRequest request, Model model) {
+		String jumuncode=request.getParameter("jumuncode");
+		
+		ArrayList<HashMap> mapAll=mapper.gumaeView2(jumuncode);
+		
+		// 상품금액당, 총삼품금액, 총배송비, 도착예정일
+		
+		int baesong=0;
+		int chong=0;
+		String baeEx="";
+		String breq="";
+		LocalDate today=LocalDate.now();
+		
+		
+		
+		for(HashMap map:mapAll) {
+			int price=(int)map.get("price");
+			int hal=(int) map.get("halin");
+			int halinPrice=(int) (price-(price*hal/100.0));
+			chong+=halinPrice;
+			
+			int baePrice=(int) map.get("baeprice");
+			baesong+=baePrice;
+			
+			map.put("halinPrice", halinPrice);
+			
+			int beaday=(int)map.get("baeday");
+			LocalDate xday=today.plusDays(beaday);
+			int m=xday.getMonthValue();
+			int d=xday.getDayOfMonth();
+			
+			String yoil=xday.getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.KOREAN);
+			switch((int)map.get("baeday")) {
+				case 0:map.put("baeEx", "오늘 도착"); break;
+				case 1:map.put("baeEx", "내일 도착"); break;
+				case 2:map.put("baeEx", "모레 도착"); break;
+				default:map.put("baeEx", m+"/"+d+"("+yoil+") 도착");
+			}	
+			
+			int req=(int)map.get("req");
+			switch(req) {
+				case 0: map.put("breq","문 앞"); break;
+				case 1: map.put("breq", "직접받고 부재시 문앞"); break;
+				case 2: map.put("breq","경비실"); break;
+				case 3: map.put("breq","택배함"); break;
+				case 4: map.put("breq","공동현관 앞"); break;
+			}
+		}
+		
+		model.addAttribute("baesong",baesong);
+		model.addAttribute("chong",chong);
+		model.addAttribute("map",mapAll);
+		/*
+		ArrayList<GumaeDTO> glist=mapper.gumaeView(jumuncode);
+		ArrayList<ProductDTO> plist=new ArrayList<>();
+		ArrayList<BaesongDTO> blist=new ArrayList<>();
+		
+		for(int i=0;i<glist.size();i++) {
+			GumaeDTO gdto=glist.get(i);
+			ProductDTO pdto=mapper.content(gdto.getPcode());
+			plist.add(pdto);
+			
+			BaesongDTO bdto=mapper.jusoUpdate(gdto.getBaeId()+"");
+			blist.add(bdto);
+		}*/
+		
+		return "/product/gumaeView";
 	}
 	
 

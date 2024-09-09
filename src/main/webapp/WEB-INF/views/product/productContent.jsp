@@ -163,7 +163,7 @@
 				${pdto.baeEx }
 				<div id="pjuk"> 적립예정 : <span id="input3"><fmt:formatNumber value="${pdto.jukPrice}" type="number"/></span>원 </div>
 				<div id="ju">
-					<div><input type="text" value="1" readonly id="su"></div>
+					<div><input type="text" value="1" readonly name="su" id="su"></div>
 					<div id="ju1">
 						<input type="button" onclick="addCart()" id="btn1" value="장바구니">
 						<div id="cartview">
@@ -171,7 +171,7 @@
 							<div><input type="button" value="장바구니로 이동" onclick="location='../member/cartView'"></div>
 						</div>
 					</div>
-					<div><button onclick="location:''" id="btn2">구매하기</button></div>
+					<div><button type="submit" id="btn2">구매하기</button></div>
 				</div>
 			</div>
 		</section>

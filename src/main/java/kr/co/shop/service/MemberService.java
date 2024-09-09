@@ -20,7 +20,7 @@ public interface MemberService {
 	public String jjimList(HttpSession session,Model model);
 	public String addCart(HttpServletRequest request, HttpSession session);
 	public String jjimDel(HttpServletRequest request, HttpSession session);
-	
-	
+	public String jumunList(HttpSession session, Model model, HttpServletResponse response);
+	public String chgState(HttpServletRequest request);
 	
 }

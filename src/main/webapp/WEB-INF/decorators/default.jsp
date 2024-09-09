@@ -122,6 +122,8 @@ nav #mainMenu > li {
     text-align: center;
 }
 
+nav #mainMenu li a {line-height:1.3;}
+
 nav #mainMenu > li:first-child {
     width: 220px;
     text-align: left;
@@ -228,6 +230,7 @@ footer {
 .header-right #myMenuList li:hover {
     background-color: #f1f1f1; /* 호버 시 배경색 변경 */
 }
+.cart a img {vertical-align:text-bottom;}
 
 </style>
 <script src="https://code.jquery.com/jquery-latest.js"></script>
@@ -390,7 +393,7 @@ document.addEventListener("DOMContentLoaded", function() {
 			    <ul id="myMenuList">
 			        <li><a href="../member/jjimList">찜리스트</a></li>
 			        <li><a href="#">회원정보</a></li>
-			        <li><a href="#">주문목록</a></li>
+			        <li><a href="../member/jumunList">주문목록</a></li>
 			        <li><a href="#">배송지관리</a></li>
 			        <li><a href="#">배송지관리</a></li>
 			        <li><a href="#">배송지관리</a></li>
@@ -401,7 +404,7 @@ document.addEventListener("DOMContentLoaded", function() {
 	           </c:if>
 	           <a href="">고객센터</a>
             </div>
-            <div>
+            <div class="cart">
             	<a href="../member/cartView"><img src="../resources/uploads/cart.png">(<span id="cartNum"></span>)</a>
             </div>
         </div>

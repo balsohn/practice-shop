@@ -22,10 +22,10 @@
    main {width: 1100px; margin: auto; margin-top: 50px;}
    .main-top {display:flex; justify-content: space-between; margin-right:10px;}
    .main-top > div > a {text-decoration: none; color:black;}
-   main table td {cursor: pointer;}
+   main table td {cursor: pointer; border:2px solid transparent;}
    table { margin-top: 20px;}
    td {padding: 10px;}
-   td:hover {border:2px solid #ccc; border-radius: 5px; padding:10px;}
+   td:hover {border-color:#ccc; border-radius: 5px; padding:10px;}
  </style>
  <script>
  /*

@@ -1,10 +1,12 @@
 package kr.co.shop.mapper;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.apache.ibatis.annotations.Mapper;
 
 import kr.co.shop.dto.BaesongDTO;
+import kr.co.shop.dto.GumaeDTO;
 import kr.co.shop.dto.MemberDTO;
 import kr.co.shop.dto.ProductDTO;
 
@@ -34,4 +36,12 @@ public interface ProductMapper {
 	public void jusoDel(String id);
 	public BaesongDTO jusoUpdate(String id);
 	public void jusoUpdateOk(BaesongDTO bdto);
+	public int getBaeId(String userid);
+	public int getJumuncode(String jumuncode);
+	public void gumaeOk(GumaeDTO gdto);
+	public void useJuk(String userid, int useJuk);
+	public void cartDel(String userid,String pcode);
+	public void suUp(String pcode,int su);
+	public ArrayList<GumaeDTO> gumaeView(String jumuncode);
+	public ArrayList<HashMap> gumaeView2(String jumuncode);
 }
