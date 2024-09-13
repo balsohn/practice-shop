@@ -18,6 +18,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import kr.co.shop.dto.MemberDTO;
 import kr.co.shop.dto.ProductDTO;
+import kr.co.shop.dto.ReviewDTO;
 import kr.co.shop.mapper.MemberMapper;
 
 @Service
@@ -326,6 +327,32 @@ public class MemberServiceImpl implements MemberService {
 		String id=request.getParameter("id");
 		
 		mapper.chgState(state,id);
+		return "redirect:/member/jumunList";
+	}
+
+	@Override
+	public String reviewWrite(HttpServletRequest request, HttpSession session, Model model) {
+		String pcode=request.getParameter("pcode");
+		String id=request.getParameter("id");
+		model.addAttribute("id",id);
+		model.addAttribute("pcode",pcode);
+		return "/member/reviewWrite";
+	}
+
+	@Override
+	public String reviewOk(ReviewDTO rdto, HttpSession session,HttpServletRequest request) {
+		String userid=session.getAttribute("userid").toString();
+		String gumae_id=request.getParameter("gumae_id");
+		rdto.setUserid(userid);
+		mapper.reviewOk(rdto);
+		
+		// product테이블에 star필드에 평균값을 다시 구해서 저장 rdto.getPcode();
+		double star=mapper.getReviewAvg(rdto.getPcode());
+		// product테이블에 review필드에 1증가
+		mapper.setProduct(star,rdto.getPcode());
+		
+		mapper.chgIsReview(gumae_id);
+		
 		return "redirect:/member/jumunList";
 	}	
 }

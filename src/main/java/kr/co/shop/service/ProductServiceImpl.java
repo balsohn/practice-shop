@@ -18,7 +18,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import kr.co.shop.dto.BaesongDTO;
 import kr.co.shop.dto.GumaeDTO;
+import kr.co.shop.dto.ProQnaDTO;
 import kr.co.shop.dto.ProductDTO;
+import kr.co.shop.dto.ReviewDTO;
 import kr.co.shop.mapper.ProductMapper;
 import kr.co.shop.utils.MyUtils;
 
@@ -104,6 +106,26 @@ public class ProductServiceImpl implements ProductService {
 			plist.get(i).setHalinPrice(halinPrice);
 			plist.get(i).setJukPrice(jukPrice);
 			plist.get(i).setBaeEx(baeEx);
+			
+			double star=plist.get(i).getStar();
+			int ystar=0,hstar=0,gstar=0;
+			
+			ystar=(int) star;
+			star=star-ystar;
+			
+			if(star>=0.8) {
+				ystar++;
+			}
+			
+			if(star<0.8 && star>=0.3) {
+				hstar=1;
+			}
+			
+			gstar=5-(ystar+hstar);
+			
+			plist.get(i).setYstar(ystar);
+			plist.get(i).setGstar(gstar);
+			plist.get(i).setHstar(hstar);
 		}
 		
 		model.addAttribute("plist",plist);
@@ -143,6 +165,36 @@ public class ProductServiceImpl implements ProductService {
 			String userid=session.getAttribute("userid").toString();
 			int ch=mapper.jjimChk(pcode, userid);	
 		}
+		
+		double star=pdto.getStar();
+		int ystar=0,hstar=0,gstar=0;
+		
+		ystar=(int) star;
+		star=star-ystar;
+		
+		if(star>=0.8) {
+			ystar++;
+		}
+		
+		if(star<0.8 && star>=0.3) {
+			hstar=1;
+		}
+		
+		gstar=5-(ystar+hstar);
+		
+		model.addAttribute("ystar",ystar);
+		model.addAttribute("hstar",hstar);
+		model.addAttribute("gstar",gstar);
+		
+		ArrayList<ReviewDTO> reviewlist=mapper.reviewlist(pcode);
+		for(ReviewDTO review:reviewlist) {
+			review.setContent(review.getContent().replace("\r\n", "<br>")); 	
+		}
+		model.addAttribute("review",reviewlist);
+		
+		ArrayList<ProQnaDTO> questAll=mapper.questAll(pcode);
+		model.addAttribute("questAll",questAll);
+		
 		return "/product/productContent";
 	}
 
@@ -543,6 +595,25 @@ public class ProductServiceImpl implements ProductService {
 		}*/
 		
 		return "/product/gumaeView";
+	}
+
+	@Override
+	public String reviewDel(HttpServletRequest request) {
+		String id=request.getParameter("id");
+		String pcode=request.getParameter("pcode");
+		mapper.reviewDel(id);
+		return "redirect:/product/productContent?pcode="+pcode;
+	}
+
+	@Override
+	public String questWriteOk(HttpSession session, HttpServletRequest request) {
+		String pcode=request.getParameter("pcode");
+		String userid=session.getAttribute("userid").toString();
+		String content=request.getParameter("content");
+		int ref=mapper.getRef(pcode);
+		mapper.questWriteOk(pcode, userid, content,ref);
+		
+		return "redirect:/product/productContent?pcode="+pcode;
 	}
 	
 

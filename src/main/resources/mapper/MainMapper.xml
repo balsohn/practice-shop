@@ -32,5 +32,22 @@ ORDER BY
     d.id, j.id, s.id;
 
 	</select>
+	
+	<select id="getProduct1" resultType="kr.co.shop.dto.ProductDTO">
+		select * from product where sales=1
+		order by id desc limit 4
+	</select>
+	<select id="getProduct2" resultType="kr.co.shop.dto.ProductDTO">
+		select * from product where sales=1
+		order by halin desc limit 4
+	</select>
+	<select id="getProduct3" resultType="kr.co.shop.dto.ProductDTO">
+		select * from product where sales=1
+		order by writeday limit 4
+	</select>
+	<select id="getProduct4" resultType="kr.co.shop.dto.ProductDTO">
+		select * from product where sales=1
+		order by pansu limit 4
+	</select>
 
 </mapper>

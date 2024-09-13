@@ -93,8 +93,11 @@
 				<c:if test="${map.state==3}">
 					<input type="button" value="교환신청" id="btn" onclick="location='chgState?state=7&id=${map.id}'">
 				</c:if>
-				<c:if test="${map.state==3}">
-					<input type="button" value="리뷰쓰기" id="btn">
+				<c:if test="${map.state==3 && map.isReview==0}">
+					<input type="button" value="리뷰쓰기" id="btn" onclick="location='reviewWrite?pcode=${map.pcode}&id=${map.id}'">
+				</c:if>
+				<c:if test="${map.state==3 && map.isReview==1}">
+				<input type="button" value="리뷰보기" id="btn">
 				</c:if>
 				<c:if test="${map.state==5}"> 
 					<input type="button" value="반품취소" id="btn" onclick="location='chgState?state=3&id=${map.id}'">

@@ -10,4 +10,10 @@ public class ProductDTO {
 	
 	private String baeEx;
 	private int halinPrice, jukPrice;
+	
+	private int ystar,gstar,hstar;
+	
+	// 타임세일 관련
+	private int sales;
+	private String salesDay;
 }

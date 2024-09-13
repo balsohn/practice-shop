@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import kr.co.shop.dto.DaeDTO;
 import kr.co.shop.dto.MemberDTO;
+import kr.co.shop.dto.ReviewDTO;
 
 public interface MemberService {
 	public String useridChk(String userid);
@@ -22,5 +23,7 @@ public interface MemberService {
 	public String jjimDel(HttpServletRequest request, HttpSession session);
 	public String jumunList(HttpSession session, Model model, HttpServletResponse response);
 	public String chgState(HttpServletRequest request);
+	public String reviewWrite(HttpServletRequest request, HttpSession session, Model model);
+	public String reviewOk(ReviewDTO rdto, HttpSession session,HttpServletRequest request);
 	
 }

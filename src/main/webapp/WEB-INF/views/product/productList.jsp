@@ -62,9 +62,15 @@
            <div> <fmt:formatNumber value="${pdto.halinPrice}" type="number"/>원 </div>
            <div> ${pdto.baeEx} </div>     
            <div style="letter-spacing:-4px"> 
-             <c:forEach begin="1" end="5">
-               <img src="../resources/uploads/star1.png" width="10">
-             </c:forEach>
+	            <c:forEach begin="1" end="${pdto.ystar}">
+				<img src="../resources/uploads/star1.png" width="10">
+				</c:forEach>
+				<c:if test="${pdto.hstar==1}">
+				<img src="../resources/uploads/star3.png" width="10">
+				</c:if>
+				<c:forEach begin="1" end="${pdto.gstar}">
+				<img src="../resources/uploads/star2.png" width="10">
+				</c:forEach>
            </div>   
           <c:if test="${pdto.juk!=0}"> <!-- 적립금이 있다면 -->   
            <div> 

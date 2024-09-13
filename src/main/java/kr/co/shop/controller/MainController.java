@@ -31,8 +31,8 @@ public class MainController {
 	}
 	
 	@RequestMapping("/main/index")
-	public String index() {
-		return service.index();
+	public String index(Model model) {
+		return service.index(model);
 	}
 	
 	

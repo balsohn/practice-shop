@@ -12,7 +12,7 @@ import kr.co.shop.dto.JungDTO;
 import kr.co.shop.dto.SoDTO;
 
 public interface MainService {
-	public String index();
+	public String index(Model model);
 	public ArrayList<DaeDTO> getDae();
 	public ArrayList<CateDTO> getCate();
 	public ArrayList<JungDTO> getJung();
