@@ -8,7 +8,9 @@ import org.apache.ibatis.annotations.Mapper;
 import kr.co.shop.dto.BaesongDTO;
 import kr.co.shop.dto.GumaeDTO;
 import kr.co.shop.dto.MemberDTO;
+import kr.co.shop.dto.ProQnaDTO;
 import kr.co.shop.dto.ProductDTO;
+import kr.co.shop.dto.ReviewDTO;
 
 @Mapper
 public interface ProductMapper {
@@ -44,4 +46,11 @@ public interface ProductMapper {
 	public void suUp(String pcode,int su);
 	public ArrayList<GumaeDTO> gumaeView(String jumuncode);
 	public ArrayList<HashMap> gumaeView2(String jumuncode);
+	public double getStar(String pcode);
+	public ArrayList<ReviewDTO> reviewlist(String pcode);
+	public void reviewDel(String id);
+	public int getRef(String pcode);
+	public void questWriteOk(String pcode,String userid, String content, int ref);
+	public ArrayList<ProQnaDTO> questAll(String pcode);
+	
 }

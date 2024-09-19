@@ -393,7 +393,7 @@ document.addEventListener("DOMContentLoaded", function() {
 			    <ul id="myMenuList">
 			        <li><a href="../member/jjimList">찜리스트</a></li>
 			        <li><a href="#">회원정보</a></li>
-			        <li><a href="#">주문목록</a></li>
+			        <li><a href="../member/jumunList">주문목록</a></li>
 			        <li><a href="#">배송지관리</a></li>
 			        <li><a href="#">배송지관리</a></li>
 			        <li><a href="#">배송지관리</a></li>
@@ -426,6 +426,8 @@ document.addEventListener("DOMContentLoaded", function() {
         </ul>
     </nav>
 <sitemesh:write property="body"/>
-    <footer></footer> <!-- 쇼핑몰 관련 정보 -->
+    <footer>
+    	<img src="../resources/uploads/footer.png">
+    </footer> <!-- 쇼핑몰 관련 정보 -->
 </body>
 </html>

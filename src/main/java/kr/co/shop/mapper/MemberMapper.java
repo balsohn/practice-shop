@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import kr.co.shop.dto.MemberDTO;
 import kr.co.shop.dto.ProductDTO;
+import kr.co.shop.dto.ReviewDTO;
 
 @Mapper
 public interface MemberMapper {
@@ -20,5 +21,11 @@ public interface MemberMapper {
 	public void addCart(String userid, String pcode);
 	public boolean isCart(String userid, String pcode);
 	public void jjimDel(String userid, String pcode);
+	public ArrayList<HashMap> jumunList(String userid);
+	public void chgState(String state, String id);
+	public void reviewOk(ReviewDTO rdto);
+	public double getReviewAvg(String pcode);
+	public void setProduct(double star,String pcode);
+	public void chgIsReview(String id);
 }
 

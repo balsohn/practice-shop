@@ -100,5 +100,15 @@ public class ProductController {
 	public String gumaeView(HttpServletRequest request, Model model) {
 		return service.gumaeView(request,model);
 	}
+	
+	@RequestMapping("/product/reviewDel")
+	public String reviewDel(HttpServletRequest request) {
+		return service.reviewDel(request);
+	}
+	
+	@RequestMapping("/product/questWriteOk")
+	public String questWriteOk(HttpSession session,HttpServletRequest request) {
+		return service.questWriteOk(session,request);
+	}
 
 }

@@ -18,6 +18,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import kr.co.shop.dto.MemberDTO;
 import kr.co.shop.dto.ProductDTO;
+import kr.co.shop.dto.ReviewDTO;
 import kr.co.shop.mapper.MemberMapper;
 
 @Service
@@ -287,5 +288,71 @@ public class MemberServiceImpl implements MemberService {
 			}
 			return "redirect:/member/jjimList";
 		}		
+	}
+
+	@Override
+	public String jumunList(HttpSession session, Model model, HttpServletResponse response) {
+		if(session.getAttribute("userid")==null) {
+			Cookie url=new Cookie("url", "/member/jumunList");
+			url.setMaxAge(500);
+			url.setPath("/");
+			response.addCookie(url);
+			return "redirect:/login/login";
+		} else {
+			String userid=session.getAttribute("userid").toString();
+			ArrayList<HashMap> mapAll=mapper.jumunList(userid);
+			
+			for(HashMap map:mapAll) {
+				String sts="";
+				switch((int)map.get("state")) {
+					case 0:sts="결제완료"; break;
+					case 1:sts="상품준비중"; break;
+					case 2:sts="배송중"; break;
+					case 3:sts="배송완료"; break;
+					case 4:sts="취소완료"; break;
+					case 5:sts="반품"; break;
+					case 6:sts="교환"; break;
+				}
+				map.put("stat", sts );
+			}
+			
+			model.addAttribute("mapAll", mapAll);
+			return "/member/jumunList";
+		}
+	}
+
+	@Override
+	public String chgState(HttpServletRequest request) {
+		String state=request.getParameter("state");
+		String id=request.getParameter("id");
+		
+		mapper.chgState(state,id);
+		return "redirect:/member/jumunList";
+	}
+
+	@Override
+	public String reviewWrite(HttpServletRequest request, HttpSession session, Model model) {
+		String pcode=request.getParameter("pcode");
+		String id=request.getParameter("id");
+		model.addAttribute("id",id);
+		model.addAttribute("pcode",pcode);
+		return "/member/reviewWrite";
+	}
+
+	@Override
+	public String reviewOk(ReviewDTO rdto, HttpSession session,HttpServletRequest request) {
+		String userid=session.getAttribute("userid").toString();
+		String gumae_id=request.getParameter("gumae_id");
+		rdto.setUserid(userid);
+		mapper.reviewOk(rdto);
+		
+		// product테이블에 star필드에 평균값을 다시 구해서 저장 rdto.getPcode();
+		double star=mapper.getReviewAvg(rdto.getPcode());
+		// product테이블에 review필드에 1증가
+		mapper.setProduct(star,rdto.getPcode());
+		
+		mapper.chgIsReview(gumae_id);
+		
+		return "redirect:/member/jumunList";
 	}	
 }

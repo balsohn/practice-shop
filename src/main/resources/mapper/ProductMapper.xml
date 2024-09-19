@@ -135,4 +135,29 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		on gumae.baeId=baesong.id
 		where gumae.jumuncode=#{jumuncode}
 	</select>
+	<select id="getStar" resultType="double">
+		select star from product where pcode=#{pcode}
+	</select>
+	<select id="reviewlist" resultType="kr.co.shop.dto.ReviewDTO">
+		select *, 
+		rpad(substring(userid,1,3),char_length(userid),'*') user 
+		from review
+		where pcode=#{pcode}
+	</select>
+	<delete id="reviewDel">
+		delete from review
+		where id=#{id}
+	</delete>
+	<select id="getRef" resultType="int">
+		select ifnull(max(ref),0)+1 from proQna
+	</select>
+	<insert id="questWriteOk">
+		insert into proQna (userid,pcode,content,writeday, qna, ref)
+		values (#{userid},#{pcode},#{content},now(),'0',#{ref})
+	</insert>
+	<select id="questAll" resultType="kr.co.shop.dto.ProQnaDTO">
+		select * from proQna
+		where pcode=#{pcode}
+		order by ref desc,qna asc
+	</select>
 </mapper>

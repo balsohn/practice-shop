@@ -58,6 +58,7 @@ label {margin-right: 30px;}
 				subChk[i].checked=false;
 			} 
 		}
+		totalChk();
 	}
 	
 	function subChk() {

@@ -11,6 +11,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import kr.co.shop.dto.MemberDTO;
+import kr.co.shop.dto.ReviewDTO;
 import kr.co.shop.service.MemberService;
 
 @Controller
@@ -66,5 +67,25 @@ public class MemberController {
 	@RequestMapping("/member/jjimDel")
 	public String jjimDel(HttpServletRequest request, HttpSession session) {
 		return service.jjimDel(request,session);
+	}
+	
+	@RequestMapping("/member/jumunList")
+	public String jumunList(HttpSession session,Model model,HttpServletResponse response) {
+		return service.jumunList(session ,model, response);
+	}
+	
+	@RequestMapping("/member/chgState")
+	public String chgState(HttpServletRequest request) {
+		return service.chgState(request);
+	}
+	
+	@RequestMapping("/member/reviewWrite")
+	public String reviewWrite(HttpServletRequest request, HttpSession session, Model model) {
+		return service.reviewWrite(request,session,model);
+	}
+	
+	@RequestMapping("/member/reviewOk")
+	public String reviewOk(ReviewDTO rdto,HttpSession session,HttpServletRequest request) {
+		return service.reviewOk(rdto, session,request);
 	}
 }
