@@ -12,7 +12,6 @@
        width: 1500px;
        height: 402px;
        margin: auto;
-       background: pink;
        display: flex;
        overflow: hidden;
        position: relative;
@@ -73,7 +72,7 @@
     /* 테이블 스타일 */
     main section table {
         width: 100%;
-        border-spacing: 20px; /* 셀 간의 간격 추가 */
+        border-spacing: 10px; /* 셀 간의 간격 추가 */
     }
 
     main section td {
@@ -99,12 +98,6 @@
         text-align: left;
     }
 
-    footer {
-       width: 1100px;
-       height: 150px;
-       margin: auto;
-       background: black;
-    }
 </style>
 <script src="https://code.jquery.com/jquery-latest.js"></script>
 <script>
@@ -122,15 +115,18 @@
         images.eq(currentIndex).addClass('active'); // 첫 번째 이미지를 표시
 
         setInterval(showNextImage, 3000); // 3초마다 슬라이드 변경
-       
-        setInterval(isTime,1000);
+		
+        isTime();
+        let ss=setInterval(isTime,1000);
     });
     
     function isTime() {
 	  	var xday=new Date('${time[0].salesDay }');
     	var today=new Date();
     	var sigan=xday-today;
-    	
+    	if(sigan<=0) {
+    		clearInterval(ss);
+    	}
     	sigan=Math.floor(sigan/1000);
     	var sec=sigan%60;
     	
@@ -138,9 +134,10 @@
     	var min=sigan%60;
     	
     	sigan=Math.floor(sigan/60);
-    	var hour=sigan%60;
+    	var hour=sigan%24;
     	
-    	document.getElementById("countdown").innerText=hour+"시간 "+min+"분 "+sec+"초";
+    	sigan=Math.floor(sigan/24);
+    	document.getElementById("countdown").innerText=sigan+"일 "+hour+"시간 "+min+"분 "+sec+"초";
     }
 </script>
 </head>
@@ -160,10 +157,10 @@
         <section id="p1">
         <table>
 		<h2>타임세일</h2>
-        <span id="countdown"></span>
+        <span id="countdown" style="color:red;"></span>
         	<tr>
         	<c:forEach var="timedto" items="${time }">
-				<td onclick="location='productContent?pcode=${timedto.pcode}'" width="20%"> 
+				<td onclick="location='../product/productContent?pcode=${timedto.pcode}'" width="20%"> 
 				<div style="text-align:center;"> <img src="../resources/pageimg/${timedto.pimg}" width="200" height="300"> </div> 
 				<div> ${timedto.title} </div>
 				<c:if test="${timedto.halin!=0}"> <!-- 할인율이 0이면 의미없다 -->
@@ -199,7 +196,7 @@
         <caption><h2>특가상품</h2></caption>
 			<tr>	
         	<c:forEach var="halindto" items="${halin }">
-				<td onclick="location='productContent?pcode=${halindto.pcode}'" width="20%"> 
+				<td onclick="location='../product/productContent?pcode=${halindto.pcode}'" width="20%"> 
 				<div style="text-align:center;"> <img src="../resources/pageimg/${halindto.pimg}" width="200" height="300"> </div> 
 				<div> ${halindto.title} </div>
 				<c:if test="${halindto.halin!=0}"> <!-- 할인율이 0이면 의미없다 -->
@@ -235,7 +232,7 @@
         <caption><h2>최신상품</h2></caption>
     	    <tr>	
         	<c:forEach var="writedto" items="${writeday }">
-				<td onclick="location='productContent?pcode=${writedto.pcode}'" width="20%"> 
+				<td onclick="location='../product/productContent?pcode=${writedto.pcode}'" width="20%"> 
 				<div style="text-align:center;"> <img src="../resources/pageimg/${writedto.pimg}" width="200" height="300"> </div> 
 				<div> ${writedto.title} </div>
 				<c:if test="${writedto.halin!=0}"> <!-- 할인율이 0이면 의미없다 -->
@@ -271,7 +268,7 @@
         <caption><h2>BEST</h2></caption>
    	      <tr>	
         	<c:forEach var="bestdto" items="${best }">
-				<td onclick="location='productContent?pcode=${bestdto.pcode}'" width="20%"> 
+				<td onclick="location='../product/productContent?pcode=${bestdto.pcode}'" width="20%"> 
 				<div style="text-align:center;"> <img src="../resources/pageimg/${bestdto.pimg}" width="200" height="300"> </div> 
 				<div> ${bestdto.title} </div>
 				<c:if test="${bestdto.halin!=0}"> <!-- 할인율이 0이면 의미없다 -->
@@ -304,6 +301,6 @@
         </section> <!-- 최다판매 -->
     </main>
 
-    <footer></footer>
+
 </body>
 </html>

@@ -378,6 +378,7 @@
 		</section>
 		<section id="fifth">
 			<h3 class="cmenu"> 배송/교환/취소 </h3>
+			<img src="../resources/uploads/exch.png">
 		</section>
 		<section id="sixth"></section>
 		

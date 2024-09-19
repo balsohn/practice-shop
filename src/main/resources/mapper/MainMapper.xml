@@ -34,8 +34,9 @@ ORDER BY
 	</select>
 	
 	<select id="getProduct1" resultType="kr.co.shop.dto.ProductDTO">
-		select * from product where sales=1
-		order by id desc limit 4
+		select * from product
+		where now() &lt; salesDay
+		order by rand() desc limit 4
 	</select>
 	<select id="getProduct2" resultType="kr.co.shop.dto.ProductDTO">
 		select * from product where sales=1

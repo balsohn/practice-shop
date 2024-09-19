@@ -426,6 +426,8 @@ document.addEventListener("DOMContentLoaded", function() {
         </ul>
     </nav>
 <sitemesh:write property="body"/>
-    <footer></footer> <!-- 쇼핑몰 관련 정보 -->
+    <footer>
+    	<img src="../resources/uploads/footer.png">
+    </footer> <!-- 쇼핑몰 관련 정보 -->
 </body>
 </html>
