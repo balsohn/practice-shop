@@ -124,6 +124,7 @@
 	  	var xday=new Date('${time[0].salesDay }');
     	var today=new Date();
     	var sigan=xday-today;
+    	
     	if(sigan<=0) {
     		clearInterval(ss);
     	}
@@ -191,6 +192,7 @@
         	</tr>
        	</table>
         </section> <!-- 타임세일 -->
+        
         <section id="p2">
         <table>
         <caption><h2>특가상품</h2></caption>

@@ -86,13 +86,14 @@ public class MainServiceImpl implements MainService {
 	    ArrayList<ProductDTO> halin = mapper.getProduct2();
 	    ArrayList<ProductDTO> writeday = mapper.getProduct3();
 	    ArrayList<ProductDTO> best = mapper.getProduct4();
-
+	    
 	    // 4가지 리스트에 대해 동일한 작업 수행
 	    processProductList(time);
 	    processProductList(halin);
 	    processProductList(writeday);
 	    processProductList(best);
-
+	    
+	    System.out.println(time);
 	    // 모델에 각각의 리스트 추가
 	    model.addAttribute("time", time);
 	    model.addAttribute("halin", halin);
