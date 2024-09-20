@@ -21,7 +21,7 @@ public interface MemberMapper {
 	public void addCart(String userid, String pcode);
 	public boolean isCart(String userid, String pcode);
 	public void jjimDel(String userid, String pcode);
-	public ArrayList<HashMap> jumunList(String userid);
+	public ArrayList<HashMap> jumunList(String userid, int month, String start, String end);
 	public void chgState(String state, String id);
 	public void reviewOk(ReviewDTO rdto);
 	public double getReviewAvg(String pcode);

@@ -49,7 +49,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		,g.isReview
 		from gumae g inner join product p on g.pcode=p.pcode
 		inner join baesong b on g.baeId=b.id
-		where g.userid=#{userid} order by g.id desc
+		where g.userid=#{userid}
+		<if test="month>1">
+		and <![CDATA[ g.writeday >= (now()-interval ${month} month)]]> 
+		</if>
+		<if test="month==-1">
+		and <![CDATA[ g.writeday >= #{start} and g.writeday <= #{end} ]]>
+		</if>
+		order by g.id desc
 	</select>
 	<update id="chgState">
 		update gumae set state=#{state}

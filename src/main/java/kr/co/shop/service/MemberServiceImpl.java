@@ -291,7 +291,7 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public String jumunList(HttpSession session, Model model, HttpServletResponse response) {
+	public String jumunList(HttpSession session, Model model, HttpServletResponse response, HttpServletRequest request) {
 		if(session.getAttribute("userid")==null) {
 			Cookie url=new Cookie("url", "/member/jumunList");
 			url.setMaxAge(500);
@@ -300,7 +300,15 @@ public class MemberServiceImpl implements MemberService {
 			return "redirect:/login/login";
 		} else {
 			String userid=session.getAttribute("userid").toString();
-			ArrayList<HashMap> mapAll=mapper.jumunList(userid);
+			int month=0;
+			if(request.getParameter("month")!=null) {
+				month=Integer.parseInt(request.getParameter("month")); 				
+			}
+			String start=request.getParameter("start");
+			String end=request.getParameter("end");
+			
+			ArrayList<HashMap> mapAll=mapper.jumunList(userid,month,start,end);
+		
 			
 			for(HashMap map:mapAll) {
 				String sts="";

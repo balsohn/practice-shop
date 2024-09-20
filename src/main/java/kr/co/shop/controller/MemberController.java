@@ -70,8 +70,8 @@ public class MemberController {
 	}
 	
 	@RequestMapping("/member/jumunList")
-	public String jumunList(HttpSession session,Model model,HttpServletResponse response) {
-		return service.jumunList(session ,model, response);
+	public String jumunList(HttpSession session,Model model,HttpServletResponse response, HttpServletRequest request) {
+		return service.jumunList(session ,model, response, request);
 	}
 	
 	@RequestMapping("/member/chgState")

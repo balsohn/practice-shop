@@ -21,7 +21,7 @@ public interface MemberService {
 	public String jjimList(HttpSession session,Model model);
 	public String addCart(HttpServletRequest request, HttpSession session);
 	public String jjimDel(HttpServletRequest request, HttpSession session);
-	public String jumunList(HttpSession session, Model model, HttpServletResponse response);
+	public String jumunList(HttpSession session, Model model, HttpServletResponse response, HttpServletRequest request);
 	public String chgState(HttpServletRequest request);
 	public String reviewWrite(HttpServletRequest request, HttpSession session, Model model);
 	public String reviewOk(ReviewDTO rdto, HttpSession session,HttpServletRequest request);

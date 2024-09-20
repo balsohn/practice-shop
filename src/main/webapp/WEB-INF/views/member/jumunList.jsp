@@ -9,7 +9,7 @@
  <style>
    main {
      width:800px;
-     margin:auto;
+     margin:20px auto;
      font-family: 'GmarketSansMedium';
    }
    
@@ -19,6 +19,12 @@
       border-spacing:0px;
       margin-top:30px;
    }
+   
+   #cal table {
+   		margin:0;
+   }
+   
+   table {border-spacing: 0px;}
    main table tr:first-child td {
       border-top:2px solid purple;
    }
@@ -38,13 +44,146 @@
       border:1px solid purple;
       padding:10px 20px;
    }
+   
+   main #pkc {
+   		position: relative;
+   }
+   
+   main #cal {
+   		position: absolute;
+   		background: white;
+   		padding: 10px;
+   		border: 1px solid purple;
+   		display: none;
+   		left: 350px;
+   }
+   
+   
    </style>
+   <script>
+   function calView(y,m,chk)
+ {
+
+	  // 달력 생성시 필요한 값 : 1일의요일, 총일수, 몇주
+	  // 1일의 요일 => ?년 ?월 1일의 날짜 객체가 필요
+	  if(!y) // 값이 없다면
+	  {
+
+	     var today=new Date();		  
+	     var y=today.getFullYear();
+	     var m=today.getMonth(); // 0~11
+	  }
+	  
+	  // 월이 -1이 오면
+	  if(m==-1)
+	  {
+		  y=y-1;
+		  m=11;
+	  }	  
+	  
+	  // 월이 12가 오면
+	  if(m==12)
+	  {
+		  y=y+1;
+		  m=0;
+	  }	  
+	  
+	  var xday=new Date(y,m,1);
+	  var yoil=xday.getDay(); //0~6(일~토)
+	  
+	  var month=[31,28,31,30,31,30,31,31,30,31,30,31];
+	  var chong=month[m];
+	  
+	  if( (y%4==0 && y%100!=0) || y%400==0 )  // 4의 배수 100의 배수는 아니다   단 400의 배수는 윤년
+	  {
+		  if(m==1)
+		    chong=chong+1;
+	  }	  
+	  
+	  var ju=Math.ceil( (chong+yoil)/7 );
+	  
+
+	  
+	  var calData="<table width='200' height='180' border='0'>";
+	  calData=calData+"<caption>";
+	  calData=calData+" <span onclick='calView("+y+","+(m-1)+","+chk+")'> << </span>";  
+	  calData=calData+y+"년 "+(m+1)+"월";                                                
+	  calData=calData+" <span onclick='calView("+y+","+(m+1)+","+chk+")'> >> </span>";  
+	  calData=calData+"</caption>";
+	  calData=calData+"<tr>";
+	  calData=calData+"<td> 일 </td>";
+	  calData=calData+"<td> 월 </td>";
+	  calData=calData+"<td> 화 </td>";
+	  calData=calData+"<td> 수 </td>";
+	  calData=calData+"<td> 목 </td>";
+	  calData=calData+"<td> 금 </td>";
+	  calData=calData+"<td> 토 </td>";
+	  calData=calData+"</tr>";
+	  var day=1;
+	  for(i=1;i<=ju;i++)
+	  {
+		  calData=calData+"<tr>";
+		  
+		  for(j=0;j<7;j++)
+		  {
+			  if( (i==1 && j<yoil)  || chong<day  )  // 첫주에 1일의 요일보다 적은 j , 총일수보다 많은 day값일때
+			  {	  
+			      calData=calData+"<td> &nbsp; </td>";
+			  }
+			  else
+			  {	  
+				  calData=calData+"<td onclick='moveNalja("+y+","+m+","+day+","+chk+")'>"+day+"</td>";
+				                      
+			      day++;
+			  }
+  	      }	  
+		  
+		  calData=calData+"</tr>";
+	  }
+	  calData=calData+"</table>";
+
+	  document.getElementById("cal").innerHTML=calData;
+	  document.getElementById("cal").style.display="block";
+	
+ }
+   
+   function moveNalja(y,m,d,chk) {
+	   var gigan=document.getElementsByClassName("gigan");
+	   var nalja=y+"-"+String(m+1).padStart(2, "0")+"-"+String(d).padStart(2, "0");
+	   var start=new Date(gigan[0].value);
+	   var end=new Date(nalja);
+	   if(chk==0) {
+		   gigan[chk].value=nalja;		   
+	   } else {
+		   if((end-start)<0) {
+			   alert("기간을 확인해주세요.");
+			   gigan[chk].value="";
+		   } else {
+			   gigan[chk].value=nalja;		 
+		   }
+	   }
+	   document.getElementById("cal").style.display="none";
+   }
+ </script>
 </head>
 <body>
-	<main>
+	<main>	
+		<h2>주문목록</h2>
+		<div align="center" id="pkc">
+			<form method="post" action="jumunList">
+				<input type="hidden" name="month" value="-1">
+				<input type="button" onclick="location='jumunList?month=3'" value="3개월">
+				<input type="button" onclick="location='jumunList?month=6'" value="6개월">
+				<input type="button" onclick="location='jumunList?month=12'" value="12개월">
+				<input type="text" readonly name="start" class="gigan" onfocus="calView(null,null,0)">-
+				<input type="text" readonly name="end" class="gigan" onfocus="calView(null,null,1)">
+				<input type="submit" value="조회">
+			</form>
+			<div id="cal"></div>
+		</div>
 		<c:set var="prevDate" value="${map[0].writeday }"/>
 		<c:set var="chong" value="0"/>
-
+		
 		<c:forEach var="map" items="${mapAll}">
 			<c:if test="${prevDate != map.writeday}">
 				<!-- 이전 날짜의 테이블 종료 -->
@@ -60,7 +199,7 @@
 
 				<!-- 새로운 날짜의 테이블 시작 -->
 				<h3>${map.writeday}</h3>
-				<table>
+				<table class="hi">
 					<tr>
 						<td>상 태</td>
 						<td>주문상품</td>
