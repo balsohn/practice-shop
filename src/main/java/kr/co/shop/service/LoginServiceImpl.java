@@ -5,10 +5,12 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.WebUtils;
 
+import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpSessionEvent;
 import kr.co.shop.mapper.LoginMapper;
 import kr.co.shop.mapper.ProductMapper;
 
@@ -24,7 +26,7 @@ public class LoginServiceImpl implements LoginService {
 
 	@Override
 	public String loginOk(String userid,String pwd,HttpSession session, 
-			HttpServletRequest request, HttpServletResponse response) {
+			HttpServletRequest request, HttpServletResponse response, ServletContext application) {
 		
 		int chk=mapper.loginOk(userid, pwd);
 		if(chk==1) {
@@ -35,6 +37,14 @@ public class LoginServiceImpl implements LoginService {
 			String oriURL=(cookie==null)?null:cookie.getValue();
 			String[] codes=(code==null)?null:code.getValue().split("/");
 			
+			String names=application.getAttribute("names").toString();
+			
+			application.setAttribute("names", names+userid+"/");
+			names=application.getAttribute("names").toString();
+			System.out.println(application.getAttribute("names").toString());
+			String[] users=names.split("/");
+			application.setAttribute("users", users.length);
+			System.out.println(users.length);
 			if(cookie!=null) {
 				cookie.setMaxAge(0);
 				cookie.setPath("/");
@@ -72,10 +82,18 @@ public class LoginServiceImpl implements LoginService {
 
 	@Override
 	public String logout(HttpSession session) {
+		ServletContext application = session.getServletContext();
+		String userid=session.getAttribute("userid").toString();
+		String names=application.getAttribute("names").toString().replace(userid+"/", "");
+		application.setAttribute("names", names);
+		String[] users=names.split("/");
+		application.setAttribute("users", users.length);
+		
+		
 		session.invalidate();
 		return "redirect:../main/index";
 	}
-
+	
 	@Override
 	public String login(HttpSession session) {
 		if(session.getAttribute("userid")!=null) {
@@ -84,4 +102,5 @@ public class LoginServiceImpl implements LoginService {
 			return "/login/login";
 		}
 	}
+
 }

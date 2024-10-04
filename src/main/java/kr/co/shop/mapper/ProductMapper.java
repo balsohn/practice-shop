@@ -15,11 +15,11 @@ import kr.co.shop.dto.ReviewDTO;
 @Mapper
 public interface ProductMapper {
 
-	public ArrayList<ProductDTO> list(String pcode,String order, int index);
+	public ArrayList<ProductDTO> list(String pcode,String order, int index, String search);
 	public String getDaeName(String code);
 	public String getJungName(String code, String daecode);
 	public String getSoName(String code, String daejung);
-	public int getChong(String pcode);
+	public int getChong(String pcode, String search);
 	public ProductDTO content(String pcode);
 	public void jjimOk(String pcode, String userid);
 	public void jjimDel(String pcode, String userid);

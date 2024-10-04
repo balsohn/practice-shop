@@ -40,11 +40,11 @@
   	<div class="main-top">
   		<div>${pos}</div>
   		<div>
-  			<a href="productList?pcode=${pcode}&order=0" class="type">판매량순</a>
-  			<a href="productList?pcode=${pcode}&order=1" class="type">가격낮은순</a>
-  			<a href="productList?pcode=${pcode}&order=2" class="type">가격높은순</a>
-  			<a href="productList?pcode=${pcode}&order=3" class="type">별점순</a>
-  			<a href="productList?pcode=${pcode}&order=4" class="type">최신상품</a>
+  			<a href="productList?pcode=${pcode}&order=0&search=${param.search}" class="type">판매량순</a>
+  			<a href="productList?pcode=${pcode}&order=1&search=${param.search}" class="type">가격낮은순</a>
+  			<a href="productList?pcode=${pcode}&order=2&search=${param.search}" class="type">가격높은순</a>
+  			<a href="productList?pcode=${pcode}&order=3&search=${param.search}" class="type">별점순</a>
+  			<a href="productList?pcode=${pcode}&order=4&search=${param.search}" class="type">최신상품</a>
   		</div>
   	</div>
    <table width="1100" align="center">
@@ -88,16 +88,16 @@
      <tr>	
      	<td colspan="4" align="center">
      	<c:if test="${pstart!=1}">
-     	<a href="productList?pcode=${param.pcode}&order=${order}&page=1">처음</a>
-     	<a href="productList?pcode=${param.pcode}&order=${order}&page=${pstart-1}">이전</a>
+     	<a href="productList?pcode=${param.pcode}&order=${order}&page=1&search=${param.search}">처음</a>
+     	<a href="productList?pcode=${param.pcode}&order=${order}&page=${pstart-1}&search=${param.search}">이전</a>
      	</c:if>
      	<c:forEach var="i" begin="${pstart}" end="${pend}">
-     	<a href="productList?pcode=${param.pcode}&order=${order}&page=${i}" <c:if test="${i==page}">style='color:red;'</c:if>>${i}</a>
+     	<a href="productList?pcode=${param.pcode}&order=${order}&page=${i}&search=${param.search}" <c:if test="${i==page}">style='color:red;'</c:if>>${i}</a>
      	
      	</c:forEach>
      	<c:if test="${chong!=pend}">
-     	<a href="productList?pcode=${param.pcode}&order=${order }&page=${pend+1}">다음</a>
-     	<a href="productList?pcode=${param.pcode}&order=${order}&page=${chong}">마지막</a>
+     	<a href="productList?pcode=${param.pcode}&order=${order }&page=${pend+1}&search=${param.search}">다음</a>
+     	<a href="productList?pcode=${param.pcode}&order=${order}&page=${chong}&search=${param.search}">마지막</a>
      	</c:if>
 		</td>
      </tr>

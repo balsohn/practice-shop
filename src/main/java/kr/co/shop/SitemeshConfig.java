@@ -2,6 +2,7 @@ package kr.co.shop;
 
 import org.sitemesh.builder.SiteMeshFilterBuilder;
 import org.sitemesh.config.ConfigurableSiteMeshFilter;
+import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 
 public class SitemeshConfig extends ConfigurableSiteMeshFilter{
 
@@ -11,7 +12,6 @@ public class SitemeshConfig extends ConfigurableSiteMeshFilter{
 		builder.addExcludedPath("/product/jusoWrite");
 		builder.addExcludedPath("/product/jusoList");
 		builder.addExcludedPath("/product/jusoUpdate");
-        
-       
 	}
+	
 }

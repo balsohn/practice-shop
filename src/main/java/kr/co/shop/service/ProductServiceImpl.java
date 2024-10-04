@@ -33,7 +33,7 @@ public class ProductServiceImpl implements ProductService {
 
 	@Override
 	public String list(HttpServletRequest request, Model model) {
-		String pcode=request.getParameter("pcode");
+		String pcode=request.getParameter("pcode")==null?"":request.getParameter("pcode");
 		model.addAttribute("pcode",pcode);
 		String pos="HOME-";
 		if(pcode.length()==3) {
@@ -73,7 +73,8 @@ public class ProductServiceImpl implements ProductService {
 		int p=(page-1)/10;
 		int pstart=p*10+1;
 		int pend=pstart+9;
-		int chong=mapper.getChong(pcode);
+		String search=request.getParameter("search");
+		int chong=mapper.getChong(pcode, search);
 		if(chong<pend) {
 			pend=chong;
 		}
@@ -81,7 +82,9 @@ public class ProductServiceImpl implements ProductService {
 		model.addAttribute("pstart",pstart);
 		model.addAttribute("pend",pend);
 		model.addAttribute("chong",chong);
-		ArrayList<ProductDTO> plist=mapper.list(pcode,order,index);
+		
+		
+		ArrayList<ProductDTO> plist=mapper.list(pcode,order,index,search);
 		
 		for(int i=0;i<plist.size();i++) {
 			ProductDTO pdto=plist.get(i);

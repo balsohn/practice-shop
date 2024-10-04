@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.util.WebUtils;
 
+import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -79,7 +80,7 @@ public class MainServiceImpl implements MainService {
 	
 	
 	@Override
-	public String index(Model model) {
+	public String index(Model model, ServletContext application) {
 		
 		// 여러 리스트에서 데이터를 가져옴
 	    ArrayList<ProductDTO> time = mapper.getProduct1();
@@ -99,6 +100,10 @@ public class MainServiceImpl implements MainService {
 	    model.addAttribute("halin", halin);
 	    model.addAttribute("writeday", writeday);
 	    model.addAttribute("best", best);
+	    
+	    if(application.getAttribute("names")==null) {
+	    	application.setAttribute("names", "");
+	    }
 
 	    return "/main/index";
 	}

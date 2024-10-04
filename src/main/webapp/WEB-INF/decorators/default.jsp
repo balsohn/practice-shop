@@ -276,6 +276,13 @@ window.onload = function() {
     document.getElementsByClassName("type")[${param.order}].style.color="red";
     </c:if>
     
+    var topEQ="top=";
+    var topCookie=document.cookie;
+    var top=topCookie.substring(topEQ.length,topCookie.length);
+    
+    if(top==1) {
+    	document.getElementById("ads").style.display="none";
+    }
     
 }
 
@@ -334,9 +341,45 @@ function buildMenu(daeData, jungData, soData) {
     document.querySelector("nav #mainMenu > li:first-child").appendChild(daeMenu);
 }
 
+function hideAds() {
+	var ads=document.getElementById("ads");
+	var hei=40;
+	
+	ss=setInterval(function(){
+		hei--;
+		
+		ads.style.height=hei+"px";
+		
+		if(hei==0) {
+			clearInterval(ss);
+			ads.remove();
+			
+			document.cookie="top=1; Max-Age=10; path=/";
+		}
+		
+	},10)
+	
+}
 function viewsrc() {
 	document.getElementById("aa").innerText=document.getElementsByTagName("body")[0].innerHTML;
 }
+
+function xCheck(n) {
+	if(n.length!=0) {
+		document.getElementById("xx").style.visibility="visible";
+	} else {
+		document.getElementById("xx").style.visibility="hidden";
+	}
+}
+
+function hi() {
+	document.getElementsByName("search")[0].value="";
+}
+
+function subgo() {
+	document.getElementById("search").submit();
+}
+
 
 document.addEventListener("DOMContentLoaded", function() {
     var myMenu = document.getElementById("myMenu");
@@ -365,22 +408,25 @@ document.addEventListener("DOMContentLoaded", function() {
 <sitemesh:write property="head"/>
 <body>
 <div id="aa"></div><button onclick="viewsrc()">ㅇㅇㅇ</button>
+접속자수 : ${users } / ${names }
     <div id="ads">
         <div id="first">
 	        <div id="left"></div>
 	        <div id="center"> 회원가입하고 상품 첫 주문시 100만원 드립니다. </div>
-	        <div id="right"> X </div>
+	        <div id="right" onclick="hideAds()"> X </div>
         </div>
     </div>      
     <header>
         <div id="logo"><a href="../main/index"><img src="../resources/uploads/logo.png" class="logo"></a></div>
+        <form method="get" action="../product/productList" id="search">
         <div id="search">
             <div id="searchForm">
                 <input type="text" name="search" onkeyup="xCheck(this.value)">
-                <img src="../resources/uploads/x.png" id="xx">
-                <img src="../resources/uploads/s.png">
+                <img src="../resources/uploads/x.png" onclick="hi()" id="xx">
+                <img src="../resources/uploads/s.png" onclick="subgo()">
             </div>
         </div>
+        </form>
         <div class="header-right">
         	<div>
 	           <c:if test="${empty userid}">

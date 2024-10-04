@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import kr.co.shop.dto.CateDTO;
@@ -25,6 +26,9 @@ public class MainController {
 	@Qualifier("ms")
 	private MainService service;
 	
+	@Autowired
+	private ServletContext apllication;
+	
 	@RequestMapping("/")
 	public String home() {
 		return "redirect:/main/index";
@@ -32,7 +36,7 @@ public class MainController {
 	
 	@RequestMapping("/main/index")
 	public String index(Model model) {
-		return service.index(model);
+		return service.index(model, apllication);
 	}
 	
 	

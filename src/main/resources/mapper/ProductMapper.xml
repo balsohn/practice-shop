@@ -6,7 +6,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="kr.co.shop.mapper.ProductMapper">
 	<select id="list" resultType="kr.co.shop.dto.ProductDTO">
 		select * from product where 
+		<if test="search == null or search == ''">
 		pcode like concat(#{pcode},'%')
+		</if>
+		<if test="search != null and search != ''">
+		title like concat('%',#{search},'%')
+		</if>
 		order by ${order} limit #{index},20
 	</select>
 	<select id="getDaeName" resultType="string">
@@ -22,8 +27,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		where code=#{code} and daejung=#{daejung}
 	</select>
 	<select id="getChong" resultType="int">
-		select ceil(count(*)/20) from product where pcode like
-		concat(#{pcode},'%')
+		select ceil(count(*)/20) from product where 
+		<if test="search == null or search == ''">
+		pcode like concat(#{pcode},'%')
+		</if>
+		<if test="search != null and search != ''">
+		title like concat('%',#{search},'%')
+		</if>
 	</select>
 	<select id="content" resultType="kr.co.shop.dto.ProductDTO">
 		select * from product where pcode=#{pcode}
